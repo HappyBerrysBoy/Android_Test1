@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/title_margin"
+    android:background="#ccdd00"
+    android:orientation="vertical"
+    tools:context=".UnitCalculationActivity" >
+
+    <TextView
+        android:id="@+id/showInputInfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cccccc" />
+    <LinearLayout style="@style/LabelLayout">
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/length" />
+		<TextView
+		    style="@style/DefaultWrapLayout"
+	        android:text="@string/width" />
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/height" />
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/dimension" />
+	</LinearLayout>
+    <LinearLayout style="@style/LabelLayout">
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/length"
+	        android:onClick="btnInputNum" />
+		<Button
+		    style="@style/DefaultWrapLayout"
+	        android:id="@+id/width"
+	        android:onClick="btnInputNum" />
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/height"
+	        android:onClick="btnInputNum" />
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/dimension"
+	        android:onClick="btnDimension" />
+	</LinearLayout>
+	<LinearLayout style="@style/LabelLayout">
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/quantity" />
+		<TextView
+		    style="@style/DefaultWrapLayout"
+	        android:text="@string/weight" />
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/weightType" />
+	</LinearLayout>
+	<LinearLayout style="@style/LabelLayout">
+		<Button
+		    style="@style/DefaultWrapLayout"
+	        android:id="@+id/quantity"
+	        android:onClick="btnInputNum" />
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/weight"
+	        android:onClick="btnInputNum" />
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/weightType"
+	        android:onClick="btnWeightType" />
+	</LinearLayout>
+	
+	<LinearLayout style="@style/LabelLayout">
+	    <TextView
+	        style="@style/DefaultWrapLayout"
+	        android:text="@string/ContainerType" />
+		<TextView
+		    style="@style/DefaultWrapLayout"
+	        android:text="@string/Detail_Spec" />
+	</LinearLayout>
+	<LinearLayout style="@style/LabelLayout">
+		<Button
+		    style="@style/DefaultWrapLayout"
+	        android:id="@+id/containerType"
+	        android:text="Pallet" />
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/detailSpec"
+	        android:text="T11형 표준규격" />
+	</LinearLayout>
+</LinearLayout>

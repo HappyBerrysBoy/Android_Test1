@@ -1,10 +1,10 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -16,5 +16,69 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="TitleText" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical|center_horizontal|center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/title_textsize</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
+    <!-- Menu 부분 RelativeLayout Style -->
+    <style name="MenuButtonLayout" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/menu_interval</item>
+    </style>
+    
+    <style name="MenuButton" parent="AppBaseTheme">
+        <item name="android:layout_width">@dimen/menu_buttonsize</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:background">@drawable/round_button</item>
+        <item name="android:textSize">@dimen/menu_textsize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
+    <style name="MenuLeftButton" parent="@style/MenuButton">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">@dimen/menu_margin</item>
+    </style>
+    
+    <style name="MenuRightButton" parent="@style/MenuButton">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/menu_margin</item>
+    </style>
+    
+    <!-- Unit Calculation Layout -->
+    <style name="DefaultWrapLayout" parent="AppBaseTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="LabelLayout" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <!-- Keypad Layout -->
+    <style name="DefaultKeypadLayout" parent="AppBaseTheme">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/keypad_textSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="KeypadLayout" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/keypad_buttonHeight</item>
+    </style>
 </resources>
