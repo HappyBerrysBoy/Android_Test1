@@ -1,0 +1,33 @@
+<resources>
+	<string-array name="dimensions">
+		<item>Millimeter</item>
+		<item>Centimeter</item>
+		<item>Meter</item>
+		<item>Inch</item>
+		<item>Foot</item>
+	</string-array>
+	<string-array name="weights">
+		<item>Ton</item>
+		<item>Kgs</item>
+		<item>Lbs</item>
+	</string-array>
+	<string-array name="containerType">
+		<item>Container</item>
+		<item>Pallet</item>
+		<item>Air ULD</item>
+	</string-array>
+	<string-array name="detailContainer">
+		<item>20DC</item>
+		<item>40DC</item>
+		<item>43DC</item>
+		<item>45DC</item>
+	</string-array>
+	<string-array name="detailPallet">
+		<item>T11(1100mmX1100mm)</item>
+		<item>T14(1100mmX1400mm)</item>
+	</string-array>
+	<string-array name="detailAirULD">
+		<item>Type1</item>
+		<item>Type2</item>
+	</string-array>
+</resources>

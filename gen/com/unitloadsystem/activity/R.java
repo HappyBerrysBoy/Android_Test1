@@ -16,6 +16,14 @@ public final class R {
         public static final int abc_slide_out_bottom=0x7f040004;
         public static final int abc_slide_out_top=0x7f040005;
     }
+    public static final class array {
+        public static final int containerType=0x7f0c0002;
+        public static final int detailAirULD=0x7f0c0005;
+        public static final int detailContainer=0x7f0c0003;
+        public static final int detailPallet=0x7f0c0004;
+        public static final int dimensions=0x7f0c0000;
+        public static final int weights=0x7f0c0001;
+    }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -794,10 +802,11 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f070003;
+        public static final int abc_search_url_text_holo=0x7f070004;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
+        public static final int textcolor=0x7f070003;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1144,7 +1153,7 @@ containing a value of this type.
         public static final int unitcalculation_layout=0x7f03001c;
     }
     public static final class menu {
-        public static final int main=0x7f0c0000;
+        public static final int main=0x7f0d0000;
     }
     public static final class string {
         public static final int ContainerType=0x7f0a001d;

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
 		TextView textTitle = (TextView) findViewById(R.id.title);
 		textTitle.setText(R.string.menu);
 	}
@@ -47,30 +48,8 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-//	public static class MainFragment extends Fragment {
-//
-//		public MainFragment() {
-//		}
-//
-//		@Override
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//			return rootView;
-//		}
-//	}
-//	
-//	public static class SubFragment extends Fragment {
-//
-//		public SubFragment() {
-//		}
-//
-//		@Override
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//			View rootView = inflater.inflate(R.layout.fragment_sub1, container, false);
-//			return rootView;
-//		}
-//	}
+	public void btnPalletInfo(View v){
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://kpp.logisall.com/"));
+		startActivity(intent); 
+	}
 }

@@ -82,10 +82,12 @@
 		<Button
 		    style="@style/DefaultWrapLayout"
 	        android:id="@+id/containerType"
-	        android:text="Pallet" />
+	        android:text="Pallet"
+	        android:onClick="btnSelectType" />
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/detailSpec"
-	        android:text="T11형 표준규격" />
+	        android:text="T11형 표준규격"
+	        android:onClick="btnDetail" />
 	</LinearLayout>
 </LinearLayout>

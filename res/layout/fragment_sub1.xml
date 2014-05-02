@@ -17,7 +17,8 @@
 	    <Button
 	        style="@style/MenuRightButton"
 	        android:id="@+id/palletInfo"
-	        android:text="@string/inquiryPallet" />
+	        android:text="@string/inquiryPallet"
+	        android:onClick="btnPalletInfo" />
 	</RelativeLayout>
 	<RelativeLayout 
         style="@style/MenuButtonLayout">

@@ -16,6 +16,7 @@
 	        android:text="0"
 	        android:textSize="30dp"
 	        android:textStyle="bold"
+	        android:cursorVisible="false"
 	        android:background="#cccccc" />
 	    <Button
 	        android:id="@+id/sendNum"
@@ -23,7 +24,8 @@
 	        android:layout_height="match_parent"
 	        android:layout_weight="4"
 	        android:background="#ff0000"
-	        android:text="Send" />
+	        android:text="Send"
+	        android:onClick="btnSend" />
     </LinearLayout>
 	<LinearLayout style="@style/KeypadLayout">
 		<Button
@@ -40,7 +42,7 @@
 	        style="@style/DefaultKeypadLayout"
 	        android:id="@+id/btn3"
 	        android:text="3"
-	        android:onClick="btnWeightType" />
+	        android:onClick="btnInputNum" />
 	</LinearLayout>
 	<LinearLayout style="@style/KeypadLayout">
 		<Button
@@ -57,7 +59,7 @@
 	        style="@style/DefaultKeypadLayout"
 	        android:id="@+id/btn6"
 	        android:text="6"
-	        android:onClick="btnWeightType" />
+	        android:onClick="btnInputNum" />
 	</LinearLayout>
 	<LinearLayout style="@style/KeypadLayout">
 		<Button
@@ -74,7 +76,7 @@
 	        style="@style/DefaultKeypadLayout"
 	        android:id="@+id/btn9"
 	        android:text="9"
-	        android:onClick="btnWeightType" />
+	        android:onClick="btnInputNum" />
 	</LinearLayout>
 	<LinearLayout style="@style/KeypadLayout">
 		<Button
@@ -91,6 +93,6 @@
 	        style="@style/DefaultKeypadLayout"
 	        android:id="@+id/btnClear"
 	        android:text="Clear"
-	        android:onClick="btnWeightType" />
+	        android:onClick="btnClear" />
 	</LinearLayout>
 </LinearLayout>
