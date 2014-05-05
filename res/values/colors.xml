@@ -1,3 +1,16 @@
 <resources>
-	<color name="textcolor">#0000ff</color>
+	<color name="titleTextColor">#ffffff</color>
+	<color name="titleBackgroundColor">#000066</color>
+	<color name="bodyBackgroundColor">#ccdd00</color>
+	
+	<!-- Menu -->
+	<color name="menuTextColor">#ffffff</color>
+	
+	<!-- Unit Calculation -->
+	<color name="unitTextViewColor">#cccccc</color>
+	
+	<!-- Keypad -->
+	<color name="keypadTextViewColor">#cccccc</color>
+	<color name="keypadSendButtonBack">#ff0000</color>
+	
 </resources>

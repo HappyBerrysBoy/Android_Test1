@@ -23,7 +23,7 @@
         <item name="android:layout_gravity">center_vertical|center_horizontal|center</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/title_textsize</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@color/titleTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -41,7 +41,7 @@
         <item name="android:background">@drawable/round_button</item>
         <item name="android:textSize">@dimen/menu_textsize</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@color/menuTextColor</item>
     </style>
     
     <style name="MenuLeftButton" parent="@style/MenuButton">

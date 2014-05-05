@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/title_margin"
-    android:background="#ccdd00"
+    android:background="@color/bodyBackgroundColor"
     android:orientation="vertical"
     tools:context=".UnitCalculationActivity" >
 
@@ -11,7 +11,7 @@
         android:id="@+id/showInputInfo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#cccccc" />
+        android:background="@color/unitTextViewColor" />
     <LinearLayout style="@style/LabelLayout">
 	    <TextView
 	        style="@style/DefaultWrapLayout"

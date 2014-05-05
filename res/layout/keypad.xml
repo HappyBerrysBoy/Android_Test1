@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ccdd00"
+    android:background="@color/bodyBackgroundColor"
     android:orientation="vertical"
     tools:context=".KeyPadActivity" >
 
@@ -17,13 +17,13 @@
 	        android:textSize="30dp"
 	        android:textStyle="bold"
 	        android:cursorVisible="false"
-	        android:background="#cccccc" />
+	        android:background="@color/keypadTextViewColor" />
 	    <Button
 	        android:id="@+id/sendNum"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="4"
-	        android:background="#ff0000"
+	        android:background="@color/keypadSendButtonBack"
 	        android:text="Send"
 	        android:onClick="btnSend" />
     </LinearLayout>
