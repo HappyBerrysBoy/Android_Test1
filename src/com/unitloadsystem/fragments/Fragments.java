@@ -45,4 +45,16 @@ public class Fragments {
 			return rootView;
 		}
 	}
+	
+	public static class CalculationResultFragment extends Fragment {
+
+		public CalculationResultFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.calculationresult_layout, container, false);
+			return rootView;
+		}
+	}
 }

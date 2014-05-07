@@ -1,6 +1,10 @@
 package com.unitloadsystem.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.unitloadsystem.activity.R;
+import com.unitloadsystem.beans.PalletViewBean;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
 
@@ -11,6 +15,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable.Creator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +27,11 @@ public class UnitCalculationActivity extends Activity {
 	TextView tView;
 	int g_iBtnID;
 	int g_iArrayID;
+	int g_iContainerLength;
+	int g_iContainerWidth;
+	
+	float g_fBoxLength;
+	float g_fBoxWidth;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +125,54 @@ public class UnitCalculationActivity extends Activity {
 	
 	public void btnSelectType(View v){
 		SetDialogItem(v.getId(), R.array.containerType);
+		
+		Button btnDetailSpec = (Button) findViewById(R.id.detailSpec);
+		btnDetailSpec.setText("");
 	}
 	
 	public void btnDetail(View v){
-		SetDialogItem(v.getId(), R.array.detailContainer);
+		Button btnContainer = (Button) findViewById(R.id.containerType);
+		
+		if(btnContainer.getText().equals("Container")){
+			SetDialogItem(v.getId(), R.array.detailContainer);
+		}else if(btnContainer.getText().equals("Pallet")){
+			SetDialogItem(v.getId(), R.array.detailPallet);
+		}else{
+			SetDialogItem(v.getId(), R.array.detailAirULD);
+		}
+	}
+	
+	public void btnCalc(View v){
+		Button btnSize;
+		
+		Intent intent = new Intent(getApplicationContext(), CalculationResultActivity.class);
+		btnSize = (Button) findViewById(R.id.length);
+		intent.putExtra("Length", btnSize.getText());
+		g_fBoxLength = Float.parseFloat(btnSize.getText().toString());
+		
+		btnSize = (Button) findViewById(R.id.width);
+		g_fBoxWidth = Float.parseFloat(btnSize.getText().toString());
+		
+		intent.putExtra("Width", btnSize.getText());
+		btnSize = (Button) findViewById(R.id.height);
+		intent.putExtra("Height", btnSize.getText());
+		intent.putExtra("ContainerLength", "1100");
+		intent.putExtra("ContainerWidth", "1100");
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		intent.putExtra("Layout", getBoxArray());
+		startActivity(intent);
+	}
+	
+	private Bundle getBoxArray(){
+		Bundle b = new Bundle();
+		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
+		aList.add(new PalletViewBean("V", 0, 0));
+		aList.add(new PalletViewBean("H", g_fBoxLength, 0));
+		aList.add(new PalletViewBean("H", 0, g_fBoxWidth));
+		aList.add(new PalletViewBean("V", g_fBoxWidth, g_fBoxLength));
+
+		b.putParcelableArrayList("Layout", aList);
+		
+		return b;
 	}
 }

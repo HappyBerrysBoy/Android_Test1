@@ -20,7 +20,6 @@ public class KeyPadActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.keypad);
 		
-//		eText = (EditText) findViewById(R.id.showInputNum);
 		tText = (TextView) findViewById(R.id.showInputNum);
 		
 		Intent intent = getIntent();

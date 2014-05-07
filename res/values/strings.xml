@@ -23,4 +23,10 @@
     <string name="weightType">WeightType</string>
     <string name="ContainerType">Container Type</string>
     <string name="Detail_Spec">Detail Spec</string>
+    <string name="cntr">Container</string>
+    <string name="pallet">Pallet</string>
+    <string name="airULD">airULD</string>
+    <!-- <String name="Cntr">Container</String>
+    <String name="Pallet">Pallet</String>
+    <String name="AirULD">AirULD</String> -->
 </resources>

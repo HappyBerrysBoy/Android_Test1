@@ -30,14 +30,17 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/length"
+	        android:text="400"
 	        android:onClick="btnInputNum" />
 		<Button
 		    style="@style/DefaultWrapLayout"
 	        android:id="@+id/width"
+	        android:text="700"
 	        android:onClick="btnInputNum" />
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/height"
+	        android:text="300"
 	        android:onClick="btnInputNum" />
 	    <Button
 	        style="@style/DefaultWrapLayout"
@@ -87,7 +90,13 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/detailSpec"
-	        android:text="T11형 표준규격"
 	        android:onClick="btnDetail" />
+	</LinearLayout>
+	<LinearLayout style="@style/LabelLayout">
+	    <Button
+	        style="@style/DefaultWrapLayout"
+	        android:id="@+id/calculation"
+	        android:text="Calculation"
+	        android:onClick="btnCalc" />
 	</LinearLayout>
 </LinearLayout>
