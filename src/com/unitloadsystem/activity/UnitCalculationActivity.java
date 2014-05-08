@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.unitloadsystem.activity.R;
 import com.unitloadsystem.beans.PalletViewBean;
+import com.unitloadsystem.beans.StackEvalutorBean;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
 
@@ -33,6 +34,8 @@ public class UnitCalculationActivity extends Activity {
 	
 	float g_fBoxLength;
 	float g_fBoxWidth;
+	
+	double g_dPalletShare;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +148,7 @@ public class UnitCalculationActivity extends Activity {
 	
 	public void btnCalc(View v){
 		Button btnSize;
+		g_dPalletShare = 0.0d;
 		
 		Intent intent = new Intent(getApplicationContext(), CalculationResultActivity.class);
 		btnSize = (Button) findViewById(R.id.length);
@@ -164,6 +168,7 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("ContainerWidth", g_iContainerWidth);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra("Layout", getBoxArray());
+		intent.putExtra("PalletShare", g_dPalletShare);
 		startActivity(intent);
 	}
 	
@@ -185,51 +190,66 @@ public class UnitCalculationActivity extends Activity {
 		return dReturn;
 	}
 	
+	
+	
 	private Bundle getBoxArray(){
 		Bundle b = new Bundle();
 		ArrayList<ArrayList<PalletViewBean>> aTotalList = new ArrayList<ArrayList<PalletViewBean>>();
-//		aList.add(new PalletViewBean("V", 0, 0));
-//		aList.add(new PalletViewBean("H", g_fBoxLength, 0));
-//		aList.add(new PalletViewBean("H", 0, g_fBoxWidth));
-//		aList.add(new PalletViewBean("V", g_fBoxWidth, g_fBoxLength));
 
-		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
-		double dPalletShare = 0;
-		double dPalletShareWidth = 0;
-		double dPalletShareLength = 0;
-		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
-		ArrayList<Rect> aRectList = new ArrayList<Rect>();
+		StackEvalutorBean stackHorizontal = CalcHorizontalSplitStackRule();
+		StackEvalutorBean stackVertical = CalcVerticalSplitStackRule();
 		
-		boolean bCheck = true;
 		
-		if(g_fBoxWidth < g_iContainerWidth && g_fBoxLength < g_iContainerLength){
-			aList.add(new PalletViewBean("H", 0, 0));
-			dPalletShare += dUnitShare;
-			
-			dPalletShareWidth = g_fBoxWidth;
-			dPalletShareLength = g_fBoxLength;
-			
-			aRectList.add(new Rect(0, 0, (int)(g_fBoxWidth), (int)(g_fBoxLength)));
+		if(stackHorizontal.getShare() > stackVertical.getShare()){
+			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
+			g_dPalletShare = stackHorizontal.getShare();
+		}else{
+			b.putParcelableArrayList("Layout", stackVertical.getPalletView());
+			g_dPalletShare = stackVertical.getShare();
 		}
-		
-		while(bCheck){
-			if(dPalletShareWidth + g_fBoxWidth < g_iContainerWidth 
-					&& dPalletShareLength + g_fBoxLength < g_iContainerLength && dPalletShare + dUnitShare < 100){
-				aList.add(new PalletViewBean("H", (int)(dPalletShareWidth), (int)(dPalletShareLength)));
-				dPalletShare += dUnitShare;
-				
-				dPalletShareWidth = g_fBoxWidth;
-				dPalletShareLength = g_fBoxLength;
-				
-				aRectList.add(new Rect((int)(dPalletShareWidth), (int)(dPalletShareLength), (int)(g_fBoxWidth), (int)(g_fBoxLength)));
-				continue;
-			}
-			
-			
-		}
-		
-		b.putParcelableArrayList("Layout", aList);
 		
 		return b;
+	}
+	
+	private StackEvalutorBean CalcHorizontalSplitStackRule(){
+		StackEvalutorBean result = new StackEvalutorBean();
+		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
+		
+		int iWidthCount = (int)(g_iContainerWidth / g_fBoxWidth);
+		int iLengthCount = (int)(g_iContainerLength / g_fBoxLength);
+		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
+		double palletShare = dUnitShare * iWidthCount * iLengthCount;
+		
+		for(int i=0; i<iWidthCount; i++){
+			for(int j=0; j<iLengthCount; j++){
+				aList.add(new PalletViewBean("H", (int)(g_fBoxWidth * i), (int)(g_fBoxLength * j)));
+			}
+		}
+		
+		result.setShare(palletShare);
+		result.setPalletView(aList);
+		
+		return result;
+	}
+	
+	private StackEvalutorBean CalcVerticalSplitStackRule(){
+		StackEvalutorBean result = new StackEvalutorBean();
+		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
+		
+		int iWidthCount = (int)(g_iContainerWidth / g_fBoxLength);
+		int iLengthCount = (int)(g_iContainerLength / g_fBoxWidth);
+		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
+		double palletShare = dUnitShare * iWidthCount * iLengthCount;
+		
+		for(int i=0; i<iWidthCount; i++){
+			for(int j=0; j<iLengthCount; j++){
+				aList.add(new PalletViewBean("V", (int)(g_fBoxLength * i), (int)(g_fBoxWidth * j)));
+			}
+		}
+		
+		result.setShare(palletShare);
+		result.setPalletView(aList);
+		
+		return result;
 	}
 }

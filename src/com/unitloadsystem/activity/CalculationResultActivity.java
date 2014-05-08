@@ -26,6 +26,7 @@ public class CalculationResultActivity extends Activity{
 	float g_fHeight;
 	float g_fContainerLength;
 	float g_fContainerWidth;
+	double g_fPalletShare;
 	
 	float g_fScreenWidth;
 	float g_fScreenLength;
@@ -64,8 +65,9 @@ public class CalculationResultActivity extends Activity{
 		g_fLength = Float.parseFloat(intent.getStringExtra("Length"));
 		g_fWidth = Float.parseFloat(intent.getStringExtra("Width"));
 		g_fHeight = Float.parseFloat(intent.getStringExtra("Height"));
-		g_fContainerLength = Float.parseFloat(intent.getStringExtra("ContainerLength"));
-		g_fContainerWidth = Float.parseFloat(intent.getStringExtra("ContainerWidth"));
+		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
+		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
+		g_fPalletShare = Math.round(intent.getDoubleExtra("PalletShare", -1) * 100);
 		g_bLayout = intent.getBundleExtra("Layout");
 	}
 	
@@ -90,12 +92,12 @@ public class CalculationResultActivity extends Activity{
 			paint.setStrokeWidth(g_iLineSize);
 			
 			Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin,
-					(int)(g_fRateSize * g_fContainerLength + g_iLeftMargin + g_iCntrMargin), 
-					(int)(g_fRateSize * g_fContainerWidth + g_iTopMargin + g_iCntrMargin));
+					(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
+					(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin));
 			paint.setColor(Color.BLUE);
 			canvas.drawRect(rect, paint);
 			
-			String sText = "<È¦¼ö ´Ü>";
+			String sText = "<È¦¼ö ´Ü : " + g_fPalletShare + "%>";
 			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin - 30,paint);
 			sText = "<Â¦¼ö ´Ü>";
 			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin + g_fRateSize * g_fContainerLength + 50,paint);
