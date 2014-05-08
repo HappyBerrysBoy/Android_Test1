@@ -17,6 +17,8 @@ public final class R {
         public static final int abc_slide_out_top=0x7f040005;
     }
     public static final class array {
+        /**  <item>Air ULD</item> 
+         */
         public static final int containerType=0x7f0c0002;
         public static final int detailAirULD=0x7f0c0005;
         public static final int detailContainer=0x7f0c0003;

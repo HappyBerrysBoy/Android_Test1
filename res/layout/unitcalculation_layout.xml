@@ -90,6 +90,7 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/detailSpec"
+	        android:text="1200 X 800"
 	        android:onClick="btnDetail" />
 	</LinearLayout>
 	<LinearLayout style="@style/LabelLayout">

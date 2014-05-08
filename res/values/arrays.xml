@@ -14,7 +14,7 @@
 	<string-array name="containerType">
 		<item>Container</item>
 		<item>Pallet</item>
-		<item>Air ULD</item>
+		<!-- <item>Air ULD</item> -->
 	</string-array>
 	<string-array name="detailContainer">
 		<item>20DC</item>
@@ -23,8 +23,13 @@
 		<item>45DC</item>
 	</string-array>
 	<string-array name="detailPallet">
-		<item>T11(1100mmX1100mm)</item>
-		<item>T14(1100mmX1400mm)</item>
+		<item>1100 X 1100</item>
+		<item>1200 X 1000</item>
+		<item>1165 X 1165</item>
+		<item>1200 X 800</item>
+		<item>1219 X 1016</item>
+		<item>1219 X 1219</item>
+		<item>직접 입력</item>
 	</string-array>
 	<string-array name="detailAirULD">
 		<item>Type1</item>

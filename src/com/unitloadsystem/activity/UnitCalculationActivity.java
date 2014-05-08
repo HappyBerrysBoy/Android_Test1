@@ -14,6 +14,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable.Creator;
 import android.view.View;
@@ -156,21 +157,77 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("Width", btnSize.getText());
 		btnSize = (Button) findViewById(R.id.height);
 		intent.putExtra("Height", btnSize.getText());
-		intent.putExtra("ContainerLength", "1100");
-		intent.putExtra("ContainerWidth", "1100");
+		
+		btnSize = (Button) findViewById(R.id.detailSpec);
+		SetContainerSize(btnSize.getText().toString());
+		intent.putExtra("ContainerLength", g_iContainerLength);
+		intent.putExtra("ContainerWidth", g_iContainerWidth);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra("Layout", getBoxArray());
 		startActivity(intent);
 	}
 	
+	private void SetContainerSize(String p_sSize){
+		String[] sSize = p_sSize.split("X");
+		
+		if(sSize.length > 1){
+			g_iContainerWidth = Integer.parseInt(sSize[0].trim());
+			g_iContainerLength = Integer.parseInt(sSize[1].trim());
+		}else{
+			g_iContainerLength = 1100;
+			g_iContainerWidth = 1100;
+		}
+	}
+	
+	private double GetShareRate(){
+		double dReturn = 0.0d;
+		
+		return dReturn;
+	}
+	
 	private Bundle getBoxArray(){
 		Bundle b = new Bundle();
-		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
-		aList.add(new PalletViewBean("V", 0, 0));
-		aList.add(new PalletViewBean("H", g_fBoxLength, 0));
-		aList.add(new PalletViewBean("H", 0, g_fBoxWidth));
-		aList.add(new PalletViewBean("V", g_fBoxWidth, g_fBoxLength));
+		ArrayList<ArrayList<PalletViewBean>> aTotalList = new ArrayList<ArrayList<PalletViewBean>>();
+//		aList.add(new PalletViewBean("V", 0, 0));
+//		aList.add(new PalletViewBean("H", g_fBoxLength, 0));
+//		aList.add(new PalletViewBean("H", 0, g_fBoxWidth));
+//		aList.add(new PalletViewBean("V", g_fBoxWidth, g_fBoxLength));
 
+		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
+		double dPalletShare = 0;
+		double dPalletShareWidth = 0;
+		double dPalletShareLength = 0;
+		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
+		ArrayList<Rect> aRectList = new ArrayList<Rect>();
+		
+		boolean bCheck = true;
+		
+		if(g_fBoxWidth < g_iContainerWidth && g_fBoxLength < g_iContainerLength){
+			aList.add(new PalletViewBean("H", 0, 0));
+			dPalletShare += dUnitShare;
+			
+			dPalletShareWidth = g_fBoxWidth;
+			dPalletShareLength = g_fBoxLength;
+			
+			aRectList.add(new Rect(0, 0, (int)(g_fBoxWidth), (int)(g_fBoxLength)));
+		}
+		
+		while(bCheck){
+			if(dPalletShareWidth + g_fBoxWidth < g_iContainerWidth 
+					&& dPalletShareLength + g_fBoxLength < g_iContainerLength && dPalletShare + dUnitShare < 100){
+				aList.add(new PalletViewBean("H", (int)(dPalletShareWidth), (int)(dPalletShareLength)));
+				dPalletShare += dUnitShare;
+				
+				dPalletShareWidth = g_fBoxWidth;
+				dPalletShareLength = g_fBoxLength;
+				
+				aRectList.add(new Rect((int)(dPalletShareWidth), (int)(dPalletShareLength), (int)(g_fBoxWidth), (int)(g_fBoxLength)));
+				continue;
+			}
+			
+			
+		}
+		
 		b.putParcelableArrayList("Layout", aList);
 		
 		return b;
