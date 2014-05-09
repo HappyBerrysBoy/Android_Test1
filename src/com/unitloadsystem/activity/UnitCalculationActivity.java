@@ -226,6 +226,19 @@ public class UnitCalculationActivity extends Activity {
 			}
 		}
 		
+		if(iWidthCount * g_fBoxWidth + g_fBoxLength <= g_iContainerWidth){
+			int iRemainCount = (int)(g_iContainerLength / g_fBoxWidth);
+			int iRemainInterval = 0;
+			if(iRemainCount > 1){
+				iRemainInterval = (int)((g_iContainerLength - g_fBoxWidth * 2 - g_fBoxWidth * (iRemainCount - 2)) / (iRemainCount - 1));
+			}
+			
+			for(int i=0; i<iRemainCount; i++){
+				aList.add(new PalletViewBean("V", (int)(g_fBoxWidth * iWidthCount), (int)((g_fBoxWidth + iRemainInterval) * i)));
+				palletShare += dUnitShare;
+			}
+		}
+		
 		result.setShare(palletShare);
 		result.setPalletView(aList);
 		
@@ -244,6 +257,19 @@ public class UnitCalculationActivity extends Activity {
 		for(int i=0; i<iWidthCount; i++){
 			for(int j=0; j<iLengthCount; j++){
 				aList.add(new PalletViewBean("V", (int)(g_fBoxLength * i), (int)(g_fBoxWidth * j)));
+			}
+		}
+		
+		if(iLengthCount * g_fBoxWidth + g_fBoxLength  <= g_iContainerLength){
+			int iRemainCount = (int)(g_iContainerWidth / g_fBoxWidth);
+			int iRemainInterval = 0;
+			if(iRemainCount > 1){
+				iRemainInterval = (int)((g_iContainerWidth - g_fBoxWidth * 2 - g_fBoxWidth * (iRemainCount - 2)) / (iRemainCount - 1));
+			}
+			
+			for(int i=0; i<iRemainCount; i++){
+				aList.add(new PalletViewBean("H", (int)((g_fBoxWidth + iRemainInterval) * i), (int)(g_fBoxWidth * iLengthCount)));
+				palletShare += dUnitShare;
 			}
 		}
 		
