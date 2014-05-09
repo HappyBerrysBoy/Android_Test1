@@ -30,10 +30,10 @@ public class CalculationResultActivity extends Activity{
 	
 	float g_fScreenWidth;
 	float g_fScreenLength;
-	float g_fRateSize = 0.35f;
+	float g_fRateSize = 0.20f;
 	
-	int g_iLeftMargin = 100;
-	int g_iTopMargin = 100;
+	int g_iLeftMargin = 50;
+	int g_iTopMargin = 80;
 	int g_iInterval = 2;
 	int g_iCntrMargin = 5;
 	int g_iTextSize = 30;
@@ -91,21 +91,31 @@ public class CalculationResultActivity extends Activity{
 			paint.setTextSize(g_iTextSize);
 			paint.setStrokeWidth(g_iLineSize);
 			
+			// È¦¼ö´Ü pallet
 			Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin,
 					(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
 					(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin));
 			paint.setColor(Color.BLUE);
 			canvas.drawRect(rect, paint);
 			
-			String sText = "<È¦¼ö ´Ü : " + g_fPalletShare + "%>";
+			// Â¦¼ö´Ü pallet
+			rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin,
+					(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
+					(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin));
+			canvas.drawRect(rect, paint);
+			
+			String sText = "1. <È¦¼ö ´Ü : " + g_fPalletShare + "%>";
 			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin - 30,paint);
 			sText = "<Â¦¼ö ´Ü>";
+			canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
+			sText = "2. <Â¦¼ö ´Ü>";
 			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin + g_fRateSize * g_fContainerLength + 50,paint);
 			
 			paint.setColor(Color.GREEN);
 			
 			ArrayList<PalletViewBean> boxes = g_bLayout.getParcelableArrayList("Layout");
 			
+			// È¦¼ö´Ü..
 			for(int i=0; i<boxes.size(); i++){
 				PalletViewBean box = boxes.get(i);
 				if(box.getdirection().equals("H")){
@@ -117,6 +127,22 @@ public class CalculationResultActivity extends Activity{
 					canvas.drawRect(new Rect((int)(g_iLeftMargin + box.getx() * g_fRateSize), 
 							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
 							(int)(g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
+							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
+				}
+			}
+			
+			// Â¦¼ö´Ü..
+			for(int i=0; i<boxes.size(); i++){
+				PalletViewBean box = boxes.get(i);
+				if(box.getdirection().equals("H")){
+					canvas.drawRect(new Rect((int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_iLeftMargin + box.getx() * g_fRateSize + screenWidth / 2), 
+							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
+							(int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_fRateSize * g_fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval + screenWidth / 2), 
+							(int)(g_fRateSize * g_fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
+				}else{
+					canvas.drawRect(new Rect((int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_iLeftMargin + box.getx() * g_fRateSize + screenWidth / 2), 
+							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
+							(int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval  + screenWidth / 2), 
 							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
 				}
 			}
