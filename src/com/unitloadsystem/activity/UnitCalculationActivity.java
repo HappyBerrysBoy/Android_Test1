@@ -1,13 +1,10 @@
 package com.unitloadsystem.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.unitloadsystem.activity.R;
-import com.unitloadsystem.beans.PalletViewBean;
 import com.unitloadsystem.beans.StackEvalutorBean;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
+import com.unitloadsystem.stackcalculation.CalcSplitStackforPallet;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,13 +12,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable.Creator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class UnitCalculationActivity extends Activity {
 	
@@ -31,9 +25,6 @@ public class UnitCalculationActivity extends Activity {
 	int g_iArrayID;
 	int g_iContainerLength;
 	int g_iContainerWidth;
-	
-	float g_fBoxLength;
-	float g_fBoxWidth;
 	
 	double g_dPalletShare;
 	
@@ -84,19 +75,6 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnDimension(View v){
-//		new AlertDialog.Builder(this)
-//		.setTitle("Select Item")
-////		.setIcon(R.drawable.ic_launcher)
-//		.setItems(R.array.dimensions, 
-//			new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int which) {
-//				String[] dimensions = getResources().getStringArray(R.array.dimensions);
-//				Button btn = (Button)findViewById(R.id.dimension);
-//				btn.setText(dimensions[which]);
-//			}
-//		})
-//		.setNegativeButton("Cancel", null)
-//		.show();
 		SetDialogItem(v.getId(), R.array.dimensions);
 	}
 	
@@ -147,33 +125,33 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnCalc(View v){
-		Button btnSize;
 		g_dPalletShare = 0.0d;
+		Button btnSize;
+		btnSize = (Button) findViewById(R.id.length);
+		float fBoxLength = Float.parseFloat(btnSize.getText().toString());
+		btnSize = (Button) findViewById(R.id.width);
+		float fBoxWidth = Float.parseFloat(btnSize.getText().toString());
+		btnSize = (Button) findViewById(R.id.height);
+		float fBoxHeight = Float.parseFloat(btnSize.getText().toString());
 		
 		Intent intent = new Intent(getApplicationContext(), CalculationResultActivity.class);
-		btnSize = (Button) findViewById(R.id.length);
-		intent.putExtra("Length", btnSize.getText());
-		g_fBoxLength = Float.parseFloat(btnSize.getText().toString());
-		
-		btnSize = (Button) findViewById(R.id.width);
-		g_fBoxWidth = Float.parseFloat(btnSize.getText().toString());
-		
-		intent.putExtra("Width", btnSize.getText());
-		btnSize = (Button) findViewById(R.id.height);
-		intent.putExtra("Height", btnSize.getText());
+		intent.putExtra("Length", fBoxLength);
+		intent.putExtra("Width", fBoxWidth);
+		intent.putExtra("Height", fBoxHeight);
 		
 		btnSize = (Button) findViewById(R.id.detailSpec);
 		SetContainerSize(btnSize.getText().toString());
 		intent.putExtra("ContainerLength", g_iContainerLength);
 		intent.putExtra("ContainerWidth", g_iContainerWidth);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		intent.putExtra("Layout", getBoxArray());
+		intent.putExtra("Layout", getBoxArray(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
 		intent.putExtra("PalletShare", g_dPalletShare);
+		
 		startActivity(intent);
 	}
 	
-	private void SetContainerSize(String p_sSize){
-		String[] sSize = p_sSize.split("X");
+	private void SetContainerSize(String pSize){
+		String[] sSize = pSize.split("X");
 		
 		if(sSize.length > 1){
 			g_iContainerWidth = Integer.parseInt(sSize[0].trim());
@@ -184,20 +162,12 @@ public class UnitCalculationActivity extends Activity {
 		}
 	}
 	
-	private double GetShareRate(){
-		double dReturn = 0.0d;
-		
-		return dReturn;
-	}
-	
-	
-	
-	private Bundle getBoxArray(){
+	private Bundle getBoxArray(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		Bundle b = new Bundle();
-		ArrayList<ArrayList<PalletViewBean>> aTotalList = new ArrayList<ArrayList<PalletViewBean>>();
-
-		StackEvalutorBean stackHorizontal = CalcHorizontalSplitStackRule();
-		StackEvalutorBean stackVertical = CalcVerticalSplitStackRule();
+		CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
+		
+		StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
+		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth);
 		
 		if(stackHorizontal.getShare() > stackVertical.getShare()){
 			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
@@ -208,76 +178,5 @@ public class UnitCalculationActivity extends Activity {
 		}
 		
 		return b;
-	}
-	
-	private StackEvalutorBean CalcHorizontalSplitStackRule(){
-		StackEvalutorBean result = new StackEvalutorBean();
-		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
-		
-		int iWidthCount = (int)(g_iContainerWidth / g_fBoxWidth);
-		int iLengthCount = (int)(g_iContainerLength / g_fBoxLength);
-		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
-		double palletShare = dUnitShare * iWidthCount * iLengthCount;
-		
-		for(int i=0; i<iWidthCount; i++){
-			for(int j=0; j<iLengthCount; j++){
-				aList.add(new PalletViewBean("H", (int)(g_fBoxWidth * i), (int)(g_fBoxLength * j)));
-			}
-		}
-		
-		if(iWidthCount * g_fBoxWidth + g_fBoxLength <= g_iContainerWidth){
-			int iRemainRow = (int) ((g_iContainerWidth - g_fBoxWidth * iWidthCount) / g_fBoxLength);
-			int iRemainCount = (int)(g_iContainerLength / g_fBoxWidth);
-			int iRemainInterval = 0;
-			if(iRemainCount > 1){
-				iRemainInterval = (int)((g_iContainerLength - g_fBoxWidth * 2 - g_fBoxWidth * (iRemainCount - 2)) / (iRemainCount - 1));
-			}
-			
-			for(int i=0; i<iRemainRow; i++){
-				for(int j=0; j<iRemainCount; j++){
-					aList.add(new PalletViewBean("V", (int)(g_fBoxWidth * iWidthCount + i * g_fBoxLength), (int)((g_fBoxWidth + iRemainInterval) * j)));
-					palletShare += dUnitShare;
-				}
-			}
-		}
-		
-		result.setShare(palletShare);
-		result.setPalletView(aList);
-		
-		return result;
-	}
-	
-	private StackEvalutorBean CalcVerticalSplitStackRule(){
-		StackEvalutorBean result = new StackEvalutorBean();
-		ArrayList<PalletViewBean> aList = new ArrayList<PalletViewBean>();
-		
-		int iWidthCount = (int)(g_iContainerWidth / g_fBoxLength);
-		int iLengthCount = (int)(g_iContainerLength / g_fBoxWidth);
-		double dUnitShare = (g_fBoxLength * g_fBoxWidth) / (g_iContainerLength * g_iContainerWidth);
-		double palletShare = dUnitShare * iWidthCount * iLengthCount;
-		
-		for(int i=0; i<iWidthCount; i++){
-			for(int j=0; j<iLengthCount; j++){
-				aList.add(new PalletViewBean("V", (int)(g_fBoxLength * i), (int)(g_fBoxWidth * j)));
-			}
-		}
-		
-		if(iLengthCount * g_fBoxWidth + g_fBoxLength  <= g_iContainerLength){
-			int iRemainCount = (int)(g_iContainerWidth / g_fBoxWidth);
-			int iRemainInterval = 0;
-			if(iRemainCount > 1){
-				iRemainInterval = (int)((g_iContainerWidth - g_fBoxWidth * 2 - g_fBoxWidth * (iRemainCount - 2)) / (iRemainCount - 1));
-			}
-			
-			for(int i=0; i<iRemainCount; i++){
-				aList.add(new PalletViewBean("H", (int)((g_fBoxWidth + iRemainInterval) * i), (int)(g_fBoxWidth * iLengthCount)));
-				palletShare += dUnitShare;
-			}
-		}
-		
-		result.setShare(palletShare);
-		result.setPalletView(aList);
-		
-		return result;
 	}
 }

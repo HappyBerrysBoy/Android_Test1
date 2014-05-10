@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class KeyPadActivity extends Activity{
 	
 	int iID;
 	TextView tText;
 	Button bBtn;
+	boolean g_bFirstClick = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,11 @@ public class KeyPadActivity extends Activity{
 		if(sValueText.length() > 10)
 			return;
 		
-		if(sValueText.equals("0") && !sBtnText.equals("."))
+		if(g_bFirstClick){
+			tText.setText(sBtnText);
+			g_bFirstClick = false;
+		}
+		else if(sValueText.equals("0") && !sBtnText.equals("."))
 			tText.setText(sBtnText);
 		else
 			tText.setText(tText.getText() + sBtnText);

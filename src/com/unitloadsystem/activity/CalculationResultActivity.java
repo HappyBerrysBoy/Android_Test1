@@ -3,11 +3,8 @@ package com.unitloadsystem.activity;
 import java.util.ArrayList;
 
 import com.unitloadsystem.beans.PalletViewBean;
-import com.unitloadsystem.fragments.Fragments.CalculationResultFragment;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -17,7 +14,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.TextView;
 
 public class CalculationResultActivity extends Activity{
 
@@ -32,12 +28,18 @@ public class CalculationResultActivity extends Activity{
 	float g_fScreenLength;
 	float g_fRateSize = 0.20f;
 	
+	int g_iTitleLength = 150;
+	int g_iNumberOfRowDivision = 3;
+	int g_iNumberOfColDivision = 2;
+	int g_iLengthOfRowDivision;
+	int g_iLengthOfColDivision;
 	int g_iLeftMargin = 50;
 	int g_iTopMargin = 80;
+	int g_iTextMargin =50;
 	int g_iInterval = 2;
 	int g_iCntrMargin = 5;
 	int g_iTextSize = 30;
-	int g_iLineSize = 5;
+	int g_iLineSize = 2;
 	
 	int g_iBorderColor = Color.BLACK;
 	int g_iBoxColor = Color.BLUE;
@@ -62,9 +64,9 @@ public class CalculationResultActivity extends Activity{
 //		}
 		
 		Intent intent = getIntent();
-		g_fLength = Float.parseFloat(intent.getStringExtra("Length"));
-		g_fWidth = Float.parseFloat(intent.getStringExtra("Width"));
-		g_fHeight = Float.parseFloat(intent.getStringExtra("Height"));
+		g_fLength = intent.getFloatExtra("Length", 0f);
+		g_fWidth = intent.getFloatExtra("Width", 0f);
+		g_fHeight = intent.getFloatExtra("Height", 0f);
 		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
 		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
 		g_fPalletShare = Math.round(intent.getDoubleExtra("PalletShare", -1) * 100);
@@ -83,37 +85,42 @@ public class CalculationResultActivity extends Activity{
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
 			int screenWidth = metrics.widthPixels;
-			int screenHeight = metrics.heightPixels;
+			int screenHeight = metrics.heightPixels - g_iTitleLength;
 			
+			g_iLengthOfRowDivision = (int)screenHeight / g_iNumberOfRowDivision;
+			g_iLengthOfColDivision = (int)screenWidth / g_iNumberOfColDivision; 
 //			g_fRateSize = (screenWidth - g_iMargin * 2) / g_fContainerLength;
 			
 			paint.setColor(g_iBorderColor);
 			paint.setTextSize(g_iTextSize);
 			paint.setStrokeWidth(g_iLineSize);
 			
-			// È¦¼ö´Ü pallet
-			Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin,
-					(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
-					(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin));
-			paint.setColor(Color.BLUE);
-			canvas.drawRect(rect, paint);
+			ArrayList<PalletViewBean> boxes = g_bLayout.getParcelableArrayList("Layout");
 			
-			// Â¦¼ö´Ü pallet
-			rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin,
-					(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
-					(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin));
-			canvas.drawRect(rect, paint);
-			
-			String sText = "1. <È¦¼ö ´Ü : " + g_fPalletShare + "%>";
-			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin - 30,paint);
-			sText = "<Â¦¼ö ´Ü>";
-			canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
-			sText = "2. <Â¦¼ö ´Ü>";
-			canvas.drawText(sText, g_iLeftMargin,g_iTopMargin + g_fRateSize * g_fContainerLength + 50,paint);
+			for(int i=0; i<g_iNumberOfRowDivision; i++){
+				paint.setColor(Color.BLACK);
+				String sText = (i + 1) + ". " + boxes.size() + "boxes / È°¿ëÀ² " + g_fPalletShare + "% / 1´Ü ÀûÀç Layout";
+				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
+//				sText = "<Â¦¼ö ´Ü>";
+//				canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
+//				sText = i + ". " + boxes.size() + "boxes / È°¿ëÀ² " + g_fPalletShare + "% / 1´Ü ÀûÀç Layout";
+//				canvas.drawText(sText, g_iLeftMargin, g_iLengthOfRowDivision, paint);	
+				
+				// È¦¼ö´Ü pallet
+				Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
+						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
+						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
+				paint.setColor(Color.BLUE);
+				canvas.drawRect(rect, paint);
+				
+				// Â¦¼ö´Ü pallet
+				rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
+						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
+						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
+				canvas.drawRect(rect, paint);
+			}
 			
 			paint.setColor(Color.GREEN);
-			
-			ArrayList<PalletViewBean> boxes = g_bLayout.getParcelableArrayList("Layout");
 			
 			// È¦¼ö´Ü..
 			for(int i=0; i<boxes.size(); i++){
@@ -131,21 +138,21 @@ public class CalculationResultActivity extends Activity{
 				}
 			}
 			
-			// Â¦¼ö´Ü..
-			for(int i=0; i<boxes.size(); i++){
-				PalletViewBean box = boxes.get(i);
-				if(box.getdirection().equals("H")){
-					canvas.drawRect(new Rect((int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_iLeftMargin + box.getx() * g_fRateSize + screenWidth / 2), 
-							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_fRateSize * g_fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval + screenWidth / 2), 
-							(int)(g_fRateSize * g_fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
-				}else{
-					canvas.drawRect(new Rect((int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_iLeftMargin + box.getx() * g_fRateSize + screenWidth / 2), 
-							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(g_fRateSize * (g_fContainerWidth - g_fWidth) - g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval  + screenWidth / 2), 
-							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
-				}
-			}
+//			// Â¦¼ö´Ü.. ÀÏ´Ü º¸·ù..
+//			for(int i=0; i<boxes.size(); i++){
+//				PalletViewBean box = boxes.get(i);
+//				if(box.getdirection().equals("H")){
+//					canvas.drawRect(new Rect((int)(screenWidth / 2 + g_iLeftMargin + box.getx() * g_fRateSize), 
+//							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
+//							(int)(screenWidth / 2 + g_fRateSize * g_fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
+//							(int)(g_fRateSize * g_fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
+//				}else{
+//					canvas.drawRect(new Rect((int)(screenWidth / 2 + g_iLeftMargin + box.getx() * g_fRateSize), 
+//							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
+//							(int)(screenWidth / 2 + g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
+//							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
+//				}
+//			}
 			
 //			canvas.drawRect(new Rect(g_iLeftMargin, g_iTopMargin, (int)(g_fRateSize * g_fLength + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
 //			canvas.drawRect(new Rect((int)(g_fRateSize * g_fLength + g_iLeftMargin) + g_iInterval, g_iTopMargin, (int)(g_fRateSize * g_fLength *2 + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
