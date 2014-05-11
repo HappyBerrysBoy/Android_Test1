@@ -29,7 +29,7 @@ public class CalculationResultActivity extends Activity{
 	float g_fRateSize = 0.20f;
 	
 	int g_iTitleLength = 150;
-	int g_iNumberOfRowDivision = 3;
+	int g_iNumberOfRowDivision = 2;
 	int g_iNumberOfColDivision = 2;
 	int g_iLengthOfRowDivision;
 	int g_iLengthOfColDivision;
@@ -44,7 +44,8 @@ public class CalculationResultActivity extends Activity{
 	int g_iBorderColor = Color.BLACK;
 	int g_iBoxColor = Color.BLUE;
 	
-	Bundle g_bLayout;
+	Bundle g_bSplitStackResult;
+	Bundle g_bPinWheelStackResult;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,8 @@ public class CalculationResultActivity extends Activity{
 		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
 		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
 		g_fPalletShare = Math.round(intent.getDoubleExtra("PalletShare", -1) * 100);
-		g_bLayout = intent.getBundleExtra("Layout");
+		g_bSplitStackResult = intent.getBundleExtra("SplitStack");
+		g_bPinWheelStackResult = intent.getBundleExtra("PinWheelStack");
 	}
 	
 	class MyView extends View {
@@ -89,17 +91,17 @@ public class CalculationResultActivity extends Activity{
 			
 			g_iLengthOfRowDivision = (int)screenHeight / g_iNumberOfRowDivision;
 			g_iLengthOfColDivision = (int)screenWidth / g_iNumberOfColDivision; 
-//			g_fRateSize = (screenWidth - g_iMargin * 2) / g_fContainerLength;
 			
 			paint.setColor(g_iBorderColor);
 			paint.setTextSize(g_iTextSize);
 			paint.setStrokeWidth(g_iLineSize);
 			
-			ArrayList<PalletViewBean> boxes = g_bLayout.getParcelableArrayList("Layout");
+			ArrayList<PalletViewBean> split = g_bSplitStackResult.getParcelableArrayList("Layout");
+			ArrayList<PalletViewBean> pinWheel = g_bPinWheelStackResult.getParcelableArrayList("Layout");
 			
 			for(int i=0; i<g_iNumberOfRowDivision; i++){
 				paint.setColor(Color.BLACK);
-				String sText = (i + 1) + ". " + boxes.size() + "boxes / 활용율 " + g_fPalletShare + "% / 1단 적재 Layout";
+				String sText = (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fPalletShare + "% / 1단 적재 Layout";
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
 //				sText = "<짝수 단>";
 //				canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
@@ -114,30 +116,33 @@ public class CalculationResultActivity extends Activity{
 				canvas.drawRect(rect, paint);
 				
 				// 짝수단 pallet
-				rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
-						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
-						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
-				canvas.drawRect(rect, paint);
+//				rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
+//						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
+//						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
+//				canvas.drawRect(rect, paint);
 			}
 			
 			paint.setColor(Color.GREEN);
 			
-			// 홀수단..
-			for(int i=0; i<boxes.size(); i++){
-				PalletViewBean box = boxes.get(i);
+			float fWidth = g_fRateSize * g_fWidth;
+			float fLength = g_fRateSize * g_fLength;
+			
+			// Split Stack.. Block Stack 등등.. 홀수단..
+			for(int i=0; i<split.size(); i++){
+				PalletViewBean box = split.get(i);
 				if(box.getdirection().equals("H")){
 					canvas.drawRect(new Rect((int)(g_iLeftMargin + box.getx() * g_fRateSize), 
 							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(g_fRateSize * g_fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-							(int)(g_fRateSize * g_fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
+							(int)(fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
+							(int)(fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
 				}else{
 					canvas.drawRect(new Rect((int)(g_iLeftMargin + box.getx() * g_fRateSize), 
 							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
+							(int)(fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
+							(int)(fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
 				}
 			}
-			
+
 //			// 짝수단.. 일단 보류..
 //			for(int i=0; i<boxes.size(); i++){
 //				PalletViewBean box = boxes.get(i);
@@ -153,6 +158,22 @@ public class CalculationResultActivity extends Activity{
 //							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
 //				}
 //			}
+			
+			
+			
+			int iCount = (int)(pinWheel.size() / 4);
+			
+			// Pin Wheel Stack 홀수단..
+			for(int i=0; i<(int)(pinWheel.size() / 4); i++){
+				canvas.drawRect(new Rect(g_iLeftMargin, (int)(g_iTopMargin + fLength * i + g_iLengthOfRowDivision), 
+						(int)(g_iLeftMargin + fWidth) - g_iInterval, (int)(g_iTopMargin + fLength * (i + 1)) - g_iInterval + g_iLengthOfRowDivision), paint);
+				canvas.drawRect(new Rect((int)(g_iLeftMargin + fWidth + fLength * i), g_iTopMargin + g_iLengthOfRowDivision, 
+						(int)(g_iLeftMargin + fWidth + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + fWidth) - g_iInterval + g_iLengthOfRowDivision), paint);
+				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * i), (int)(iCount * fLength + g_iTopMargin + g_iLengthOfRowDivision), 
+						(int)(g_iLeftMargin + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + iCount * fLength + fWidth + g_iLengthOfRowDivision)), paint);
+				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * iCount), (int)(g_iTopMargin + fWidth + fLength * i + g_iLengthOfRowDivision), 
+						(int)(g_iLeftMargin + fLength * iCount + fWidth - g_iInterval), (int)(g_iTopMargin + fWidth + fLength * (i + 1) - g_iInterval + g_iLengthOfRowDivision)), paint);
+			}
 			
 //			canvas.drawRect(new Rect(g_iLeftMargin, g_iTopMargin, (int)(g_fRateSize * g_fLength + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
 //			canvas.drawRect(new Rect((int)(g_fRateSize * g_fLength + g_iLeftMargin) + g_iInterval, g_iTopMargin, (int)(g_fRateSize * g_fLength *2 + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);

@@ -4,6 +4,7 @@ import com.unitloadsystem.activity.R;
 import com.unitloadsystem.beans.StackEvalutorBean;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
+import com.unitloadsystem.stackcalculation.CalcPinWheelStackforPallet;
 import com.unitloadsystem.stackcalculation.CalcSplitStackforPallet;
 
 import android.app.Activity;
@@ -144,7 +145,8 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("ContainerLength", g_iContainerLength);
 		intent.putExtra("ContainerWidth", g_iContainerWidth);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		intent.putExtra("Layout", getBoxArray(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
+		intent.putExtra("SplitStack", getSplitStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
+		intent.putExtra("PinWheelStack", getPinWheelStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
 		intent.putExtra("PalletShare", g_dPalletShare);
 		
 		startActivity(intent);
@@ -162,7 +164,7 @@ public class UnitCalculationActivity extends Activity {
 		}
 	}
 	
-	private Bundle getBoxArray(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
+	private Bundle getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		Bundle b = new Bundle();
 		CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
 		
@@ -170,6 +172,25 @@ public class UnitCalculationActivity extends Activity {
 		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth);
 		
 		if(stackHorizontal.getShare() > stackVertical.getShare()){
+			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
+			g_dPalletShare = stackHorizontal.getShare();
+		}else{
+			b.putParcelableArrayList("Layout", stackVertical.getPalletView());
+			g_dPalletShare = stackVertical.getShare();
+		}
+		
+		return b;
+	}
+	
+	private Bundle getPinWheelStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
+		Bundle b = new Bundle();
+		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
+		
+		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
+		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
+		
+//		if(stackHorizontal.getShare() > stackVertical.getShare()){
+		if(stackHorizontal.getShare() > 0){
 			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
 			g_dPalletShare = stackHorizontal.getShare();
 		}else{

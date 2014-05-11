@@ -30,12 +30,12 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/length"
-	        android:text="100"
+	        android:text="400"
 	        android:onClick="btnInputNum" />
 		<Button
 		    style="@style/DefaultWrapLayout"
 	        android:id="@+id/width"
-	        android:text="200"
+	        android:text="700"
 	        android:onClick="btnInputNum" />
 	    <Button
 	        style="@style/DefaultWrapLayout"
@@ -90,7 +90,7 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/detailSpec"
-	        android:text="1200 X 800"
+	        android:text="1100 X 1100"
 	        android:onClick="btnDetail" />
 	</LinearLayout>
 	<LinearLayout style="@style/LabelLayout">
