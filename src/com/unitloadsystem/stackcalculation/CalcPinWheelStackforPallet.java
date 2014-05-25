@@ -12,36 +12,63 @@ public class CalcPinWheelStackforPallet {
 		
 		// PinWheel 한 면적에 박스 배치 수량
 		int iAvailCount = 0;
+		int iSmallLength = 0;
 		
 		double dUnitShare = (length * width) / (containerLength * containerWidth);
-		double palletShare = dUnitShare * iAvailCount * 4;
 		
 		if(containerWidth <= containerLength){
-			iAvailCount = (int)((containerWidth - width) / length);
+			iAvailCount = (int)((containerWidth - length) / width);
+			iSmallLength = containerWidth;
 		}else{
-			iAvailCount = (int)((containerLength - width) / length);
+			iAvailCount = (int)((containerLength - length) / width);
+			containerWidth = containerLength;
 		}
 		
-		ArrayList<PalletViewBean> aPalletView = new ArrayList<PalletViewBean>();
+		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
+		
+		for(int cnt = 1; cnt<iAvailCount + 1; cnt++){
 			
-		if(firstDir.equals("H")){
-			for(int i=0; i<iAvailCount; i++){
-				aPalletView.add(new PalletViewBean(firstDir, 0, (int)(length * i)));
-				aPalletView.add(new PalletViewBean(secondDir, (int)(width + length * i), 0));
-				aPalletView.add(new PalletViewBean(secondDir, (int)(length * i), (int)(length * iAvailCount)));
-				aPalletView.add(new PalletViewBean(firstDir, (int)(length * iAvailCount), (int)(width + length * i)));
-			}	
-		}else{
-			for(int i=0; i<iAvailCount; i++){
-				aPalletView.add(new PalletViewBean(firstDir, (int)(length * i), 0));
-				aPalletView.add(new PalletViewBean(secondDir, (int)(width), (int)(length * iAvailCount)));
-				aPalletView.add(new PalletViewBean(secondDir, 0, (int)(width + length * i)));
-				aPalletView.add(new PalletViewBean(firstDir, (int)(width + length * i), (int)(length * iAvailCount)));
+			stackCase[cnt - 1] = new StackEvalutorBean();
+			ArrayList<PalletViewBean> aPalletView = new ArrayList<PalletViewBean>();
+			int iAvailRow = (int)((iSmallLength - cnt * width) / length);
+			double palletShare = 0;
+			
+			if(firstDir.equals("H")){
+				for(int i=0; i<cnt; i++){
+					for(int j=0; j<iAvailRow; j++){
+						palletShare += dUnitShare * 4;
+						aPalletView.add(new PalletViewBean(firstDir, width * i, (int)(length * j)));
+						aPalletView.add(new PalletViewBean(secondDir, (int)(width * iAvailCount + length * j), width * i));
+						aPalletView.add(new PalletViewBean(secondDir, (int)(length * j), (int)(length * iAvailRow + width * i)));
+						aPalletView.add(new PalletViewBean(firstDir, (int)(length * iAvailRow + width * i), (int)(width * iAvailCount + length * j)));
+					}
+				}
 			}
+//			else{
+//				for(int i=0; i<iAvailCount; i++){
+//					aPalletView.add(new PalletViewBean(firstDir, (int)(length * i), 0));
+//					aPalletView.add(new PalletViewBean(secondDir, (int)(width), (int)(length * iAvailCount)));
+//					aPalletView.add(new PalletViewBean(secondDir, 0, (int)(width + length * i)));
+//					aPalletView.add(new PalletViewBean(firstDir, (int)(width + length * i), (int)(length * iAvailCount)));
+//				}
+//			}
+			
+			stackCase[cnt - 1].setId(cnt - 1);
+			stackCase[cnt - 1].setRowCount(cnt);
+			stackCase[cnt - 1].setColCount(iAvailRow);
+			stackCase[cnt - 1].setShare(palletShare);
+			stackCase[cnt - 1].setPalletView(aPalletView);
 		}
 		
-		result.setShare(palletShare);
-		result.setPalletView(aPalletView);
+		int iBestIdx = GetBestShare(stackCase);
+		
+//		result.setShare(palletShare);
+//		result.setPalletView(aPalletView);
+		
+		result.setShare(stackCase[iBestIdx].getShare());
+		result.setRowCount(stackCase[iBestIdx].getRowCount());
+		result.setColCount(stackCase[iBestIdx].getColCount());
+		result.setPalletView(stackCase[iBestIdx].getPalletView());
 		
 //		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
 //		
@@ -90,14 +117,6 @@ public class CalcPinWheelStackforPallet {
 //		result.setPalletView(aPalletView);
 		
 		return result;
-	}
-	
-	private void AddBox(ArrayList<PalletViewBean> palletView, int row, int col, String dir, float startrow, float startcol, float addrow, float addcol){
-		for(int i=0; i<row; i++){
-			for(int j=0; j<col; j++){
-				palletView.add(new PalletViewBean(dir, (int)(startrow + addrow * i), (int)(startcol + addcol * j)));
-			}
-		}
 	}
 	
 	private int GetBestShare(StackEvalutorBean[] beans){

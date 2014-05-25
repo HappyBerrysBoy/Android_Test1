@@ -30,7 +30,7 @@ public class CalcSplitStackforPallet {
 		
 		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
 		
-		for(int cnt = 1; cnt <= iAvailCount; cnt++){
+		for(int cnt = 1; cnt < iAvailCount + 1; cnt++){
 			stackCase[cnt - 1] = new StackEvalutorBean();
 			ArrayList<PalletViewBean> aPalletView = new ArrayList<PalletViewBean>();
 		

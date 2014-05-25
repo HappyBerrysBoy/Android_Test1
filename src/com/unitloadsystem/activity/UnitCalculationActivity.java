@@ -27,8 +27,6 @@ public class UnitCalculationActivity extends Activity {
 	int g_iContainerLength;
 	int g_iContainerWidth;
 	
-	double g_dPalletShare;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,7 +124,6 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnCalc(View v){
-		g_dPalletShare = 0.0d;
 		Button btnSize;
 		btnSize = (Button) findViewById(R.id.length);
 		float fBoxLength = Float.parseFloat(btnSize.getText().toString());
@@ -145,9 +142,16 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("ContainerLength", g_iContainerLength);
 		intent.putExtra("ContainerWidth", g_iContainerWidth);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		intent.putExtra("SplitStack", getSplitStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
-		intent.putExtra("PinWheelStack", getPinWheelStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength));
-		intent.putExtra("PalletShare", g_dPalletShare);
+		
+		StackEvalutorBean splitStack = getSplitStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength);
+		StackEvalutorBean pinWheelStack = getPinWheelStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength);
+		
+		intent.putExtra("SplitStack", getBundleResult(splitStack));
+		intent.putExtra("PinWheelStack", getBundleResult(pinWheelStack));
+		intent.putExtra("SplitStackShare", splitStack.getShare());
+		intent.putExtra("PinWheelStackShare", pinWheelStack.getShare());
+		intent.putExtra("PinWheelStackRowCount", pinWheelStack.getRowCount());
+		intent.putExtra("PinWheelStackColCount", pinWheelStack.getColCount());
 		
 		startActivity(intent);
 	}
@@ -164,39 +168,36 @@ public class UnitCalculationActivity extends Activity {
 		}
 	}
 	
-	private Bundle getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
-		Bundle b = new Bundle();
+	private StackEvalutorBean getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
 		
 		StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
 		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth);
 		
 		if(stackHorizontal.getShare() > stackVertical.getShare()){
-			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
-			g_dPalletShare = stackHorizontal.getShare();
+			return stackHorizontal;
 		}else{
-			b.putParcelableArrayList("Layout", stackVertical.getPalletView());
-			g_dPalletShare = stackVertical.getShare();
+			return stackVertical;
 		}
-		
-		return b;
 	}
 	
-	private Bundle getPinWheelStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
-		Bundle b = new Bundle();
+	private StackEvalutorBean getPinWheelStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
 		
 		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
 		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
 		
 //		if(stackHorizontal.getShare() > stackVertical.getShare()){
-		if(stackHorizontal.getShare() > 0){
-			b.putParcelableArrayList("Layout", stackHorizontal.getPalletView());
-			g_dPalletShare = stackHorizontal.getShare();
-		}else{
-			b.putParcelableArrayList("Layout", stackVertical.getPalletView());
-			g_dPalletShare = stackVertical.getShare();
-		}
+//		if(stackHorizontal.getShare() > 0){
+			return stackHorizontal;
+//		}else{
+//			return stackVertical;
+//		}
+	}
+	
+	private Bundle getBundleResult(StackEvalutorBean stack){
+		Bundle b = new Bundle();
+		b.putParcelableArrayList("Layout", stack.getPalletView());
 		
 		return b;
 	}

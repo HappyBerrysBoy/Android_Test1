@@ -7,6 +7,8 @@ public class StackEvalutorBean {
 	private double share;
 	private ArrayList<PalletViewBean> palletView;
 	private int id;
+	private int rowCount;
+	private int colCount;
 	
 	void StackEvalutorBean(){
 		
@@ -34,5 +36,21 @@ public class StackEvalutorBean {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
+	}
+
+	public int getColCount() {
+		return colCount;
+	}
+
+	public void setColCount(int colCount) {
+		this.colCount = colCount;
 	}
 }

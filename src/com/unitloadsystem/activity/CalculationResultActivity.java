@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -22,7 +23,11 @@ public class CalculationResultActivity extends Activity{
 	float g_fHeight;
 	float g_fContainerLength;
 	float g_fContainerWidth;
-	double g_fPalletShare;
+	double g_fSplitStackShare;
+	double g_fPinWheelStacktShare;
+	
+	int g_iPinWheelRowCount;
+	int g_iPinWheelColCount;
 	
 	float g_fScreenWidth;
 	float g_fScreenLength;
@@ -70,9 +75,12 @@ public class CalculationResultActivity extends Activity{
 		g_fHeight = intent.getFloatExtra("Height", 0f);
 		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
 		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
-		g_fPalletShare = Math.round(intent.getDoubleExtra("PalletShare", -1) * 100);
+		g_fSplitStackShare = Math.round(intent.getDoubleExtra("SplitStackShare", -1) * 100);
+		g_fPinWheelStacktShare = Math.round(intent.getDoubleExtra("PinWheelStackShare", -1) * 100);
 		g_bSplitStackResult = intent.getBundleExtra("SplitStack");
 		g_bPinWheelStackResult = intent.getBundleExtra("PinWheelStack");
+		g_iPinWheelRowCount = intent.getIntExtra("PinWheelStackRowCount", 0);
+		g_iPinWheelColCount = intent.getIntExtra("PinWheelStackColCount", 0);
 	}
 	
 	class MyView extends View {
@@ -101,7 +109,14 @@ public class CalculationResultActivity extends Activity{
 			
 			for(int i=0; i<g_iNumberOfRowDivision; i++){
 				paint.setColor(Color.BLACK);
-				String sText = (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fPalletShare + "% / 1단 적재 Layout";
+				String sText = "";
+				
+				if(i%2 == 0){
+					sText = (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fSplitStackShare + "% / 1단 적재 Layout";
+				}else{
+					sText = (i + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + g_fPinWheelStacktShare + "% / 1단 적재 Layout";
+				}
+				
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
 //				sText = "<짝수 단>";
 //				canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
@@ -159,20 +174,31 @@ public class CalculationResultActivity extends Activity{
 //				}
 //			}
 			
-			
-			
 			int iCount = (int)(pinWheel.size() / 4);
 			
-			// Pin Wheel Stack 홀수단..
-			for(int i=0; i<(int)(pinWheel.size() / 4); i++){
-				canvas.drawRect(new Rect(g_iLeftMargin, (int)(g_iTopMargin + fLength * i + g_iLengthOfRowDivision), 
-						(int)(g_iLeftMargin + fWidth) - g_iInterval, (int)(g_iTopMargin + fLength * (i + 1)) - g_iInterval + g_iLengthOfRowDivision), paint);
-				canvas.drawRect(new Rect((int)(g_iLeftMargin + fWidth + fLength * i), g_iTopMargin + g_iLengthOfRowDivision, 
-						(int)(g_iLeftMargin + fWidth + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + fWidth) - g_iInterval + g_iLengthOfRowDivision), paint);
-				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * i), (int)(iCount * fLength + g_iTopMargin + g_iLengthOfRowDivision), 
-						(int)(g_iLeftMargin + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + iCount * fLength + fWidth + g_iLengthOfRowDivision)), paint);
-				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * iCount), (int)(g_iTopMargin + fWidth + fLength * i + g_iLengthOfRowDivision), 
-						(int)(g_iLeftMargin + fLength * iCount + fWidth - g_iInterval), (int)(g_iTopMargin + fWidth + fLength * (i + 1) - g_iInterval + g_iLengthOfRowDivision)), paint);
+//			// Pin Wheel Stack 홀수단..
+//			for(int i=0; i<(int)(pinWheel.size() / 4); i++){
+//				canvas.drawRect(new Rect(g_iLeftMargin, (int)(g_iTopMargin + fLength * i + g_iLengthOfRowDivision), 
+//						(int)(g_iLeftMargin + fWidth) - g_iInterval, (int)(g_iTopMargin + fLength * (i + 1)) - g_iInterval + g_iLengthOfRowDivision), paint);
+//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fWidth + fLength * i), g_iTopMargin + g_iLengthOfRowDivision, 
+//						(int)(g_iLeftMargin + fWidth + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + fWidth) - g_iInterval + g_iLengthOfRowDivision), paint);
+//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * i), (int)(iCount * fLength + g_iTopMargin + g_iLengthOfRowDivision), 
+//						(int)(g_iLeftMargin + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + iCount * fLength + fWidth + g_iLengthOfRowDivision)), paint);
+//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * iCount), (int)(g_iTopMargin + fWidth + fLength * i + g_iLengthOfRowDivision), 
+//						(int)(g_iLeftMargin + fLength * iCount + fWidth - g_iInterval), (int)(g_iTopMargin + fWidth + fLength * (i + 1) - g_iInterval + g_iLengthOfRowDivision)), paint);
+//			}
+			
+			for(int i=0; i<g_iPinWheelRowCount; i++){
+				for(int j=0; j<g_iPinWheelColCount; j++){
+					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision, 
+							g_iLeftMargin + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * j, g_iTopMargin + g_iLengthOfRowDivision + fWidth * i, 
+							g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval, g_iTopMargin + fWidth * (i + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+					canvas.drawRect(new RectF(g_iLeftMargin + fLength * j, g_iPinWheelColCount * fLength + fWidth * i + g_iTopMargin + g_iLengthOfRowDivision, 
+							g_iLeftMargin + fLength * (j + 1) - g_iInterval, g_iTopMargin + g_iPinWheelColCount * fLength + fWidth * (i + 1) + g_iLengthOfRowDivision - g_iInterval), paint);
+					canvas.drawRect(new RectF(g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * i, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * j + g_iLengthOfRowDivision, 
+							g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+				}
 			}
 			
 //			canvas.drawRect(new Rect(g_iLeftMargin, g_iTopMargin, (int)(g_fRateSize * g_fLength + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
