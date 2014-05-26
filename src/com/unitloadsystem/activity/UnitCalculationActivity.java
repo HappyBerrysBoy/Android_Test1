@@ -185,7 +185,7 @@ public class UnitCalculationActivity extends Activity {
 		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
 		
 		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
-		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
+//		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
 		
 //		if(stackHorizontal.getShare() > stackVertical.getShare()){
 //		if(stackHorizontal.getShare() > 0){

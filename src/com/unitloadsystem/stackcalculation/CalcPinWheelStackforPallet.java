@@ -21,7 +21,7 @@ public class CalcPinWheelStackforPallet {
 			iSmallLength = containerWidth;
 		}else{
 			iAvailCount = (int)((containerLength - length) / width);
-			containerWidth = containerLength;
+			iSmallLength = containerLength;
 		}
 		
 		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
@@ -44,14 +44,33 @@ public class CalcPinWheelStackforPallet {
 					}
 				}
 			}
-//			else{
-//				for(int i=0; i<iAvailCount; i++){
-//					aPalletView.add(new PalletViewBean(firstDir, (int)(length * i), 0));
-//					aPalletView.add(new PalletViewBean(secondDir, (int)(width), (int)(length * iAvailCount)));
-//					aPalletView.add(new PalletViewBean(secondDir, 0, (int)(width + length * i)));
-//					aPalletView.add(new PalletViewBean(firstDir, (int)(width + length * i), (int)(length * iAvailCount)));
-//				}
-//			}
+			
+			int iRemainWidth = (int)(containerWidth - cnt * width - iAvailRow * length);
+			
+			StackEvalutorBean temp = new StackEvalutorBean();
+			
+			if(iRemainWidth >= width && iRemainWidth >= length)
+			{
+				CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
+				
+				StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", iRemainWidth, containerLength, width, length);
+				StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", iRemainWidth, containerLength, width, length);
+				
+				if(stackHorizontal.getShare() > stackVertical.getShare()){
+					temp = stackHorizontal;
+				}else{
+					temp = stackVertical;
+				}
+				
+				ArrayList<PalletViewBean> split = temp.getPalletView();
+				
+				for(int k=0; k<split.size(); k++){
+					PalletViewBean box = split.get(k);
+					box.setx(box.getx() + iRemainWidth);
+					aPalletView.add(box);
+					palletShare += dUnitShare;
+				}
+			}
 			
 			stackCase[cnt - 1].setId(cnt - 1);
 			stackCase[cnt - 1].setRowCount(cnt);

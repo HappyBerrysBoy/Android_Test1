@@ -58,17 +58,6 @@ public class CalculationResultActivity extends Activity{
 		MyView vw = new MyView(this);
 		setContentView(vw);
 		
-//		setContentView(R.layout.activity_main);
-//
-//		FragmentManager fragManagr = getFragmentManager();
-//		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-//		
-//		if (savedInstanceState == null) {
-//			fragTransaction.add(R.id.container, new CalculationResultFragment());
-//			
-//			fragTransaction.commit();
-//		}
-		
 		Intent intent = getIntent();
 		g_fLength = intent.getFloatExtra("Length", 0f);
 		g_fWidth = intent.getFloatExtra("Width", 0f);
@@ -146,15 +135,15 @@ public class CalculationResultActivity extends Activity{
 			for(int i=0; i<split.size(); i++){
 				PalletViewBean box = split.get(i);
 				if(box.getdirection().equals("H")){
-					canvas.drawRect(new Rect((int)(g_iLeftMargin + box.getx() * g_fRateSize), 
-							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-							(int)(fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
+					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
+							g_iTopMargin + box.gety() * g_fRateSize, 
+							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
+							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
 				}else{
-					canvas.drawRect(new Rect((int)(g_iLeftMargin + box.getx() * g_fRateSize), 
-							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-							(int)(fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-							(int)(fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
+					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
+							g_iTopMargin + box.gety() * g_fRateSize, 
+							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
+							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
 				}
 			}
 
@@ -174,20 +163,7 @@ public class CalculationResultActivity extends Activity{
 //				}
 //			}
 			
-			int iCount = (int)(pinWheel.size() / 4);
-			
 //			// Pin Wheel Stack 홀수단..
-//			for(int i=0; i<(int)(pinWheel.size() / 4); i++){
-//				canvas.drawRect(new Rect(g_iLeftMargin, (int)(g_iTopMargin + fLength * i + g_iLengthOfRowDivision), 
-//						(int)(g_iLeftMargin + fWidth) - g_iInterval, (int)(g_iTopMargin + fLength * (i + 1)) - g_iInterval + g_iLengthOfRowDivision), paint);
-//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fWidth + fLength * i), g_iTopMargin + g_iLengthOfRowDivision, 
-//						(int)(g_iLeftMargin + fWidth + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + fWidth) - g_iInterval + g_iLengthOfRowDivision), paint);
-//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * i), (int)(iCount * fLength + g_iTopMargin + g_iLengthOfRowDivision), 
-//						(int)(g_iLeftMargin + fLength * (i + 1) - g_iInterval), (int)(g_iTopMargin + iCount * fLength + fWidth + g_iLengthOfRowDivision)), paint);
-//				canvas.drawRect(new Rect((int)(g_iLeftMargin + fLength * iCount), (int)(g_iTopMargin + fWidth + fLength * i + g_iLengthOfRowDivision), 
-//						(int)(g_iLeftMargin + fLength * iCount + fWidth - g_iInterval), (int)(g_iTopMargin + fWidth + fLength * (i + 1) - g_iInterval + g_iLengthOfRowDivision)), paint);
-//			}
-			
 			for(int i=0; i<g_iPinWheelRowCount; i++){
 				for(int j=0; j<g_iPinWheelColCount; j++){
 					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision, 
@@ -201,12 +177,20 @@ public class CalculationResultActivity extends Activity{
 				}
 			}
 			
-//			canvas.drawRect(new Rect(g_iLeftMargin, g_iTopMargin, (int)(g_fRateSize * g_fLength + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
-//			canvas.drawRect(new Rect((int)(g_fRateSize * g_fLength + g_iLeftMargin) + g_iInterval, g_iTopMargin, (int)(g_fRateSize * g_fLength *2 + g_iLeftMargin), (int)(g_fRateSize * g_fWidth + g_iTopMargin)), paint);
-//			canvas.drawRect(new Rect(g_iLeftMargin, (int)(g_fRateSize * g_fWidth + g_iTopMargin) + g_iInterval, (int)(g_fRateSize * g_fLength + g_iLeftMargin), (int)(g_fRateSize * g_fWidth *2 + g_iTopMargin) ), paint);
-//			canvas.drawRect(new Rect((int)(g_fRateSize * g_fLength + g_iLeftMargin) + g_iInterval, (int)(g_fRateSize * g_fWidth + g_iTopMargin) + g_iInterval, (int)(g_fRateSize * g_fLength*2 + g_iLeftMargin), (int)(g_fRateSize * g_fWidth *2+ g_iTopMargin) ), paint);
-			
-//			canvas.drawre
+			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount; i<pinWheel.size(); i++){
+				PalletViewBean box = pinWheel.get(i);
+				if(box.getdirection().equals("H")){
+					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
+							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision, 
+							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
+							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
+				}else{
+					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
+							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision, 
+							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
+							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
+				}
+			}
 			
 //			canvas.drawText(String.valueOf(g_fRateSize), 10,200,Pnt);
 //			// 검은색 점
