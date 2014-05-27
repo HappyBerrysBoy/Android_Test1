@@ -38,9 +38,9 @@ public class CalcPinWheelStackforPallet {
 					for(int j=0; j<iAvailRow; j++){
 						palletShare += dUnitShare * 4;
 						aPalletView.add(new PalletViewBean(firstDir, width * i, (int)(length * j)));
-						aPalletView.add(new PalletViewBean(secondDir, (int)(width * cnt + length * j), width * i));
+						aPalletView.add(new PalletViewBean(secondDir, (int)(width * iAvailCount + length * j), width * i));
 						aPalletView.add(new PalletViewBean(secondDir, (int)(length * j), (int)(length * iAvailRow + width * i)));
-						aPalletView.add(new PalletViewBean(firstDir, (int)(length * iAvailRow + width * i), (int)(width * cnt + length * j)));
+						aPalletView.add(new PalletViewBean(firstDir, (int)(length * iAvailRow + width * i), (int)(width * iAvailCount + length * j)));
 					}
 				}
 			}
@@ -66,7 +66,7 @@ public class CalcPinWheelStackforPallet {
 				
 				for(int k=0; k<split.size(); k++){
 					PalletViewBean box = split.get(k);
-					box.setx(box.getx() + (containerWidth - iRemainWidth));
+					box.setx(box.getx() + iRemainWidth);
 					aPalletView.add(box);
 					palletShare += dUnitShare;
 				}
@@ -88,13 +88,6 @@ public class CalcPinWheelStackforPallet {
 		result.setRowCount(stackCase[iBestIdx].getRowCount());
 		result.setColCount(stackCase[iBestIdx].getColCount());
 		result.setPalletView(stackCase[iBestIdx].getPalletView());
-		
-		
-		ArrayList<PalletViewBean> tmp = stackCase[iBestIdx].getPalletView();
-		for(int i=0; i<tmp.size(); i++){
-			PalletViewBean tt = tmp.get(i);
-			System.out.println("Idx " + i + " .  Dir : " + tt.getdirection() + ", X : " + tt.getx() + ", Y : " + tt.gety());
-		}
 		
 //		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
 //		
