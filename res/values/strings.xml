@@ -29,4 +29,8 @@
     <!-- <String name="Cntr">Container</String>
     <String name="Pallet">Pallet</String>
     <String name="AirULD">AirULD</String> -->
+    <string name="initBoxWidth">200</string>
+    <string name="initBoxHeight">500</string>
+    <string name="initBoxDepth">300</string>
+    <string name="initPalletSize">1100 X 1100</string>
 </resources>

@@ -7,7 +7,7 @@ import com.unitloadsystem.beans.StackEvalutorBean;
 
 public class CalcPinWheelStackforPallet {
 
-	public StackEvalutorBean CalcSplitStackRule(String firstDir, String secondDir, int containerWidth, int containerLength, float width, float length){
+	public StackEvalutorBean CalcPinWheelStackRule(String firstDir, String secondDir, int containerWidth, int containerLength, float width, float length){
 		StackEvalutorBean result = new StackEvalutorBean();
 		
 		// PinWheel 한 면적에 박스 배치 수량
@@ -22,6 +22,12 @@ public class CalcPinWheelStackforPallet {
 		}else{
 			iAvailCount = (int)((containerLength - length) / width);
 			iSmallLength = containerLength;
+		}
+		
+		if(iAvailCount <= 0){
+			result.setShare(0.0);
+			result.setPalletView(new ArrayList<PalletViewBean>());
+			return result;
 		}
 		
 		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
@@ -46,15 +52,16 @@ public class CalcPinWheelStackforPallet {
 			}
 			
 			int iRemainWidth = (int)(containerWidth - cnt * width - iAvailRow * length);
+			int iRemainHeight = containerLength;
 			
 			StackEvalutorBean temp = new StackEvalutorBean();
 			
-			if(iRemainWidth >= width && iRemainWidth >= length)
+			if((iRemainWidth >= width && iRemainHeight > length) || (iRemainWidth >= length && iRemainHeight > width))
 			{
 				CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
 				
-				StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", iRemainWidth, containerLength, width, length);
-				StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", iRemainWidth, containerLength, width, length);
+				StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", iRemainWidth, containerLength, width, length, containerWidth - iRemainWidth, 0);
+				StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", iRemainWidth, containerLength, length, width, containerWidth - iRemainWidth, 0);
 				
 				if(stackHorizontal.getShare() > stackVertical.getShare()){
 					temp = stackHorizontal;
@@ -66,7 +73,7 @@ public class CalcPinWheelStackforPallet {
 				
 				for(int k=0; k<split.size(); k++){
 					PalletViewBean box = split.get(k);
-					box.setx(box.getx() + iRemainWidth);
+//					box.setx(box.getx() + containerWidth - iRemainWidth);
 					aPalletView.add(box);
 					palletShare += dUnitShare;
 				}

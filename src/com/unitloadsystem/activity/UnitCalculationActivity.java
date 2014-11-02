@@ -171,8 +171,8 @@ public class UnitCalculationActivity extends Activity {
 	private StackEvalutorBean getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
 		
-		StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
-		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth);
+		StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength, 0, 0);
+		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth, 0, 0);
 		
 		if(stackHorizontal.getShare() > stackVertical.getShare()){
 			return stackHorizontal;
@@ -184,7 +184,7 @@ public class UnitCalculationActivity extends Activity {
 	private StackEvalutorBean getPinWheelStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
 		
-		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
+		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcPinWheelStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
 //		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
 		
 //		if(stackHorizontal.getShare() > stackVertical.getShare()){

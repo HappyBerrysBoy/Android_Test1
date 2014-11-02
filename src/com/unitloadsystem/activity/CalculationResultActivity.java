@@ -101,9 +101,9 @@ public class CalculationResultActivity extends Activity{
 				String sText = "";
 				
 				if(i%2 == 0){
-					sText = (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fSplitStackShare + "% / 1단 적재 Layout";
+					sText = "Split Stack Rule : " + (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fSplitStackShare + "% / 1단 적재 Layout";
 				}else{
-					sText = (i + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + g_fPinWheelStacktShare + "% / 1단 적재 Layout";
+					sText = "Pinwheel Stack Rule : " + (i + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + g_fPinWheelStacktShare + "% / 1단 적재 Layout";
 				}
 				
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
@@ -177,7 +177,7 @@ public class CalculationResultActivity extends Activity{
 				}
 			}
 			
-			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount; i<pinWheel.size(); i++){
+			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount * 4; i<pinWheel.size(); i++){
 				PalletViewBean box = pinWheel.get(i);
 				if(box.getdirection().equals("H")){
 					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 

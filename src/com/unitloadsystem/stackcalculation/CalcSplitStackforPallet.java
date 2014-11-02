@@ -23,10 +23,16 @@ public class CalcSplitStackforPallet {
 //		this.length = length;
 	}
 	
-	public StackEvalutorBean CalcSplitStackRule(String firstDir, String secondDir, int containerWidth, int containerLength, float width, float length){
+	public StackEvalutorBean CalcSplitStackRule(String firstDir, String secondDir, int containerWidth, int containerLength, float width, float length, int startX, int startY){
 		StackEvalutorBean result = new StackEvalutorBean();
 		
 		int iAvailCount = (int)(containerWidth / width);
+		
+		if(iAvailCount <= 0){
+			result.setShare(0.0);
+			result.setPalletView(new ArrayList<PalletViewBean>());
+			return result;
+		}
 		
 		StackEvalutorBean[] stackCase = new StackEvalutorBean[iAvailCount];
 		
@@ -38,14 +44,14 @@ public class CalcSplitStackforPallet {
 			double dUnitShare = (length * width) / (containerLength * containerWidth);
 			double palletShare = dUnitShare * cnt * iLengthCount;
 			
-			AddBox(aPalletView, cnt, iLengthCount, firstDir, 0, 0, width, length);
+			AddBox(aPalletView, cnt, iLengthCount, firstDir, startX, startY, width, length);
 			
 			if(cnt * width + length <= containerWidth && width <= containerLength){
 				int iRemainWidthCnt = (int) ((containerWidth - width * cnt) / length);
 				int iAvailLengthCnt = (int)(containerLength / width);
 				palletShare += dUnitShare * iRemainWidthCnt * iAvailLengthCnt;
 				
-				AddBox(aPalletView, iRemainWidthCnt, iAvailLengthCnt, secondDir, width * cnt, 0, length, width);
+				AddBox(aPalletView, iRemainWidthCnt, iAvailLengthCnt, secondDir, startX + width * cnt, startY, length, width);
 				
 				if(iAvailLengthCnt * width + length <= containerLength){
 					if(cnt * width + width <= containerWidth){
@@ -53,7 +59,7 @@ public class CalcSplitStackforPallet {
 						int iAvailWidthCnt = (int)((containerLength - width * iAvailLengthCnt) / length);
 						palletShare += dUnitShare * iRemainLengthCnt * iAvailWidthCnt;
 						
-						AddBox(aPalletView, iRemainLengthCnt, iAvailWidthCnt, firstDir, width * cnt, width * iAvailLengthCnt, width, length);
+						AddBox(aPalletView, iRemainLengthCnt, iAvailWidthCnt, firstDir, startX + width * cnt, startY + width * iAvailLengthCnt, width, length);
 					}
 				}
 			}else if(iLengthCount * length + width <= containerLength && length <= containerWidth){
@@ -61,7 +67,7 @@ public class CalcSplitStackforPallet {
 				int iAvailLengthCnt = (int)((containerLength - length * iLengthCount) / width);
 				palletShare += dUnitShare * iRemainWidthCnt * iAvailLengthCnt;
 				
-				AddBox(aPalletView, iRemainWidthCnt, iAvailLengthCnt, secondDir, 0, length * iLengthCount, length, width);
+				AddBox(aPalletView, iRemainWidthCnt, iAvailLengthCnt, secondDir, startX, startY + length * iLengthCount, length, width);
 			}
 			
 			stackCase[cnt - 1].setId(cnt - 1);
