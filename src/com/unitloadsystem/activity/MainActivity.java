@@ -51,4 +51,10 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://kpp.logisall.com/"));
 		startActivity(intent); 
 	}
+	
+	public void btnCodeManager(View v){
+		Intent intent = new Intent(getApplicationContext(), PalletManagerActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(intent);
+	}
 }

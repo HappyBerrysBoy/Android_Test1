@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+        <Button 
+            android:id="@+id/addPallet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="팔레트 추가"
+            />
+        
+        <Button 
+            android:id="@+id/getPallet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="팔레트 확인"
+            />
+        
+        <TextView 
+            android:id="@+id/palletName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        
+        <TextView 
+            android:id="@+id/palletWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <ListView
+         android:id="@+id/palletListView"
+         android:layout_width="match_parent"
+         android:layout_height="400dp"
+         android:gravity="start"
+         android:numColumns="1"
+         android:scrollbars="vertical"
+         android:stretchMode="columnWidth" >
+     </ListView>
+</LinearLayout>

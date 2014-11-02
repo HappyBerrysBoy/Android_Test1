@@ -37,7 +37,8 @@
 	    <Button
 	        style="@style/MenuLeftButton"
 	        android:id="@+id/inquiryCode"
-	        android:text="@string/inquiryCode" />
+	        android:text="@string/inquiryCode"
+	        android:onClick="btnCodeManager" />
 	
 	    <Button
 	        style="@style/MenuRightButton"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <!--             <style name="quotListArray" parent="AppBaseTheme"> -->
+<!--         <item name="android:layout_width">0dp</item> -->
+<!--         <item name="android:layout_height">match_parent</item> -->
+<!--         <item name="android:layout_gravity">center</item> -->
+<!--         <item name="android:ellipsize">end</item> -->
+<!--         <item name="android:gravity">center</item> -->
+<!--         <item name="android:lines">1</item> -->
+<!--     </style> -->
+        
+        <TextView
+    		style="@style/palletList"
+            android:id="@+id/listTextUserId"
+            android:layout_weight="4"
+            android:textColor="#0000ff" />
+
+        <ImageView
+            style="@style/devideGraphic" />
+
+        <TextView
+            style="@style/palletList"
+            android:id="@+id/listTextName"
+            android:layout_weight="4" />
+
+        <ImageView
+            style="@style/devideGraphic" />
+
+        <TextView
+            style="@style/palletList"
+            android:id="@+id/listTextInput"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+</LinearLayout>

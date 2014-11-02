@@ -11,7 +11,6 @@ import com.unitloadsystem.activity.R;
 public class Fragments {
 
 	public static class TitleFragment extends Fragment {
-
 		public TitleFragment() {
 		}
 
@@ -23,7 +22,6 @@ public class Fragments {
 	}
 	
 	public static class MenuFragment extends Fragment {
-
 		public MenuFragment() {
 		}
 
@@ -35,7 +33,6 @@ public class Fragments {
 	}
 	
 	public static class UnitCalcFragment extends Fragment {
-
 		public UnitCalcFragment() {
 		}
 
@@ -47,13 +44,23 @@ public class Fragments {
 	}
 	
 	public static class CalculationResultFragment extends Fragment {
-
 		public CalculationResultFragment() {
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.calculationresult_layout, container, false);
+			return rootView;
+		}
+	}
+	
+	public static class PalletManagerFragment extends Fragment {
+		public PalletManagerFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.palletmanager_layout, container, false);
 			return rootView;
 		}
 	}
