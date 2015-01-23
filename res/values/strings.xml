@@ -5,12 +5,12 @@
     <string name="menu">Menu</string>
     
     <!-- Menu -->
-    <string name="calc">유닛 계산</string>
+    <string name="calc">Calculation</string>
     <string name="inquiryPallet">팔렛트 조회</string>
     <string name="inquiryCntr">컨테이너 조회</string>
     <string name="inquiryAiruld">Air ULD 조회</string>
-    <string name="inquiryCode">Code</string>
-    <string name="option">Options</string>
+    <string name="palletCode">Pallet Code</string>
+    <string name="containerCode">Container Code</string>
     <string name="action_settings">Settings</string>
 
     <!-- Unit Calculation Activity 내부 Label String -->
@@ -21,8 +21,8 @@
     <string name="quantity">Quantity</string>
     <string name="weight">Weight</string>
     <string name="weightType">WeightType</string>
-    <string name="ContainerType">Container Type</string>
-    <string name="Detail_Spec">Detail Spec</string>
+    <string name="PalletSize">Pallet Size</string>
+    <string name="LayerNum">Num of Layers</string>
     <string name="cntr">Container</string>
     <string name="pallet">Pallet</string>
     <string name="airULD">airULD</string>

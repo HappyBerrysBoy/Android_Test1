@@ -22,16 +22,16 @@ public class MainActivity extends Activity {
 
 		FragmentManager fragManagr = getFragmentManager();
 		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-		
+
 		if (savedInstanceState == null) {
 //			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			fragTransaction.add(R.id.container, new TitleFragment());
 			fragTransaction.add(R.id.container, new MenuFragment());
-			
+
 			fragTransaction.commit();
 		}
 	}
-	
+
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 		TextView textTitle = (TextView) findViewById(R.id.title);
 		textTitle.setText(R.string.menu);
 	}
-	
+
 	public void btnCalcClick(View v){
 		Intent intent = new Intent(getApplicationContext(), UnitCalculationActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -49,9 +49,9 @@ public class MainActivity extends Activity {
 
 	public void btnPalletInfo(View v){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://kpp.logisall.com/"));
-		startActivity(intent); 
+		startActivity(intent);
 	}
-	
+
 	public void btnCodeManager(View v){
 		Intent intent = new Intent(getApplicationContext(), PalletManagerActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

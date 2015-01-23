@@ -35,7 +35,7 @@
     </style>
     
     <style name="MenuButton" parent="AppBaseTheme">
-        <item name="android:layout_width">@dimen/menu_buttonsize</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/menu_Height</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:background">@drawable/round_button</item>
@@ -59,12 +59,18 @@
     <!-- Unit Calculation Layout -->
     <style name="DefaultWrapLayout" parent="AppBaseTheme">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
     </style>
     
     <style name="LabelLayout" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="LabelButtonLayout" parent="AppBaseTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -74,6 +80,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">3dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/keypad_textSize</item>
         <item name="android:textStyle">bold</item>

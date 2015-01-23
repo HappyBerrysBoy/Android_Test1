@@ -15,15 +15,22 @@
 	        android:gravity="right|center"
 	        android:text="0"
 	        android:textSize="30dp"
-	        android:textStyle="bold"
+	        android:textStyle="bold|italic"
 	        android:cursorVisible="false"
+            android:layout_margin="10dp"
 	        android:background="@color/keypadTextViewColor" />
 	    <Button
 	        android:id="@+id/sendNum"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="4"
-	        android:background="@color/keypadSendButtonBack"
+            android:textSize="20dp"
+	        android:background="@drawable/round_button"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
 	        android:text="Send"
 	        android:onClick="btnSend" />
     </LinearLayout>

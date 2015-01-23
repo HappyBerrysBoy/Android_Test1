@@ -5,6 +5,7 @@
     android:layout_marginTop="@dimen/title_margin"
     android:background="@color/bodyBackgroundColor"
     android:orientation="vertical"
+
     tools:context="com.unitloadsystem.activity.MainActivity$PlaceholderFragment" >
 
     <RelativeLayout 
@@ -20,8 +21,8 @@
         style="@style/MenuButtonLayout">
 	    <Button
 	        style="@style/MenuLeftButton"
-	        android:id="@+id/inquiryCode"
-	        android:text="@string/inquiryCode"
+	        android:id="@+id/palletCode"
+	        android:text="@string/palletCode"
 	        android:onClick="btnCodeManager" />
 	</RelativeLayout>
 
@@ -30,7 +31,7 @@
 
         <Button
             style="@style/MenuRightButton"
-            android:id="@+id/option"
-            android:text="@string/option" />
+            android:id="@+id/containerCode"
+            android:text="@string/containerCode" />
     </RelativeLayout>
 </LinearLayout>

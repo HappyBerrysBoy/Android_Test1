@@ -101,25 +101,25 @@ public class CalculationResultActivity extends Activity{
 				String sText = "";
 				
 				if(i%2 == 0){
-					sText = "Split Stack Rule : " + (i + 1) + ". " + split.size() + "boxes / È°¿ëÀ² " + g_fSplitStackShare + "% / 1´Ü ÀûÀç Layout";
+					sText = "Split Stack Rule : " + (i + 1) + ". " + split.size() + "boxes / í™œìš©ìœ¨ " + g_fSplitStackShare + "% / 1ë‹¨ ì ì¬ Layout";
 				}else{
-					sText = "Pinwheel Stack Rule : " + (i + 1) + ". " + pinWheel.size() + "boxes / È°¿ëÀ² " + g_fPinWheelStacktShare + "% / 1´Ü ÀûÀç Layout";
+					sText = "Pinwheel Stack Rule : " + (i + 1) + ". " + pinWheel.size() + "boxes / í™œìš©ìœ¨ " + g_fPinWheelStacktShare + "% / 1ë‹¨ ì ì¬ Layout";
 				}
 				
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
-//				sText = "<Â¦¼ö ´Ü>";
+//				sText = "<Â¦ï¿½ï¿½ ï¿½ï¿½>";
 //				canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
-//				sText = i + ". " + boxes.size() + "boxes / È°¿ëÀ² " + g_fPalletShare + "% / 1´Ü ÀûÀç Layout";
+//				sText = i + ". " + boxes.size() + "boxes / È°ï¿½ï¿½ï¿½ï¿½ " + g_fPalletShare + "% / 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Layout";
 //				canvas.drawText(sText, g_iLeftMargin, g_iLengthOfRowDivision, paint);	
 				
-				// È¦¼ö´Ü pallet
+				// È¦ï¿½ï¿½ï¿½ï¿½ pallet
 				Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
 						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
 						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
 				paint.setColor(Color.BLUE);
 				canvas.drawRect(rect, paint);
 				
-				// Â¦¼ö´Ü pallet
+				// Â¦ï¿½ï¿½ï¿½ï¿½ pallet
 //				rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
 //						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
 //						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
@@ -131,7 +131,7 @@ public class CalculationResultActivity extends Activity{
 			float fWidth = g_fRateSize * g_fWidth;
 			float fLength = g_fRateSize * g_fLength;
 			
-			// Split Stack.. Block Stack µîµî.. È¦¼ö´Ü..
+			// Split Stack.. Block Stack ï¿½ï¿½ï¿½.. È¦ï¿½ï¿½ï¿½ï¿½..
 			for(int i=0; i<split.size(); i++){
 				PalletViewBean box = split.get(i);
 				if(box.getdirection().equals("H")){
@@ -147,7 +147,7 @@ public class CalculationResultActivity extends Activity{
 				}
 			}
 
-//			// Â¦¼ö´Ü.. ÀÏ´Ü º¸·ù..
+//			// Â¦ï¿½ï¿½ï¿½ï¿½.. ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½..
 //			for(int i=0; i<boxes.size(); i++){
 //				PalletViewBean box = boxes.get(i);
 //				if(box.getdirection().equals("H")){
@@ -163,7 +163,7 @@ public class CalculationResultActivity extends Activity{
 //				}
 //			}
 			
-//			// Pin Wheel Stack È¦¼ö´Ü..
+//			// Pin Wheel Stack È¦ï¿½ï¿½ï¿½ï¿½..
 			for(int i=0; i<g_iPinWheelRowCount; i++){
 				for(int j=0; j<g_iPinWheelColCount; j++){
 					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision, 
@@ -193,17 +193,17 @@ public class CalculationResultActivity extends Activity{
 			}
 			
 //			canvas.drawText(String.valueOf(g_fRateSize), 10,200,Pnt);
-//			// °ËÀº»ö Á¡
+//			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 //			canvas.drawPoint(10,10,Pnt);
-//			// ÆÄ¶õ»ö ¼±
+//			// ï¿½Ä¶ï¿½ï¿½ï¿½ ï¿½ï¿½
 //			canvas.drawLine(20,10,200,50,paint);
-//			// »¡°£»ö ¿ø
+//			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 //			Pnt.setColor(Color.RED);
 //			canvas.drawCircle(100,90,50,Pnt);
-//			// ¹İÅõ¸íÇÑ ÆÄ¶õ»ö »ç°¢Çü
+//			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ ï¿½ç°¢ï¿½ï¿½
 //			Pnt.setColor(0x800000ff);
 //			canvas.drawRect(10,100,200,170,Pnt);
-//			// °ËÀº»ö ¹®ÀÚ¿­
+//			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½
 //			Pnt.setColor(Color.BLACK);
 //			canvas.drawText("Canvas Text Out", 10,200,Pnt);
 		}

@@ -10,7 +10,7 @@
 	<color name="unitTextViewColor">#cccccc</color>
 	
 	<!-- Keypad -->
-	<color name="keypadTextViewColor">#cccccc</color>
+	<color name="keypadTextViewColor">#fff</color>
 	<color name="keypadSendButtonBack">#ff0000</color>
 	
 </resources>

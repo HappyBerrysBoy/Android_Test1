@@ -42,7 +42,7 @@ public class UnitCalculationActivity extends Activity {
 			fragTransaction.commit();
 		}
 		
-		tView = (TextView) findViewById(R.id.showInputInfo);
+//		tView = (TextView) findViewById(R.id.showInputInfo);
 	}
 	
 	@Override
@@ -74,7 +74,8 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnDimension(View v){
-		SetDialogItem(v.getId(), R.array.dimensions);
+        // 2015. 1. 23. 일단 센치미터만 가능하도록 설정
+//		SetDialogItem(v.getId(), R.array.dimensions);
 	}
 	
 	private String SetDialogItem(int id, int arrayId){
@@ -101,7 +102,8 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnWeightType(View v){
-		SetDialogItem(v.getId(), R.array.weights);
+        // 2015. 1. 23. 일단 kg만 가능하도록 설정
+//		SetDialogItem(v.getId(), R.array.weights);
 	}
 	
 	public void btnSelectType(View v){
@@ -112,15 +114,15 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnDetail(View v){
-		Button btnContainer = (Button) findViewById(R.id.containerType);
+//		Button btnContainer = (Button) findViewById(R.id.containerType);
 		
-		if(btnContainer.getText().equals("Container")){
-			SetDialogItem(v.getId(), R.array.detailContainer);
-		}else if(btnContainer.getText().equals("Pallet")){
+//		if(btnContainer.getText().equals("Container")){
+//			SetDialogItem(v.getId(), R.array.detailContainer);
+//		}else if(btnContainer.getText().equals("Pallet")){
 			SetDialogItem(v.getId(), R.array.detailPallet);
-		}else{
-			SetDialogItem(v.getId(), R.array.detailAirULD);
-		}
+//		}else{
+//			SetDialogItem(v.getId(), R.array.detailAirULD);
+//		}
 	}
 	
 	public void btnCalc(View v){
