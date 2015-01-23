@@ -1,7 +1,7 @@
 <resources>
 	<color name="titleTextColor">#ffffff</color>
 	<color name="titleBackgroundColor">#000066</color>
-	<color name="bodyBackgroundColor">#ccdd00</color>
+	<color name="bodyBackgroundColor">#fff</color>
 	
 	<!-- Menu -->
 	<color name="menuTextColor">#ffffff</color>

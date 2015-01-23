@@ -10,39 +10,27 @@
     <RelativeLayout 
         style="@style/MenuButtonLayout">
 	    <Button
-	        style="@style/MenuLeftButton"
+	        style="@style/MenuButton"
 	        android:text="@string/calc"
 	        android:onClick="btnCalcClick" />
-	
-	    <Button
-	        style="@style/MenuRightButton"
-	        android:id="@+id/palletInfo"
-	        android:text="@string/inquiryPallet"
-	        android:onClick="btnPalletInfo" />
-	</RelativeLayout>
-	<RelativeLayout 
-        style="@style/MenuButtonLayout">
-	    <Button
-	        style="@style/MenuLeftButton"
-	        android:id="@+id/inquiryCntr"
-	        android:text="@string/inquiryCntr" />
-	
-	    <Button
-	        style="@style/MenuRightButton"
-	        android:id="@+id/inquiryAiruld"
-	        android:text="@string/inquiryAiruld" />
-	</RelativeLayout>
-	<RelativeLayout 
+
+    </RelativeLayout>
+
+    <RelativeLayout
         style="@style/MenuButtonLayout">
 	    <Button
 	        style="@style/MenuLeftButton"
 	        android:id="@+id/inquiryCode"
 	        android:text="@string/inquiryCode"
 	        android:onClick="btnCodeManager" />
-	
-	    <Button
-	        style="@style/MenuRightButton"
-	        android:id="@+id/option"
-	        android:text="@string/option" />
 	</RelativeLayout>
+
+    <RelativeLayout
+        style="@style/MenuButtonLayout">
+
+        <Button
+            style="@style/MenuRightButton"
+            android:id="@+id/option"
+            android:text="@string/option" />
+    </RelativeLayout>
 </LinearLayout>
