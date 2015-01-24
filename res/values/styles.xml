@@ -104,4 +104,19 @@
         <item name="android:layout_width">1dip</item>
         <item name="android:layout_height">fill_parent</item>
     </style>
+
+    <style name="palletCodeStyle" parent="AppBaseTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="verticalLine" parent="AppBaseTheme">
+        <item name="android:layout_width">1dip</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">#fff</item>
+    </style>
 </resources>

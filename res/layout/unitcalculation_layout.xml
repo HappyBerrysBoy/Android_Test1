@@ -87,7 +87,6 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/detailSpec"
-	        android:text="@string/initPalletSize"
 	        android:onClick="btnDetail" />
         <Button
             style="@style/DefaultWrapLayout"

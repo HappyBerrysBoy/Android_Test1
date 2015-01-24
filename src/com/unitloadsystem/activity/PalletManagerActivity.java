@@ -43,23 +43,37 @@ public class PalletManagerActivity extends Activity{
     SQLiteDatabase db;
     MySQLiteOpenHelper helper;
 
+    ListAdapter la;
+    ListView listView;
+
+    String strSelectedPallet;
+
+    View.OnClickListener ocl = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView tv = (TextView) v;
+            tv.setBackgroundColor(getResources().getColor(R.color.keypadSendButtonBack));
+            strSelectedPallet = (String)tv.getText();
+        }
+    };
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+//		setContentView(R.layout.activity_main);
+		setContentView(R.layout.palletmanager_layout);
 
-		FragmentManager fragManagr = getFragmentManager();
-		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-		
-		if (savedInstanceState == null) {
-			fragTransaction.add(R.id.container, new PalletManagerFragment());
-			fragTransaction.commit();
-		}
+//		FragmentManager fragManagr = getFragmentManager();
+//		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
+//
+//		if (savedInstanceState == null) {
+//			fragTransaction.add(R.id.container, new PalletManagerFragment());
+//			fragTransaction.commit();
+//		}
 
         helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, 1);
 
-
-        getPallets();
+        listRefresh();
 	}
 
     public void btnInputNum(View v){
@@ -80,7 +94,7 @@ public class PalletManagerActivity extends Activity{
         }
     }
 
-    public void getPallets(){
+    public ArrayList getPallets(){
         // 1) db의 데이터를 읽어와서, 2) 결과 저장, 3)해당 데이터를 꺼내 사용
 
         db = helper.getReadableDatabase(); // db객체를 얻어온다. 읽기 전용
@@ -92,15 +106,25 @@ public class PalletManagerActivity extends Activity{
          * selectionArgs, String groupBy, String having, String orderBy)
          */
 
+        ArrayList aResult = new ArrayList();
+
         while (c.moveToNext()) {
             // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
             String name = c.getString(c.getColumnIndex("name"));
             int width = c.getInt(c.getColumnIndex("width"));
             int height = c.getInt(c.getColumnIndex("height"));
             String unit = c.getString(c.getColumnIndex("unit"));
-            Log.i("db", "name: " + name + ", width : " + width + ", height : " + height
-                    + ", unit : " + unit);
+            Log.i("db", "name: " + name + ", width : " + width + ", height : " + height + ", unit : " + unit);
+
+            HashMap hMap = new HashMap();
+            hMap.put("name", name);
+            hMap.put("width", width);
+            hMap.put("height", height);
+            hMap.put("unit", unit);
+            aResult.add(hMap);
         }
+
+        return aResult;
     }
 
     public void addPallet(View v){
@@ -116,7 +140,7 @@ public class PalletManagerActivity extends Activity{
 
         db.insert("palletdb", null, values);
 
-        getPallets();
+        listRefresh();
     }
 
     // update
@@ -136,131 +160,57 @@ public class PalletManagerActivity extends Activity{
 //         * ContentValues values, String whereClause, String[] whereArgs)
 //         */
 //    }
-//    [출처] Android - SQLite 활용 예제1|작성자 장스
 
     public void delPallet(View v){
         Button widthBtn = (Button)findViewById(R.id.widthPalletforAdd);
         Button heightBtn = (Button)findViewById(R.id.heightPalletforAdd);
         db = helper.getWritableDatabase();
 
-        db.delete("palletdb", "name=?", new String[]{widthBtn.getText() + "X" + heightBtn.getText()});
+        db.delete("palletdb", "name=?", new String[]{strSelectedPallet});
+        listRefresh();
     }
-	
-	AdapterView.OnItemClickListener mItemClickListener =
-			new AdapterView.OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					
-					final LinearLayout linear = (LinearLayout)View.inflate(PalletManagerActivity.this, R.layout.palletitem, null);
-					
-					ListView lv = (ListView)parent;
-					final LinearLayout ll = (LinearLayout)lv.getChildAt(position);
-					final TextView tvItem = (TextView)ll.getChildAt(0);
-					final TextView tvAssign = (TextView)ll.getChildAt(2);
-					final TextView tvQuantity = (TextView)ll.getChildAt(4);
-					final TextView tvUnitPrice = (TextView)ll.getChildAt(6);
-					final TextView tvTotalPrice = (TextView)ll.getChildAt(8);
-					final TextView tvMagam = (TextView)ll.getChildAt(12);
-					
-					if(!tvMagam.getText().toString().trim().equals("")){
-						Toast.makeText(getApplicationContext(), "�̹� ���� �Ǿ���ϴ�.", Toast.LENGTH_SHORT).show();
-						return;
-					}
-					
-					final AlertDialog.Builder adb = new AlertDialog.Builder(PalletManagerActivity.this);
-                    adb.setTitle("���� ������ �Է��Ͻÿ�.");
-                    adb.setView(linear);
-                    adb.setPositiveButton("Ȯ��", new DialogInterface.OnClickListener() {
-            			public void onClick(DialogInterface dialog, int whichButton) {
-//            				final RadioGroup rg = (RadioGroup)linear.findViewById(R.id.yesnoGroup);
-//            				final RadioButton yesRadio = (RadioButton)linear.findViewById(R.id.yesCheck);
-//            				final RadioButton noRadio = (RadioButton)linear.findViewById(R.id.noCheck);
-//            				final EditText ev = (EditText)linear.findViewById(R.id.quotationPrice);
-//            				
-//            				if(yesRadio.getId() == rg.getCheckedRadioButtonId())
-//            					tvAssign.setText("Y");
-//            				else
-//            					tvAssign.setText("N");
-//            				
-//            				tvUnitPrice.setText(ev.getText());
-//            				
-//            				if(ev.getText().toString().length() > 0)
-//            					tvTotalPrice.setText(String.valueOf(Integer.parseInt(ev.getText().toString()) * Integer.parseInt(tvQuantity.getText().toString())));
-//            				else
-//            					tvTotalPrice.setText("0");
-            			}
-            		});
-                    adb.setNegativeButton("���", new DialogInterface.OnClickListener() {
-            			public void onClick(DialogInterface dialog, int whichButton) {
-            			}
-            		});
-                    adb.show();
-				}
-			};
 
+    public void listRefresh(){
+        ArrayList aList = getPallets();
 
+        la = new ListAdapter(this, R.id.palletListView, aList);
+        listView = (ListView) findViewById(R.id.palletListView);
+        listView.setAdapter(la);
+    }
 
-	private class ListAdapter extends ArrayAdapter<HashMap> {
-		LayoutInflater inflater;
-		private ArrayList<HashMap> items;
+    private class ListAdapter extends ArrayAdapter<HashMap> {
+        LayoutInflater inflater;
+        private ArrayList<HashMap> items;
 
-		public ListAdapter(Context context, int textViewResourceId, ArrayList<HashMap> items) {
-			super(context, textViewResourceId, items);
-			inflater = (LayoutInflater) thisAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.items = items;
-		}
+        public ListAdapter(Context context, int textViewResourceId, ArrayList<HashMap> items) {
+            super(context, textViewResourceId, items);
+            inflater = (LayoutInflater) thisAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.items = items;
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.palletitem, parent, false);
-				
-				HashMap hItem = items.get(position);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.pallet_code, parent, false);
 
-				if (hItem != null) {
-//					TextView tvName = (TextView) convertView.findViewById(R.id.productName);
-//					TextView tvAssign = (TextView) convertView.findViewById(R.id.assign);
-//					TextView tvQuantity = (TextView) convertView.findViewById(R.id.productQuantity);
-//					TextView tvPrice = (TextView) convertView.findViewById(R.id.productPrice);
-//					TextView tvSubtotal = (TextView) convertView.findViewById(R.id.subTotal);
-//					TextView tvItemcode = (TextView) convertView.findViewById(R.id.itemCode);
-//					TextView tvItemtype = (TextView) convertView.findViewById(R.id.itemType);
-//					TextView tvRemark = (TextView) convertView.findViewById(R.id.pqremark);
-//					TextView tvMagam = (TextView) convertView.findViewById(R.id.quotationMagam);
-//
-//					String sItemName = hItem.get("BI_ITEMNAME") == null ? "" : (String) hItem.get("BI_ITEMNAME");
-//					String sAssign = hItem.get("PQ_ARRANGE_CHK") == null ? "" : (String) hItem.get("PQ_ARRANGE_CHK");
-//					String sItemQuantity = hItem.get("PQ_QUOT_QTY") == null ? "   " : (String) hItem.get("PQ_QUOT_QTY");
-//					String sPrice = hItem.get("PQ_PRICE_LOC") == null ? "" : (String) hItem.get("PQ_PRICE_LOC");
-//					String sSubtotal = "";
-//					String sItemcode = hItem.get("BI_ITEMCODE") == null ? "" : (String) hItem.get("BI_ITEMCODE");
-//					String sItemtype = hItem.get("BI_ITEMTYPE") == null ? "" : (String) hItem.get("BI_ITEMTYPE");
-//					String sRemark = hItem.get("PQ_REMARK") == null ? "" : (String) hItem.get("PQ_REMARK");
-//					String sMagam = hItem.get("MAGAM") == null ? "" : (String) hItem.get("MAGAM");
-//					
-//					if(!sAssign.equals("") && !sPrice.equals("")){
-//						sSubtotal = String.valueOf(Integer.parseInt(sItemQuantity) * Integer.parseInt(sPrice));
-//					}else{
-//						sSubtotal = "0";
-//					}
-//					
-//					if(sPrice.equals(""))
-//						sPrice = "0";
-//					
-//					tvName.setText(sItemName);
-//					tvAssign.setText(sAssign);
-//					tvQuantity.setText(sItemQuantity);
-//					tvPrice.setText(sPrice);
-//					tvSubtotal.setText(sSubtotal);
-//					tvItemcode.setText(sItemcode);
-//					tvItemtype.setText(sItemtype);
-//					tvRemark.setText(sRemark);
-//					tvMagam.setText(sMagam);
-//
-//					tvName.setOnClickListener(ocl);
-				}
-			}
+                HashMap hPallet = items.get(position);
 
-			return convertView;
-		}
-	}
+                if (hPallet != null) {
+                    TextView tvPalletName = (TextView) convertView.findViewById(R.id.palletCodeName);
+                    TextView tvPalletWidth = (TextView) convertView.findViewById(R.id.palletCodeWidth);
+                    TextView tvPalletHeight = (TextView) convertView.findViewById(R.id.palletCodeHeight);
+                    TextView tvPalletUnit = (TextView) convertView.findViewById(R.id.palletCodeUnit);
+
+                    tvPalletName.setText((String) hPallet.get("name"));
+                    tvPalletWidth.setText(String.valueOf((Integer)hPallet.get("width")));
+                    tvPalletHeight.setText(String.valueOf((Integer)hPallet.get("height")));
+                    tvPalletUnit.setText((String) hPallet.get("unit"));
+
+                    tvPalletName.setOnClickListener(ocl);
+                    }
+                }
+
+            return convertView;
+        }
+    }
 }

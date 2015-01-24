@@ -2,6 +2,7 @@ package com.unitloadsystem.activity;
 
 import com.unitloadsystem.activity.R;
 import com.unitloadsystem.beans.StackEvalutorBean;
+import com.unitloadsystem.db.MySQLiteOpenHelper;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
 import com.unitloadsystem.stackcalculation.CalcPinWheelStackforPallet;
@@ -13,13 +14,22 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class UnitCalculationActivity extends Activity {
-	
+
+    SQLiteDatabase db;
+    MySQLiteOpenHelper helper;
+
 	Button bBtn;
 	TextView tView;
 	int g_iBtnID;
@@ -41,8 +51,8 @@ public class UnitCalculationActivity extends Activity {
 			
 			fragTransaction.commit();
 		}
-		
-//		tView = (TextView) findViewById(R.id.showInputInfo);
+
+        helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, 1);
 	}
 	
 	@Override
@@ -53,6 +63,30 @@ public class UnitCalculationActivity extends Activity {
 		TextView textTitle = (TextView) findViewById(R.id.title);
 		textTitle.setText(R.string.calc);
 	}
+
+    public ArrayList getPallets(){
+        db = helper.getReadableDatabase(); // db객체를 얻어온다. 읽기 전용
+        Cursor c = db.query("palletdb", null, null, null, null, null, null);
+
+        ArrayList aResult = new ArrayList();
+
+        while (c.moveToNext()) {
+            // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
+            String name = c.getString(c.getColumnIndex("name"));
+            int width = c.getInt(c.getColumnIndex("width"));
+            int height = c.getInt(c.getColumnIndex("height"));
+            String unit = c.getString(c.getColumnIndex("unit"));
+
+            HashMap hMap = new HashMap();
+            hMap.put("name", name);
+            hMap.put("width", width);
+            hMap.put("height", height);
+            hMap.put("unit", unit);
+            aResult.add(hMap);
+        }
+
+        return aResult;
+    }
 	
 	public void btnInputNum(View v){
 		
@@ -100,6 +134,27 @@ public class UnitCalculationActivity extends Activity {
 		
 		return sReturn;
 	}
+
+    private String SetDialogItem(int id, String[] names){
+        String sReturn = "";
+        final String[] items = names;
+
+        g_iBtnID = id;
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Item")
+                .setItems(names,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Button btn = (Button)findViewById(g_iBtnID);
+                                btn.setText(items[which]);
+                            }
+                        })
+                .setNegativeButton("Cancel", null)
+                .show();
+
+        return sReturn;
+    }
 	
 	public void btnWeightType(View v){
         // 2015. 1. 23. 일단 kg만 가능하도록 설정
@@ -114,15 +169,13 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnDetail(View v){
-//		Button btnContainer = (Button) findViewById(R.id.containerType);
-		
-//		if(btnContainer.getText().equals("Container")){
-//			SetDialogItem(v.getId(), R.array.detailContainer);
-//		}else if(btnContainer.getText().equals("Pallet")){
-			SetDialogItem(v.getId(), R.array.detailPallet);
-//		}else{
-//			SetDialogItem(v.getId(), R.array.detailAirULD);
-//		}
+		ArrayList aList = getPallets();
+        String[] strPallets = new String[aList.size()];
+        for(int i=0; i<aList.size(); i++){
+            strPallets[i] = (String)((HashMap)aList.get(i)).get("name");
+        }
+
+        SetDialogItem(v.getId(), strPallets);
 	}
 	
 	public void btnCalc(View v){
