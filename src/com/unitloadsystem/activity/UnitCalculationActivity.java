@@ -179,6 +179,8 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnCalc(View v){
+        ArrayList aPalletList = getPallets();
+
 		Button btnSize;
 		btnSize = (Button) findViewById(R.id.length);
 		float fBoxLength = Float.parseFloat(btnSize.getText().toString());
@@ -207,7 +209,6 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("PinWheelStackShare", pinWheelStack.getShare());
 		intent.putExtra("PinWheelStackRowCount", pinWheelStack.getRowCount());
 		intent.putExtra("PinWheelStackColCount", pinWheelStack.getColCount());
-		
 		startActivity(intent);
 	}
 	
@@ -253,7 +254,11 @@ public class UnitCalculationActivity extends Activity {
 	private Bundle getBundleResult(StackEvalutorBean stack){
 		Bundle b = new Bundle();
 		b.putParcelableArrayList("Layout", stack.getPalletView());
-		
+
 		return b;
 	}
+
+    public void btnBack(View v){
+        finish();
+    }
 }

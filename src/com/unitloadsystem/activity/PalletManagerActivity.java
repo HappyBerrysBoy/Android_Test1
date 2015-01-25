@@ -128,14 +128,31 @@ public class PalletManagerActivity extends Activity{
     }
 
     public void addPallet(View v){
-        Button widthBtn = (Button)findViewById(R.id.widthPalletforAdd);
-        Button heightBtn = (Button)findViewById(R.id.heightPalletforAdd);
+        String widthBtn = (String)((Button)findViewById(R.id.widthPalletforAdd)).getText();
+        String heightBtn = (String)((Button)findViewById(R.id.heightPalletforAdd)).getText();
+
+        if(widthBtn.equals("") || Float.parseFloat(widthBtn) < 10){
+            Toast.makeText(getApplicationContext(), "Please Input Width or Input Width over 10cm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(heightBtn.equals("") || Float.parseFloat(heightBtn) < 10){
+            Toast.makeText(getApplicationContext(), "Please Input Height or Input Height over 10cm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         db = helper.getWritableDatabase();
 
+        if(Float.parseFloat(widthBtn) < Float.parseFloat(heightBtn)){
+            String strTemp = heightBtn;
+            heightBtn = widthBtn;
+            widthBtn = strTemp;
+        }
+
         ContentValues values = new ContentValues();
-        values.put("name", widthBtn.getText() + "X" + heightBtn.getText());
-        values.put("width", Integer.parseInt((String)widthBtn.getText()));
-        values.put("height", Integer.parseInt((String)heightBtn.getText()));
+        values.put("name", widthBtn + "X" + heightBtn);
+        values.put("width", Integer.parseInt(widthBtn));
+        values.put("height", Integer.parseInt(heightBtn));
         values.put("unit", "cm");
 
         db.insert("palletdb", null, values);
@@ -162,6 +179,9 @@ public class PalletManagerActivity extends Activity{
 //    }
 
     public void delPallet(View v){
+        if(strSelectedPallet.equals(null) || strSelectedPallet.equals(""))
+            return;
+
         Button widthBtn = (Button)findViewById(R.id.widthPalletforAdd);
         Button heightBtn = (Button)findViewById(R.id.heightPalletforAdd);
         db = helper.getWritableDatabase();
@@ -212,5 +232,9 @@ public class PalletManagerActivity extends Activity{
 
             return convertView;
         }
+    }
+
+    public void btnBack(View v){
+        this.finish();
     }
 }

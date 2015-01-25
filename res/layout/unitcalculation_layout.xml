@@ -95,14 +95,26 @@
             android:onClick="btnInputNum" />
 	</LinearLayout>
 	<LinearLayout style="@style/LabelLayout"
+        android:orientation="vertical"
         android:layout_marginTop="30dp">
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/calculation"
 	        android:text="Calculation"
             android:textStyle="bold"
+            android:textColor="#fff"
             android:textSize="20dp"
             android:background="@drawable/round_button"
 	        android:onClick="btnCalc" />
+
+        <Button
+            style="@style/DefaultWrapLayout"
+            android:layout_marginTop="20dp"
+            android:text="Back"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="20dp"
+            android:background="@drawable/round_button"
+            android:onClick="btnBack" />
 	</LinearLayout>
 </LinearLayout>

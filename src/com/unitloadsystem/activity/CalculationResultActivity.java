@@ -29,8 +29,6 @@ public class CalculationResultActivity extends Activity{
 	int g_iPinWheelRowCount;
 	int g_iPinWheelColCount;
 	
-	float g_fScreenWidth;
-	float g_fScreenLength;
 	float g_fRateSize = 0.20f;
 	
 	int g_iTitleLength = 150;
@@ -47,7 +45,9 @@ public class CalculationResultActivity extends Activity{
 	int g_iLineSize = 2;
 	
 	int g_iBorderColor = Color.BLACK;
-	int g_iBoxColor = Color.BLUE;
+	int g_iPalletColor = Color.BLUE;
+    int g_iBoxColor = Color.GREEN;
+    int g_iTextColor = Color.BLACK;
 	
 	Bundle g_bSplitStackResult;
 	Bundle g_bPinWheelStackResult;
@@ -80,7 +80,7 @@ public class CalculationResultActivity extends Activity{
 		public void onDraw(Canvas canvas) {
 			canvas.drawColor(Color.WHITE);
 			Paint paint = new Paint();
-			
+
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
 			int screenWidth = metrics.widthPixels;
@@ -95,9 +95,9 @@ public class CalculationResultActivity extends Activity{
 			
 			ArrayList<PalletViewBean> split = g_bSplitStackResult.getParcelableArrayList("Layout");
 			ArrayList<PalletViewBean> pinWheel = g_bPinWheelStackResult.getParcelableArrayList("Layout");
-			
+
 			for(int i=0; i<g_iNumberOfRowDivision; i++){
-				paint.setColor(Color.BLACK);
+				paint.setColor(g_iTextColor);
 				String sText = "";
 				
 				if(i%2 == 0){
@@ -107,105 +107,112 @@ public class CalculationResultActivity extends Activity{
 				}
 				
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
-//				sText = "<¦�� ��>";
-//				canvas.drawText(sText, g_iLeftMargin + screenWidth / 2, g_iTopMargin - 30,paint);
-//				sText = i + ". " + boxes.size() + "boxes / Ȱ���� " + g_fPalletShare + "% / 1�� ���� Layout";
-//				canvas.drawText(sText, g_iLeftMargin, g_iLengthOfRowDivision, paint);	
-				
-				// Ȧ���� pallet
-				Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
+
+                Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
 						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
 						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
-				paint.setColor(Color.BLUE);
+				paint.setColor(g_iPalletColor);
 				canvas.drawRect(rect, paint);
-				
-				// ¦���� pallet
-//				rect = new Rect(g_iLeftMargin - g_iCntrMargin + screenWidth / 2, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
-//						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin + screenWidth / 2),
-//						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
-//				canvas.drawRect(rect, paint);
 			}
 			
-			paint.setColor(Color.GREEN);
+			paint.setColor(g_iBoxColor);
 			
 			float fWidth = g_fRateSize * g_fWidth;
 			float fLength = g_fRateSize * g_fLength;
 			
-			// Split Stack.. Block Stack ���.. Ȧ����..
-			for(int i=0; i<split.size(); i++){
-				PalletViewBean box = split.get(i);
-				if(box.getdirection().equals("H")){
-					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
-							g_iTopMargin + box.gety() * g_fRateSize, 
-							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
-							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
-				}else{
-					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
-							g_iTopMargin + box.gety() * g_fRateSize, 
-							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
-							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
-				}
-			}
-
-//			// ¦����.. �ϴ� ����..
-//			for(int i=0; i<boxes.size(); i++){
-//				PalletViewBean box = boxes.get(i);
+			// Split Stack.. Block Stack
+            drawSplitStack(canvas, paint, split, g_iTopMargin, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval);
+//			for(int i=0; i<split.size(); i++){
+//				PalletViewBean box = split.get(i);
 //				if(box.getdirection().equals("H")){
-//					canvas.drawRect(new Rect((int)(screenWidth / 2 + g_iLeftMargin + box.getx() * g_fRateSize), 
-//							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-//							(int)(screenWidth / 2 + g_fRateSize * g_fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-//							(int)(g_fRateSize * g_fLength + g_iTopMargin + box.gety() * g_fRateSize) - g_iInterval), paint);
+//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
+//							g_iTopMargin + box.gety() * g_fRateSize,
+//							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
+//							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
 //				}else{
-//					canvas.drawRect(new Rect((int)(screenWidth / 2 + g_iLeftMargin + box.getx() * g_fRateSize), 
-//							(int)(g_iTopMargin + box.gety() * g_fRateSize), 
-//							(int)(screenWidth / 2 + g_fRateSize * g_fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval), 
-//							(int)(g_fRateSize * g_fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval)), paint);
+//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
+//							g_iTopMargin + box.gety() * g_fRateSize,
+//							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
+//							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
 //				}
 //			}
-			
-//			// Pin Wheel Stack Ȧ����..
-			for(int i=0; i<g_iPinWheelRowCount; i++){
-				for(int j=0; j<g_iPinWheelColCount; j++){
-					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision, 
-							g_iLeftMargin + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * j, g_iTopMargin + g_iLengthOfRowDivision + fWidth * i, 
-							g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval, g_iTopMargin + fWidth * (i + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-					canvas.drawRect(new RectF(g_iLeftMargin + fLength * j, g_iPinWheelColCount * fLength + fWidth * i + g_iTopMargin + g_iLengthOfRowDivision, 
-							g_iLeftMargin + fLength * (j + 1) - g_iInterval, g_iTopMargin + g_iPinWheelColCount * fLength + fWidth * (i + 1) + g_iLengthOfRowDivision - g_iInterval), paint);
-					canvas.drawRect(new RectF(g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * i, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * j + g_iLengthOfRowDivision, 
-							g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-				}
-			}
-			
-			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount * 4; i<pinWheel.size(); i++){
-				PalletViewBean box = pinWheel.get(i);
-				if(box.getdirection().equals("H")){
-					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
-							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision, 
-							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
-							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
-				}else{
-					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize, 
-							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision, 
-							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval, 
-							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
-				}
-			}
-			
-//			canvas.drawText(String.valueOf(g_fRateSize), 10,200,Pnt);
-//			// ������ ��
-//			canvas.drawPoint(10,10,Pnt);
-//			// �Ķ��� ��
-//			canvas.drawLine(20,10,200,50,paint);
-//			// ������ ��
-//			Pnt.setColor(Color.RED);
-//			canvas.drawCircle(100,90,50,Pnt);
-//			// �������� �Ķ��� �簢��
-//			Pnt.setColor(0x800000ff);
-//			canvas.drawRect(10,100,200,170,Pnt);
-//			// ������ ���ڿ�
-//			Pnt.setColor(Color.BLACK);
-//			canvas.drawText("Canvas Text Out", 10,200,Pnt);
+
+//			// Pin Wheel Stack
+            drawPinWheel(canvas, paint, pinWheel, g_iTopMargin + g_iLengthOfRowDivision, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval, g_iPinWheelRowCount, g_iPinWheelColCount);
+//			for(int i=0; i<g_iPinWheelRowCount; i++){
+//				for(int j=0; j<g_iPinWheelColCount; j++){
+//					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision,
+//							g_iLeftMargin + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+//					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * j, g_iTopMargin + g_iLengthOfRowDivision + fWidth * i,
+//							g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval, g_iTopMargin + fWidth * (i + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+//					canvas.drawRect(new RectF(g_iLeftMargin + fLength * j, g_iPinWheelColCount * fLength + fWidth * i + g_iTopMargin + g_iLengthOfRowDivision,
+//							g_iLeftMargin + fLength * (j + 1) - g_iInterval, g_iTopMargin + g_iPinWheelColCount * fLength + fWidth * (i + 1) + g_iLengthOfRowDivision - g_iInterval), paint);
+//					canvas.drawRect(new RectF(g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * i, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * j + g_iLengthOfRowDivision,
+//							g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
+//				}
+//			}
+//
+//			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount * 4; i<pinWheel.size(); i++){
+//				PalletViewBean box = pinWheel.get(i);
+//				if(box.getdirection().equals("H")){
+//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
+//							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision,
+//							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
+//							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
+//				}else{
+//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
+//							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision,
+//							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
+//							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
+//				}
+//			}
 		}
+
+        private void drawSplitStack(Canvas canvas, Paint paint, ArrayList<PalletViewBean> stackView, int top, int left, float fWidth, float fLength, float rate, int interval){
+            for(int i=0; i<stackView.size(); i++){
+                PalletViewBean box = stackView.get(i);
+                if(box.getdirection().equals("H")){
+                    canvas.drawRect(new RectF(left + box.getx() * rate,
+                            top + box.gety() * rate,
+                            fWidth + left + box.getx() * rate - interval,
+                            fLength + top + box.gety() * rate - interval), paint);
+                }else{
+                    canvas.drawRect(new RectF(left + box.getx() * rate,
+                            top + box.gety() * rate,
+                            fLength + left + box.getx() * rate - interval,
+                            fWidth + top + box.gety() * rate - interval), paint);
+                }
+            }
+        }
+
+        private void drawPinWheel(Canvas canvas, Paint paint, ArrayList<PalletViewBean> stackView, int top, int left, float fWidth, float fLength, float rate, int interval, int row, int col){
+            for(int i=0; i<row; i++){
+                for(int j=0; j<col; j++){
+                    canvas.drawRect(new RectF(left + fWidth * i, top + fLength * j,
+                            left + fWidth * (i + 1) - interval, top + fLength * (j + 1) - interval), paint);
+                    canvas.drawRect(new RectF(left + fWidth * row + fLength * j, top + fWidth * i,
+                            left + fWidth * row + fLength * (j + 1) - interval, top + fWidth * (i + 1) - interval), paint);
+                    canvas.drawRect(new RectF(left + fLength * j, col * fLength + fWidth * i + top,
+                            left + fLength * (j + 1) - interval, top + col * fLength + fWidth * (i + 1) - interval), paint);
+                    canvas.drawRect(new RectF(left + fLength * col + fWidth * i, top + fWidth * row + fLength * j,
+                            left + fLength * col + fWidth * (i + 1) - interval, top + fWidth * row + fLength * (j + 1) - interval), paint);
+                }
+            }
+
+            for(int i=row * col * 4; i<stackView.size(); i++){
+                PalletViewBean box = stackView.get(i);
+                if(box.getdirection().equals("H")){
+                    canvas.drawRect(new RectF(left + box.getx() * rate,
+                            top + box.gety() * rate,
+                            fWidth + left + box.getx() * rate - interval,
+                            fLength + top + box.gety() * rate - interval), paint);
+                }else{
+                    canvas.drawRect(new RectF(left + box.getx() * rate,
+                            top + box.gety() * rate,
+                            fLength + left + box.getx() * rate - interval,
+                            fWidth + top + box.gety() * rate - interval), paint);
+                }
+            }
+        }
 	}
 }

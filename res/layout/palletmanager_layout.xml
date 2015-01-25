@@ -88,10 +88,22 @@
     <ListView
          android:id="@+id/palletListView"
          android:layout_width="match_parent"
-         android:layout_height="400dp"
+         android:layout_height="380dp"
          android:gravity="start"
          android:numColumns="1"
          android:scrollbars="vertical"
          android:stretchMode="columnWidth" >
      </ListView>
+
+    <LinearLayout style="@style/LabelLayout">
+        <Button
+            style="@style/DefaultWrapLayout"
+            android:id="@+id/backMenufromPalletManager"
+            android:textColor="#fff"
+            android:text="Back"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:background="@drawable/round_button"
+            android:onClick="btnBack" />
+    </LinearLayout>
 </LinearLayout>
