@@ -109,7 +109,7 @@ public class CalculationResultActivity extends Activity{
 				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
 
                 Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
-						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin), 
+						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin),
 						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
 				paint.setColor(g_iPalletColor);
 				canvas.drawRect(rect, paint);
@@ -122,50 +122,9 @@ public class CalculationResultActivity extends Activity{
 			
 			// Split Stack.. Block Stack
             drawSplitStack(canvas, paint, split, g_iTopMargin, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval);
-//			for(int i=0; i<split.size(); i++){
-//				PalletViewBean box = split.get(i);
-//				if(box.getdirection().equals("H")){
-//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
-//							g_iTopMargin + box.gety() * g_fRateSize,
-//							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
-//							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
-//				}else{
-//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
-//							g_iTopMargin + box.gety() * g_fRateSize,
-//							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
-//							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval), paint);
-//				}
-//			}
 
 //			// Pin Wheel Stack
             drawPinWheel(canvas, paint, pinWheel, g_iTopMargin + g_iLengthOfRowDivision, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval, g_iPinWheelRowCount, g_iPinWheelColCount);
-//			for(int i=0; i<g_iPinWheelRowCount; i++){
-//				for(int j=0; j<g_iPinWheelColCount; j++){
-//					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * i, g_iTopMargin + fLength * j + g_iLengthOfRowDivision,
-//							g_iLeftMargin + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-//					canvas.drawRect(new RectF(g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * j, g_iTopMargin + g_iLengthOfRowDivision + fWidth * i,
-//							g_iLeftMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval, g_iTopMargin + fWidth * (i + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-//					canvas.drawRect(new RectF(g_iLeftMargin + fLength * j, g_iPinWheelColCount * fLength + fWidth * i + g_iTopMargin + g_iLengthOfRowDivision,
-//							g_iLeftMargin + fLength * (j + 1) - g_iInterval, g_iTopMargin + g_iPinWheelColCount * fLength + fWidth * (i + 1) + g_iLengthOfRowDivision - g_iInterval), paint);
-//					canvas.drawRect(new RectF(g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * i, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * j + g_iLengthOfRowDivision,
-//							g_iLeftMargin + fLength * g_iPinWheelColCount + fWidth * (i + 1) - g_iInterval, g_iTopMargin + fWidth * g_iPinWheelRowCount + fLength * (j + 1) - g_iInterval + g_iLengthOfRowDivision), paint);
-//				}
-//			}
-//
-//			for(int i=g_iPinWheelRowCount * g_iPinWheelColCount * 4; i<pinWheel.size(); i++){
-//				PalletViewBean box = pinWheel.get(i);
-//				if(box.getdirection().equals("H")){
-//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
-//							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision,
-//							fWidth + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
-//							fLength + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
-//				}else{
-//					canvas.drawRect(new RectF(g_iLeftMargin + box.getx() * g_fRateSize,
-//							g_iTopMargin + box.gety() * g_fRateSize + g_iLengthOfRowDivision,
-//							fLength + g_iLeftMargin + box.getx() * g_fRateSize - g_iInterval,
-//							fWidth + g_iTopMargin + box.gety() * g_fRateSize - g_iInterval + g_iLengthOfRowDivision), paint);
-//				}
-//			}
 		}
 
         private void drawSplitStack(Canvas canvas, Paint paint, ArrayList<PalletViewBean> stackView, int top, int left, float fWidth, float fLength, float rate, int interval){
