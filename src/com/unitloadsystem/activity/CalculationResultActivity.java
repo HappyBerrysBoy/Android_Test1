@@ -23,34 +23,28 @@ public class CalculationResultActivity extends Activity{
 	float g_fHeight;
 	float g_fContainerLength;
 	float g_fContainerWidth;
-	double g_fSplitStackShare;
-	double g_fPinWheelStacktShare;
-	
-	int g_iPinWheelRowCount;
-	int g_iPinWheelColCount;
-	
-	float g_fRateSize = 0.20f;
-	
-	int g_iTitleLength = 150;
-	int g_iNumberOfRowDivision = 2;
-	int g_iNumberOfColDivision = 2;
+
+	private final float RATE_SIZE = 0.20f;
+
+    private final int TITLE_LENGTH = 150;
+    private final int g_iNumberOfRowDivision = 2;
+    private final int g_iNumberOfColDivision = 2;
 	int g_iLengthOfRowDivision;
 	int g_iLengthOfColDivision;
-	int g_iLeftMargin = 50;
-	int g_iTopMargin = 80;
-	int g_iTextMargin =50;
-	int g_iInterval = 2;
-	int g_iCntrMargin = 5;
-	int g_iTextSize = 30;
-	int g_iLineSize = 2;
+    private final int LEFT_MARGIN = 50;
+    private final int TOP_MARGIN = 80;
+    private final int TEXT_MARGIN = 50;
+    private final int INTERVAL = 2;
+    private final int CNTR_MARGIN = 5;
+    private final int TEXT_SIZE = 30;
+    private final int LINE_SIZE = 2;
 	
 	int g_iBorderColor = Color.BLACK;
 	int g_iPalletColor = Color.BLUE;
     int g_iBoxColor = Color.GREEN;
     int g_iTextColor = Color.BLACK;
 	
-	Bundle g_bSplitStackResult;
-	Bundle g_bPinWheelStackResult;
+    Bundle g_Layouts;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +56,14 @@ public class CalculationResultActivity extends Activity{
 		g_fLength = intent.getFloatExtra("Length", 0f);
 		g_fWidth = intent.getFloatExtra("Width", 0f);
 		g_fHeight = intent.getFloatExtra("Height", 0f);
-		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
-		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
-		g_fSplitStackShare = Math.round(intent.getDoubleExtra("SplitStackShare", -1) * 100);
-		g_fPinWheelStacktShare = Math.round(intent.getDoubleExtra("PinWheelStackShare", -1) * 100);
-		g_bSplitStackResult = intent.getBundleExtra("SplitStack");
-		g_bPinWheelStackResult = intent.getBundleExtra("PinWheelStack");
-		g_iPinWheelRowCount = intent.getIntExtra("PinWheelStackRowCount", 0);
-		g_iPinWheelColCount = intent.getIntExtra("PinWheelStackColCount", 0);
+//		g_fContainerLength = (float)(intent.getIntExtra("ContainerLength", 0));
+//		g_fContainerWidth = (float)(intent.getIntExtra("ContainerWidth", 0));
+//		g_fSplitStackShare = Math.round(intent.getDoubleExtra("SplitStackShare", -1) * 100);
+//		g_fPinWheelStacktShare = Math.round(intent.getDoubleExtra("PinWheelStackShare", -1) * 100);
+//		g_bSplitStackResult = intent.getBundleExtra("SplitStack");
+//		g_bPinWheelStackResult = intent.getBundleExtra("PinWheelStack");
+
+        g_Layouts = intent.getBundleExtra("Layouts");
 	}
 	
 	class MyView extends View {
@@ -84,47 +78,93 @@ public class CalculationResultActivity extends Activity{
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
 			int screenWidth = metrics.widthPixels;
-			int screenHeight = metrics.heightPixels - g_iTitleLength;
+			int screenHeight = metrics.heightPixels - TITLE_LENGTH;
 			
 			g_iLengthOfRowDivision = (int)screenHeight / g_iNumberOfRowDivision;
-			g_iLengthOfColDivision = (int)screenWidth / g_iNumberOfColDivision; 
+			g_iLengthOfColDivision = (int)screenWidth / g_iNumberOfColDivision;
 			
 			paint.setColor(g_iBorderColor);
-			paint.setTextSize(g_iTextSize);
-			paint.setStrokeWidth(g_iLineSize);
-			
-			ArrayList<PalletViewBean> split = g_bSplitStackResult.getParcelableArrayList("Layout");
-			ArrayList<PalletViewBean> pinWheel = g_bPinWheelStackResult.getParcelableArrayList("Layout");
+			paint.setTextSize(TEXT_SIZE);
+			paint.setStrokeWidth(LINE_SIZE);
 
-			for(int i=0; i<g_iNumberOfRowDivision; i++){
-				paint.setColor(g_iTextColor);
-				String sText = "";
-				
-				if(i%2 == 0){
-					sText = "Split Stack Rule : " + (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fSplitStackShare + "% / 1단 적재 Layout";
-				}else{
-					sText = "Pinwheel Stack Rule : " + (i + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + g_fPinWheelStacktShare + "% / 1단 적재 Layout";
-				}
-				
-				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
+            for(int i=0; i<g_Layouts.size(); i++){
+                Bundle layout = g_Layouts.getBundle("Layout" + i);
 
-                Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
-						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin),
-						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
-				paint.setColor(g_iPalletColor);
-				canvas.drawRect(rect, paint);
-			}
-			
-			paint.setColor(g_iBoxColor);
-			
-			float fWidth = g_fRateSize * g_fWidth;
-			float fLength = g_fRateSize * g_fLength;
-			
-			// Split Stack.. Block Stack
-            drawSplitStack(canvas, paint, split, g_iTopMargin, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval);
+                float fContainerWidth = (float)layout.getInt("ContainerWidth");
+                float fContainerLength = (float)layout.getInt("ContainerLength");
 
-//			// Pin Wheel Stack
-            drawPinWheel(canvas, paint, pinWheel, g_iTopMargin + g_iLengthOfRowDivision, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval, g_iPinWheelRowCount, g_iPinWheelColCount);
+                Bundle bunSplitStack = layout.getBundle("SplitStack");
+                Bundle bunPinWheelStack = layout.getBundle("PinWheelStack");
+
+                ArrayList<PalletViewBean> split = bunSplitStack.getParcelableArrayList("Layout");
+                ArrayList<PalletViewBean> pinWheel = bunPinWheelStack.getParcelableArrayList("Layout");
+
+                for(int j=0; j<2; j++){
+                    paint.setColor(g_iTextColor);
+                    String sText = "";
+
+                    if(j%2 == 0){
+                        sText = "Split Stack Rule : " + (j + 1) + ". " + split.size() + "boxes / 활용율 " + Math.round(bunSplitStack.getDouble("SplitStackShare")) * 100 + "% / 1단 적재 Layout";
+                    }else{
+                        sText = "Pinwheel Stack Rule : " + (j + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + Math.round(bunPinWheelStack.getDouble("PinWheelStackShare")) * 100 + "% / 1단 적재 Layout";
+                    }
+
+                    canvas.drawText(sText, LEFT_MARGIN, TEXT_MARGIN + g_iLengthOfRowDivision * j, paint);
+
+                    Rect rect = new Rect(LEFT_MARGIN - CNTR_MARGIN, TOP_MARGIN - CNTR_MARGIN + g_iLengthOfRowDivision * j,
+                            (int)(RATE_SIZE * fContainerWidth + LEFT_MARGIN + CNTR_MARGIN),
+                            (int)(RATE_SIZE * fContainerLength + TOP_MARGIN + CNTR_MARGIN + g_iLengthOfRowDivision * j));
+                    paint.setColor(g_iPalletColor);
+                    canvas.drawRect(rect, paint);
+                }
+
+                paint.setColor(g_iBoxColor);
+
+                float fWidth = RATE_SIZE * g_fWidth;
+                float fLength = RATE_SIZE * g_fLength;
+
+                // Split Stack.. Block Stack
+                drawSplitStack(canvas, paint, split, TOP_MARGIN, LEFT_MARGIN, fWidth, fLength, RATE_SIZE, INTERVAL);
+
+			    // Pin Wheel Stack
+                int iPinWheelRowCount = bunPinWheelStack.getInt("PinWheelStackRowCount");
+                int iPinWheelColCount = bunPinWheelStack.getInt("PinWheelStackColCount");
+                drawPinWheel(canvas, paint, pinWheel, TOP_MARGIN + g_iLengthOfRowDivision, LEFT_MARGIN, fWidth, fLength, RATE_SIZE, INTERVAL, iPinWheelRowCount, iPinWheelColCount);
+                break;
+            }
+			
+//			ArrayList<PalletViewBean> split = g_bSplitStackResult.getParcelableArrayList("Layout");
+//			ArrayList<PalletViewBean> pinWheel = g_bPinWheelStackResult.getParcelableArrayList("Layout");
+
+//			for(int i=0; i<g_iNumberOfRowDivision; i++){
+//				paint.setColor(g_iTextColor);
+//				String sText = "";
+//
+//				if(i%2 == 0){
+//					sText = "Split Stack Rule : " + (i + 1) + ". " + split.size() + "boxes / 활용율 " + g_fSplitStackShare + "% / 1단 적재 Layout";
+//				}else{
+//					sText = "Pinwheel Stack Rule : " + (i + 1) + ". " + pinWheel.size() + "boxes / 활용율 " + g_fPinWheelStacktShare + "% / 1단 적재 Layout";
+//				}
+//
+//				canvas.drawText(sText, g_iLeftMargin, g_iTextMargin + g_iLengthOfRowDivision * i, paint);
+//
+//                Rect rect = new Rect(g_iLeftMargin - g_iCntrMargin, g_iTopMargin - g_iCntrMargin + g_iLengthOfRowDivision * i,
+//						(int)(g_fRateSize * g_fContainerWidth + g_iLeftMargin + g_iCntrMargin),
+//						(int)(g_fRateSize * g_fContainerLength + g_iTopMargin + g_iCntrMargin + g_iLengthOfRowDivision * i));
+//				paint.setColor(g_iPalletColor);
+//				canvas.drawRect(rect, paint);
+//			}
+			
+//			paint.setColor(g_iBoxColor);
+//
+//            float fWidth = g_fRateSize * g_fWidth;
+//            float fLength = g_fRateSize * g_fLength;
+//
+//            // Split Stack.. Block Stack
+//            drawSplitStack(canvas, paint, split, g_iTopMargin, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval);
+//
+////			// Pin Wheel Stack
+//            drawPinWheel(canvas, paint, pinWheel, g_iTopMargin + g_iLengthOfRowDivision, g_iLeftMargin, fWidth, fLength, g_fRateSize, g_iInterval, g_iPinWheelRowCount, g_iPinWheelColCount);
 		}
 
         private void drawSplitStack(Canvas canvas, Paint paint, ArrayList<PalletViewBean> stackView, int top, int left, float fWidth, float fLength, float rate, int interval){

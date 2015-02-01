@@ -3,8 +3,8 @@ package com.unitloadsystem.db;
 public class Pallet {
 
 	private String name;
-	private String width;
-	private String length;
+	private int width;
+	private int length;
 	private String unit;
 	
 	public String getName() {
@@ -13,16 +13,16 @@ public class Pallet {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getWidth() {
+	public int getWidth() {
 		return width;
 	}
-	public void setWidth(String width) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
-	public String getLength() {
+	public int getLength() {
 		return length;
 	}
-	public void setLength(String length) {
+	public void setLength(int length) {
 		this.length = length;
 	}
 	public String getUnit() {

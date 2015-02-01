@@ -3,6 +3,7 @@ package com.unitloadsystem.activity;
 import com.unitloadsystem.activity.R;
 import com.unitloadsystem.beans.StackEvalutorBean;
 import com.unitloadsystem.db.MySQLiteOpenHelper;
+import com.unitloadsystem.db.Pallet;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
 import com.unitloadsystem.fragments.Fragments.UnitCalcFragment;
 import com.unitloadsystem.stackcalculation.CalcPinWheelStackforPallet;
@@ -31,12 +32,9 @@ public class UnitCalculationActivity extends Activity {
     MySQLiteOpenHelper helper;
 
 	Button bBtn;
-	TextView tView;
 	int g_iBtnID;
 	int g_iArrayID;
-	int g_iContainerLength;
-	int g_iContainerWidth;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,11 +62,11 @@ public class UnitCalculationActivity extends Activity {
 		textTitle.setText(R.string.calc);
 	}
 
-    public ArrayList getPallets(){
+    public ArrayList<Pallet> getPallets(){
         db = helper.getReadableDatabase(); // db객체를 얻어온다. 읽기 전용
         Cursor c = db.query("palletdb", null, null, null, null, null, null);
 
-        ArrayList aResult = new ArrayList();
+        ArrayList<Pallet> aResult = new ArrayList<Pallet>();
 
         while (c.moveToNext()) {
             // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
@@ -77,12 +75,12 @@ public class UnitCalculationActivity extends Activity {
             int height = c.getInt(c.getColumnIndex("height"));
             String unit = c.getString(c.getColumnIndex("unit"));
 
-            HashMap hMap = new HashMap();
-            hMap.put("name", name);
-            hMap.put("width", width);
-            hMap.put("height", height);
-            hMap.put("unit", unit);
-            aResult.add(hMap);
+            Pallet pallet = new Pallet();
+            pallet.setName(name);
+            pallet.setWidth(width);
+            pallet.setLength(height);
+            pallet.setUnit(unit);
+            aResult.add(pallet);
         }
 
         return aResult;
@@ -179,7 +177,7 @@ public class UnitCalculationActivity extends Activity {
 	}
 	
 	public void btnCalc(View v){
-        ArrayList aPalletList = getPallets();
+        ArrayList<Pallet> aPalletList = getPallets();
 
 		Button btnSize;
 		btnSize = (Button) findViewById(R.id.length);
@@ -193,35 +191,32 @@ public class UnitCalculationActivity extends Activity {
 		intent.putExtra("Length", fBoxLength);
 		intent.putExtra("Width", fBoxWidth);
 		intent.putExtra("Height", fBoxHeight);
-		
-		btnSize = (Button) findViewById(R.id.detailSpec);
-		SetContainerSize(btnSize.getText().toString());
-		intent.putExtra("ContainerLength", g_iContainerLength);
-		intent.putExtra("ContainerWidth", g_iContainerWidth);
-		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		
-		StackEvalutorBean splitStack = getSplitStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength);
-		StackEvalutorBean pinWheelStack = getPinWheelStackResult(g_iContainerWidth, g_iContainerLength, fBoxWidth, fBoxLength);
-		
-		intent.putExtra("SplitStack", getBundleResult(splitStack));
-		intent.putExtra("PinWheelStack", getBundleResult(pinWheelStack));
-		intent.putExtra("SplitStackShare", splitStack.getShare());
-		intent.putExtra("PinWheelStackShare", pinWheelStack.getShare());
-		intent.putExtra("PinWheelStackRowCount", pinWheelStack.getRowCount());
-		intent.putExtra("PinWheelStackColCount", pinWheelStack.getColCount());
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        Bundle layouts = new Bundle();
+
+        for(int i=0; i<aPalletList.size(); i++){
+            Pallet pallet = aPalletList.get(i);
+            Bundle layout = new Bundle();
+            layout.putInt("ContainerWidth", pallet.getWidth());
+            layout.putInt("ContainerLength", pallet.getLength());
+
+            StackEvalutorBean splitStack = getSplitStackResult(pallet.getWidth(), pallet.getLength(), fBoxWidth, fBoxLength);
+            StackEvalutorBean pinWheelStack = getPinWheelStackResult(pallet.getWidth(), pallet.getLength(), fBoxWidth, fBoxLength);
+
+            layout.putBundle("SplitStack", getBundleResult(splitStack));
+            layout.putBundle("PinWheelStack", getBundleResult(pinWheelStack));
+            layout.putDouble("SplitStackShare", splitStack.getShare());
+            layout.putDouble("PinWheelStackShare", pinWheelStack.getShare());
+            layout.putInt("PinWheelStackRowCount", pinWheelStack.getRowCount());
+            layout.putInt("PinWheelStackColCount", pinWheelStack.getColCount());
+
+            layouts.putBundle("Layout" + i, layout);
+        }
+
+        intent.putExtra("Layouts", layouts);
+
 		startActivity(intent);
-	}
-	
-	private void SetContainerSize(String pSize){
-		String[] sSize = pSize.split("X");
-		
-		if(sSize.length > 1){
-			g_iContainerWidth = Integer.parseInt(sSize[0].trim());
-			g_iContainerLength = Integer.parseInt(sSize[1].trim());
-		}else{
-			g_iContainerLength = 1100;
-			g_iContainerWidth = 1100;
-		}
 	}
 	
 	private StackEvalutorBean getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
@@ -241,14 +236,8 @@ public class UnitCalculationActivity extends Activity {
 		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
 		
 		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcPinWheelStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
-//		StackEvalutorBean stackVertical = calcPinWheelStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pWidth, pLength);
-		
-//		if(stackHorizontal.getShare() > stackVertical.getShare()){
-//		if(stackHorizontal.getShare() > 0){
-			return stackHorizontal;
-//		}else{
-//			return stackVertical;
-//		}
+
+        return stackHorizontal;
 	}
 	
 	private Bundle getBundleResult(StackEvalutorBean stack){
