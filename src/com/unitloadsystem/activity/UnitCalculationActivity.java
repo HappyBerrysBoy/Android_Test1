@@ -42,17 +42,17 @@ public class UnitCalculationActivity extends Activity {
 
 		FragmentManager fragManagr = getFragmentManager();
 		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-		
+
 		if (savedInstanceState == null) {
 			fragTransaction.add(R.id.container, new TitleFragment());
 			fragTransaction.add(R.id.container, new UnitCalcFragment());
-			
+
 			fragTransaction.commit();
 		}
 
         helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, 1);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
@@ -85,41 +85,41 @@ public class UnitCalculationActivity extends Activity {
 
         return aResult;
     }
-	
+
 	public void btnInputNum(View v){
-		
+
 		bBtn = (Button) findViewById(v.getId());
-		
+
 		Intent intent = new Intent(getApplicationContext(), KeyPadActivity.class);
 		intent.putExtra("BtnID", v.getId());
 		intent.putExtra("TextIn", bBtn.getText());
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivityForResult(intent, v.getId());
 	}
-	
+
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-		
+
 		if (resultCode == RESULT_OK) {
 			bBtn = (Button) findViewById(requestCode);
 			bBtn.setText(data.getStringExtra("Value"));
 		}
 	}
-	
+
 	public void btnDimension(View v){
         // 2015. 1. 23. 일단 센치미터만 가능하도록 설정
 //		SetDialogItem(v.getId(), R.array.dimensions);
 	}
-	
+
 	private String SetDialogItem(int id, int arrayId){
 		String sReturn = "";
-		
+
 		g_iBtnID = id;
 		g_iArrayID = arrayId;
-		
+
 		new AlertDialog.Builder(this)
 		.setTitle("Select Item")
 //		.setIcon(R.drawable.ic_launcher)
-		.setItems(g_iArrayID, 
+		.setItems(g_iArrayID,
 			new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				String[] dimensions = getResources().getStringArray(g_iArrayID);
@@ -129,7 +129,7 @@ public class UnitCalculationActivity extends Activity {
 		})
 		.setNegativeButton("Cancel", null)
 		.show();
-		
+
 		return sReturn;
 	}
 
@@ -153,19 +153,19 @@ public class UnitCalculationActivity extends Activity {
 
         return sReturn;
     }
-	
+
 	public void btnWeightType(View v){
         // 2015. 1. 23. 일단 kg만 가능하도록 설정
 //		SetDialogItem(v.getId(), R.array.weights);
 	}
-	
+
 	public void btnSelectType(View v){
 		SetDialogItem(v.getId(), R.array.containerType);
-		
+
 		Button btnDetailSpec = (Button) findViewById(R.id.detailSpec);
 		btnDetailSpec.setText("");
 	}
-	
+
 	public void btnDetail(View v){
 		ArrayList aList = getPallets();
         String[] strPallets = new String[aList.size()];
@@ -175,7 +175,7 @@ public class UnitCalculationActivity extends Activity {
 
         SetDialogItem(v.getId(), strPallets);
 	}
-	
+
 	public void btnCalc(View v){
         ArrayList<Pallet> aPalletList = getPallets();
 
@@ -186,7 +186,7 @@ public class UnitCalculationActivity extends Activity {
 		float fBoxWidth = Float.parseFloat(btnSize.getText().toString());
 		btnSize = (Button) findViewById(R.id.height);
 		float fBoxHeight = Float.parseFloat(btnSize.getText().toString());
-		
+
 		Intent intent = new Intent(getApplicationContext(), CalculationResultActivity.class);
 		intent.putExtra("Length", fBoxLength);
 		intent.putExtra("Width", fBoxWidth);
@@ -198,6 +198,7 @@ public class UnitCalculationActivity extends Activity {
         for(int i=0; i<aPalletList.size(); i++){
             Pallet pallet = aPalletList.get(i);
             Bundle layout = new Bundle();
+            layout.putString("PalletName", pallet.getName());
             layout.putInt("ContainerWidth", pallet.getWidth());
             layout.putInt("ContainerLength", pallet.getLength());
 
@@ -218,23 +219,23 @@ public class UnitCalculationActivity extends Activity {
 
 		startActivity(intent);
 	}
-	
+
 	private StackEvalutorBean getSplitStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcSplitStackforPallet calcSplitStack = new CalcSplitStackforPallet();
-		
+
 		StackEvalutorBean stackHorizontal = calcSplitStack.CalcSplitStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength, 0, 0);
 		StackEvalutorBean stackVertical = calcSplitStack.CalcSplitStackRule("V", "H", pContainerWidth, pContainerLength, pLength, pWidth, 0, 0);
-		
+
 		if(stackHorizontal.getShare() > stackVertical.getShare()){
 			return stackHorizontal;
 		}else{
 			return stackVertical;
 		}
 	}
-	
+
 	private StackEvalutorBean getPinWheelStackResult(int pContainerWidth, int pContainerLength, float pWidth, float pLength){
 		CalcPinWheelStackforPallet calcPinWheelStack = new CalcPinWheelStackforPallet();
-		
+
 		StackEvalutorBean stackHorizontal = calcPinWheelStack.CalcPinWheelStackRule("H", "V", pContainerWidth, pContainerLength, pWidth, pLength);
 
         return stackHorizontal;
