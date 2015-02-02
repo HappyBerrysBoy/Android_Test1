@@ -184,7 +184,7 @@ public class CalculationResultActivity extends Activity{
         protected  void onMeasure(int a, int b){
             if(bFirst || totalTop == 0){
                 bFirst = false;
-                setMeasuredDimension(screenWidth, 100);
+                setMeasuredDimension(screenWidth, 3000);
             }else{
                 setMeasuredDimension(screenWidth, totalTop);
             }

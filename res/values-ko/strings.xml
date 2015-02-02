@@ -15,6 +15,7 @@
     <string name="back_button">뒤로</string>
     <string name="sendNum">전송</string>
     <string name="clearNum">삭제</string>
+    <string name="registerPalletMsg">등록된 팔렛트 코드가 하나도 없습니다. 팔레트 등록을 먼저 해주십시오.</string>
 
     <!-- Unit Calculation Activity 내부 Label String -->
     <string name="length">박스가로길이</string>
@@ -33,8 +34,8 @@
     <!-- <String name="Cntr">Container</String>
     <String name="Pallet">Pallet</String>
     <String name="AirULD">AirULD</String> -->
-    <string name="initBoxWidth">200</string>
-    <string name="initBoxHeight">400</string>
+    <string name="initBoxWidth">100</string>
+    <string name="initBoxHeight">300</string>
     <string name="initBoxDepth">300</string>
     <string name="initPalletSize">1100 X 1100</string>
     <string name="calcButton">팔렛트 계산</string>
