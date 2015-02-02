@@ -13,6 +13,8 @@
     <string name="containerCode">Container Code</string>
     <string name="action_settings">Settings</string>
     <string name="back_button">Back</string>
+    <string name="sendNum">Send</string>
+    <string name="clearNum">Clear</string>
 
     <!-- Unit Calculation Activity 내부 Label String -->
     <string name="length">Length</string>
@@ -20,6 +22,7 @@
     <string name="height">Height</string>
     <string name="dimension">Dimension</string>
     <string name="quantity">Quantity</string>
+    <string name="unitWeight">Unit Weight</string>
     <string name="weight">Weight</string>
     <string name="weightType">WeightType</string>
     <string name="PalletSize">Pallet Size</string>
@@ -34,4 +37,17 @@
     <string name="initBoxHeight">400</string>
     <string name="initBoxDepth">300</string>
     <string name="initPalletSize">1100 X 1100</string>
+    <string name="calcButton">Calculation</string>
+
+    <!-- Pallet Manager -->
+    <string name="palletWidth">Pallet Width</string>
+    <string name="palletHeight">Pallet Height</string>
+    <string name="addPallet">Add Pallet</string>
+    <string name="delPallet">Del Pallet</string>
+
+    <!-- Pallet Calculation -->
+    <string name="palletSize">Pallet Size</string>
+    <string name="stackRule">Stack Rule</string>
+    <string name="occupancyRate">Rate</string>
+    <string name="boxes">Boxes</string>
 </resources>

@@ -13,13 +13,16 @@
     <string name="containerCode">컨테이너 등록/삭제</string>
     <string name="action_settings">설정</string>
     <string name="back_button">뒤로</string>
+    <string name="sendNum">전송</string>
+    <string name="clearNum">삭제</string>
 
     <!-- Unit Calculation Activity 내부 Label String -->
-    <string name="length">박스가로</string>
-    <string name="width">박스세로</string>
+    <string name="length">박스가로길이</string>
+    <string name="width">박스세로길이</string>
     <string name="height">박스높이</string>
     <string name="dimension">길이단위</string>
     <string name="quantity">박스수량</string>
+    <string name="unitWeight">박스무게</string>
     <string name="weight">박스무게</string>
     <string name="weightType">무게단위</string>
     <string name="PalletSize">팔렛트 사이즈</string>
@@ -34,4 +37,17 @@
     <string name="initBoxHeight">400</string>
     <string name="initBoxDepth">300</string>
     <string name="initPalletSize">1100 X 1100</string>
+    <string name="calcButton">팔렛트 계산</string>
+
+    <!-- Pallet Manager -->
+    <string name="palletWidth">팔렛트 가로</string>
+    <string name="palletHeight">팔렛트 세로</string>
+    <string name="addPallet">팔렛트 추가</string>
+    <string name="delPallet">팔렛트 삭제</string>
+
+    <!-- Pallet Calculation -->
+    <string name="palletSize">팔렛트 사이즈</string>
+    <string name="stackRule">적재방법</string>
+    <string name="occupancyRate">활용율</string>
+    <string name="boxes">박스</string>
 </resources>

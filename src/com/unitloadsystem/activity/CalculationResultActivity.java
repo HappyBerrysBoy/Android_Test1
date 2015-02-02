@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -28,14 +29,15 @@ public class CalculationResultActivity extends Activity{
 	float g_fWidth;
 	float g_fHeight;
 
-	private final float RATE_SIZE = 0.20f;
+	private final float RATE_SIZE = 0.30f;
 
-    private final int TOP_INIT_MARGIN = 50;
+    private final int TOP_INIT_MARGIN = 90;
     private final int TITLE_LENGTH = 150;
     private final int LEFT_MARGIN = 50;
     private final int TOP_MARGIN = 80;
-    private final int TEXT_MARGIN = 50;
-    private final int TEXT_LAYOUT_INTERVAL = 30;
+    private final int BIG_TEST_MARGIN = 90;
+    private final int TEXT_MARGIN = 70;
+    private final int TEXT_LAYOUT_INTERVAL = 60;
     private final int INTERVAL = 2;
     private final int CNTR_MARGIN = 5;
     private final int TEXT_SIZE = 30;
@@ -45,7 +47,7 @@ public class CalculationResultActivity extends Activity{
 	private final int PALLET_COLOR = Color.BLUE;
     private final int BOX_COLOR = Color.GREEN;
     private final int TEXT_COLOR = Color.BLACK;
-	
+
     Bundle g_Layouts;
 	
 	@Override
@@ -68,6 +70,11 @@ public class CalculationResultActivity extends Activity{
         int screenWidth;
         int totalTop = 0;
         boolean bFirst = true;
+
+        private final String STR_PALLET_SIZE = getString(R.string.palletSize);
+        private final String STR_STACK_RULE = getString(R.string.stackRule);
+        private final String STR_OCCUPANCY_RATE = getString(R.string.occupancyRate);
+        private final String STR_BOXES = getString(R.string.boxes);
 
 		public MyView(Context context) {
 			super(context);
@@ -105,29 +112,42 @@ public class CalculationResultActivity extends Activity{
                 String palletName = layout.getString("PalletName");
 
                 // Split Stack Drawing..
-                sText = "Pallet Size(" + palletName + ") Stack Rule 1 : " + split.size() + "boxes / 활용율 " + Math.round(layout.getDouble("SplitStackShare") * 100) + "%";
+                sText = STR_PALLET_SIZE + "(" + palletName + ") ";
+                paint.setTextSize(80);
+                paint.setTypeface(Typeface.create((String)null, Typeface.BOLD));
+                canvas.drawText(sText, LEFT_MARGIN, iTop, paint);
+                iTop += TEXT_LAYOUT_INTERVAL;
+                paint.setTextSize(60);
+                sText = STR_STACK_RULE + "1 : " + split.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("SplitStackShare") * 100) + "%";
 
-                drawPallet(canvas, paint, sText, iTop, LEFT_MARGIN, fContainerWidth, fContainerLength);
-
-                paint.setColor(BOX_COLOR);
+                paint.setColor(TEXT_COLOR);
+                canvas.drawText(sText, LEFT_MARGIN, iTop, paint);
 
                 iTop += TEXT_LAYOUT_INTERVAL;
+
+                drawPallet(canvas, paint, sText, iTop, LEFT_MARGIN, fContainerWidth, fContainerLength);
+                paint.setColor(BOX_COLOR);
+
                 drawSplitStack(canvas, paint, split, iTop, LEFT_MARGIN, fWidth, fLength, RATE_SIZE, INTERVAL);
 
                 // Pin Wheel Stack Drawing...
-                sText = "Pallet Size(" + palletName + ") Stack Rule 2 : " + pinWheel.size() + "boxes / 활용율 " + Math.round(layout.getDouble("PinWheelStackShare") * 100) + "%";
                 iTop += (int)(RATE_SIZE * fContainerLength) + TEXT_MARGIN;
+                sText = STR_STACK_RULE + "2 : " + split.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("PinWheelStackShare") * 100) + "%";
+
+                paint.setColor(TEXT_COLOR);
+                canvas.drawText(sText, LEFT_MARGIN, iTop, paint);
+
+                iTop += TEXT_LAYOUT_INTERVAL;
 
                 drawPallet(canvas, paint, sText, iTop, LEFT_MARGIN, fContainerWidth, fContainerLength);
-
                 paint.setColor(BOX_COLOR);
 
                 int iPinWheelRowCount = layout.getInt("PinWheelStackRowCount");
                 int iPinWheelColCount = layout.getInt("PinWheelStackColCount");
-                iTop += TEXT_LAYOUT_INTERVAL;
                 drawPinWheel(canvas, paint, pinWheel, iTop, LEFT_MARGIN, fWidth, fLength, RATE_SIZE, INTERVAL, iPinWheelRowCount, iPinWheelColCount);
 
-                iTop += (int)(RATE_SIZE * fContainerLength) + TEXT_MARGIN;
+                iTop += (int)(RATE_SIZE * fContainerLength) + BIG_TEST_MARGIN;
+                paint.setColor(TEXT_COLOR);
 
                 totalTop = iTop;
             }
@@ -143,11 +163,6 @@ public class CalculationResultActivity extends Activity{
         }
 
         private void drawPallet(Canvas canvas, Paint paint, String text, int top, int left, float containerWidth, float containerHeight){
-            paint.setColor(TEXT_COLOR);
-            canvas.drawText(text, left, top, paint);
-
-            top += TEXT_LAYOUT_INTERVAL;
-
             Rect splitRect = new Rect(LEFT_MARGIN - CNTR_MARGIN, top - CNTR_MARGIN,
                     (int)(RATE_SIZE * containerWidth + LEFT_MARGIN + CNTR_MARGIN),
                     (int)(RATE_SIZE * containerHeight + top + CNTR_MARGIN));

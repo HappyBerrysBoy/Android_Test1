@@ -29,7 +29,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Width"
+                        android:text="@string/palletWidth"
                         />
 
                     <TextView
@@ -38,7 +38,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Height"
+                        android:text="@string/palletWidth"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="팔레트 추가"
+                android:text="@string/addPallet"
                 android:onClick="addPallet"/>
 
             <Button
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="팔레트 삭제"
+                android:text="@string/delPallet"
                 android:onClick="delPallet"/>
         </LinearLayout>
     </LinearLayout>
@@ -100,7 +100,7 @@
             style="@style/DefaultWrapLayout"
             android:id="@+id/backMenufromPalletManager"
             android:textColor="#fff"
-            android:text="Back"
+            android:text="@string/back_button"
             android:textStyle="bold"
             android:textSize="20dp"
             android:background="@drawable/round_button"
