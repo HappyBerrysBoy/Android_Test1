@@ -50,4 +50,8 @@
     <string name="stackRule">적재방법</string>
     <string name="occupancyRate">활용율</string>
     <string name="boxes">박스</string>
+    <string name="stackHeight">팔레트 높이(팔레트 높이 제외)</string>
+    <string name="totalWeight">전체 박스 무게(팔레트 무게 제외)</string>
+    <string name="needPalletCnt">모든 박스 적재에 필요 팔렛트 수량</string>
+    <string name="unitCnt">개</string>
 </resources>

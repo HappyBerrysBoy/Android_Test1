@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -187,11 +186,20 @@ public class UnitCalculationActivity extends Activity {
 		float fBoxWidth = Float.parseFloat(btnSize.getText().toString());
 		btnSize = (Button) findViewById(R.id.height);
 		float fBoxHeight = Float.parseFloat(btnSize.getText().toString());
+        btnSize = (Button) findViewById(R.id.quantity);
+        int iBoxQuantity = Integer.parseInt(btnSize.getText().toString());
+        btnSize = (Button) findViewById(R.id.weight);
+        float fBoxWeight = Float.parseFloat(btnSize.getText().toString());
+        btnSize = (Button) findViewById(R.id.boxLayers);
+        int iBoxLayer = Integer.parseInt(btnSize.getText().toString());
 
 		Intent intent = new Intent(getApplicationContext(), CalculationResultActivity.class);
 		intent.putExtra("Length", fBoxLength);
 		intent.putExtra("Width", fBoxWidth);
 		intent.putExtra("Height", fBoxHeight);
+        intent.putExtra("BoxQuantity", iBoxQuantity);
+        intent.putExtra("BoxWeight", fBoxWeight);
+        intent.putExtra("BoxLayer", iBoxLayer);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         Bundle layouts = new Bundle();

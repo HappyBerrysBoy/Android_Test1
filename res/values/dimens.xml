@@ -6,7 +6,7 @@
 	<dimen name="title_margin">120dp</dimen>
 	<dimen name="title_textsize">50dp</dimen>
 	<dimen name="menu_margin">20dp</dimen>
-	<dimen name="menu_interval">30dp</dimen>
+	<dimen name="menu_interval">70dp</dimen>
 	<dimen name="menu_textsize">30dp</dimen>
     <dimen name="menu_Height">100dp</dimen>
 

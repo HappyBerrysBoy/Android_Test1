@@ -50,4 +50,8 @@
     <string name="stackRule">Stack Rule</string>
     <string name="occupancyRate">Rate</string>
     <string name="boxes">Boxes</string>
+    <string name="stackHeight">Stack Height(without Pallet Height)</string>
+    <string name="totalWeight">Total Weight(without Pallet Weight)</string>
+    <string name="needPalletCnt">Number of Pallets for Stacking All Boxes</string>
+    <string name="unitCnt"></string>
 </resources>

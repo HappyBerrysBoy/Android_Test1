@@ -26,12 +26,12 @@
 	        android:onClick="btnCodeManager" />
 	</RelativeLayout>
 
-    <RelativeLayout
-        style="@style/MenuButtonLayout">
+    <!--<RelativeLayout-->
+        <!--style="@style/MenuButtonLayout">-->
 
-        <Button
-            style="@style/MenuRightButton"
-            android:id="@+id/containerCode"
-            android:text="@string/containerCode" />
-    </RelativeLayout>
+        <!--<Button-->
+            <!--style="@style/MenuRightButton"-->
+            <!--android:id="@+id/containerCode"-->
+            <!--android:text="@string/containerCode" />-->
+    <!--</RelativeLayout>-->
 </LinearLayout>

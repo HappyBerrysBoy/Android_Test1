@@ -45,7 +45,7 @@
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/dimension"
-            android:text="cm"
+            android:text="mm"
 	        android:onClick="btnDimension" />
 	</LinearLayout>
 	<LinearLayout style="@style/LabelLayout">
@@ -63,11 +63,13 @@
 		<Button
 		    style="@style/DefaultWrapLayout"
 	        android:id="@+id/quantity"
-	        android:onClick="btnInputNum" />
+	        android:onClick="btnInputNum"
+            android:text="100"/>
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/weight"
-	        android:onClick="btnInputNum" />
+	        android:onClick="btnInputNum"
+            android:text="5"/>
 	    <Button
 	        style="@style/DefaultWrapLayout"
 	        android:id="@+id/weightType"
@@ -90,7 +92,7 @@
 	        <!--android:onClick="btnDetail" />-->
         <Button
             style="@style/DefaultWrapLayout"
-            android:id="@+id/containerType"
+            android:id="@+id/boxLayers"
             android:text="5"
             android:onClick="btnInputNum" />
 	</LinearLayout>

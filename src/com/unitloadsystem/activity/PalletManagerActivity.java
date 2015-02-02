@@ -132,12 +132,12 @@ public class PalletManagerActivity extends Activity{
         String heightBtn = (String)((Button)findViewById(R.id.heightPalletforAdd)).getText();
 
         if(widthBtn.equals("") || Float.parseFloat(widthBtn) < 10){
-            Toast.makeText(getApplicationContext(), "Please Input Width or Input Width over 10cm", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please Input Width or Input Width over 100mm", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(heightBtn.equals("") || Float.parseFloat(heightBtn) < 10){
-            Toast.makeText(getApplicationContext(), "Please Input Height or Input Height over 10cm", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please Input Height or Input Height over 100mm", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -153,7 +153,7 @@ public class PalletManagerActivity extends Activity{
         values.put("name", widthBtn + "X" + heightBtn);
         values.put("width", Integer.parseInt(widthBtn));
         values.put("height", Integer.parseInt(heightBtn));
-        values.put("unit", "cm");
+        values.put("unit", "mm");
 
         db.insert("palletdb", null, values);
 
