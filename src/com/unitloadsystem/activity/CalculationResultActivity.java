@@ -18,6 +18,9 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class CalculationResultActivity extends Activity{
 
@@ -48,42 +51,34 @@ public class CalculationResultActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MyView vw = new MyView(this);
-		setContentView(vw);
-		
+        setContentView(R.layout.calculationresult_layout);
+
+        LinearLayout sv = (LinearLayout)findViewById(R.id.layoutResult);
+        MyView vw = new MyView(this);
+        sv.addView(vw);
+
 		Intent intent = getIntent();
 		g_fLength = intent.getFloatExtra("Length", 0f);
 		g_fWidth = intent.getFloatExtra("Width", 0f);
 		g_fHeight = intent.getFloatExtra("Height", 0f);
         g_Layouts = intent.getBundleExtra("Layouts");
-
-
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.calculationresult_layout);
-//
-//        FragmentManager fragManagr = getFragmentManager();
-//        FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-//
-//        if (savedInstanceState == null) {
-//            fragTransaction.add(R.id.container, new Fragments.CalculationResultFragment());
-//
-//            fragTransaction.commit();
-//        }
 	}
 	
 	class MyView extends View {
+        int screenWidth;
+        int totalTop = 0;
+        boolean bFirst = true;
+
 		public MyView(Context context) {
 			super(context);
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+			screenWidth = metrics.widthPixels;
 		}
 
 		public void onDraw(Canvas canvas) {
 			canvas.drawColor(Color.WHITE);
 			Paint paint = new Paint();
-
-			DisplayMetrics metrics = new DisplayMetrics();
-			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//			int screenWidth = metrics.widthPixels;
-//			int screenHeight = metrics.heightPixels - TITLE_LENGTH;
 
 			paint.setColor(BORDER_COLOR);
 			paint.setTextSize(TEXT_SIZE);
@@ -133,8 +128,19 @@ public class CalculationResultActivity extends Activity{
                 drawPinWheel(canvas, paint, pinWheel, iTop, LEFT_MARGIN, fWidth, fLength, RATE_SIZE, INTERVAL, iPinWheelRowCount, iPinWheelColCount);
 
                 iTop += (int)(RATE_SIZE * fContainerLength) + TEXT_MARGIN;
+
+                totalTop = iTop;
             }
 		}
+
+        protected  void onMeasure(int a, int b){
+            if(bFirst || totalTop == 0){
+                bFirst = false;
+                setMeasuredDimension(screenWidth, 100);
+            }else{
+                setMeasuredDimension(screenWidth, totalTop);
+            }
+        }
 
         private void drawPallet(Canvas canvas, Paint paint, String text, int top, int left, float containerWidth, float containerHeight){
             paint.setColor(TEXT_COLOR);

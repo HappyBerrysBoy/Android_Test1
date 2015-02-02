@@ -1,17 +1,17 @@
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:id="@+id/calculationResultLayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context="com.unitloadsystem.activity.CalculationResultActivity"-->
-    <!--tools:ignore="MergeRootFrame" />-->
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/bodyBackgroundColor"
     android:id="@+id/calcResult"
     tools:context=".CalculationResultActivity" >
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/bodyBackgroundColor"
+        android:orientation="vertical"
+        android:id="@+id/layoutResult">
+
+        </LinearLayout>
 </ScrollView>

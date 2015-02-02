@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Title -->
+    <string name="app_name">팔렛트 적재 시스템(Unit Load System)</string>
+    <string name="menu">메뉴</string>
+
+    <!-- Menu -->
+    <string name="calc">팔렛트 계산</string>
+    <string name="inquiryPallet">팔렛트 조회</string>
+    <string name="inquiryCntr">컨테이너 조회</string>
+    <string name="inquiryAiruld">Air ULD 조회</string>
+    <string name="palletCode">팔렛트 등록/삭제</string>
+    <string name="containerCode">컨테이너 등록/삭제</string>
+    <string name="action_settings">설정</string>
+    <string name="back_button">뒤로</string>
+
+    <!-- Unit Calculation Activity 내부 Label String -->
+    <string name="length">박스가로</string>
+    <string name="width">박스세로</string>
+    <string name="height">박스높이</string>
+    <string name="dimension">길이단위</string>
+    <string name="quantity">박스수량</string>
+    <string name="weight">박스무게</string>
+    <string name="weightType">무게단위</string>
+    <string name="PalletSize">팔렛트 사이즈</string>
+    <string name="LayerNum">박스 단적 수(팔레트 위로)</string>
+    <string name="cntr">컨테이너</string>
+    <string name="pallet">팔레트</string>
+    <string name="airULD">airULD</string>
+    <!-- <String name="Cntr">Container</String>
+    <String name="Pallet">Pallet</String>
+    <String name="AirULD">AirULD</String> -->
+    <string name="initBoxWidth">200</string>
+    <string name="initBoxHeight">400</string>
+    <string name="initBoxDepth">300</string>
+    <string name="initPalletSize">1100 X 1100</string>
+</resources>

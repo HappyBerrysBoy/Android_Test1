@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- Title -->
+    <!-- Title -->
     <string name="app_name">Unit Load System</string>
     <string name="menu">Menu</string>
-    
+
     <!-- Menu -->
     <string name="calc">Calculation</string>
-    <string name="inquiryPallet">팔렛트 조회</string>
-    <string name="inquiryCntr">컨테이너 조회</string>
-    <string name="inquiryAiruld">Air ULD 조회</string>
+    <string name="inquiryPallet">Select Pallet</string>
+    <string name="inquiryCntr">Select Container</string>
+    <string name="inquiryAiruld">Select Air ULD</string>
     <string name="palletCode">Pallet Code</string>
     <string name="containerCode">Container Code</string>
     <string name="action_settings">Settings</string>

@@ -160,10 +160,11 @@ public class UnitCalculationActivity extends Activity {
 	}
 
 	public void btnSelectType(View v){
-		SetDialogItem(v.getId(), R.array.containerType);
-
-		Button btnDetailSpec = (Button) findViewById(R.id.detailSpec);
-		btnDetailSpec.setText("");
+        // 2015. 2. 2. DB에 등록된 Pallet 모두 표시
+//		SetDialogItem(v.getId(), R.array.containerType);
+//
+//		Button btnDetailSpec = (Button) findViewById(R.id.detailSpec);
+//		btnDetailSpec.setText("");
 	}
 
 	public void btnDetail(View v){
