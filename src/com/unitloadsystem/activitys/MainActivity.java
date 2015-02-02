@@ -1,6 +1,5 @@
-package com.unitloadsystem.activity;
+package com.unitloadsystem.activitys;
 
-import com.unitloadsystem.activity.R;
 import com.unitloadsystem.db.MySQLiteOpenHelper;
 import com.unitloadsystem.db.Pallet;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends Activity {
     SQLiteDatabase db;

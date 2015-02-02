@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.unitloadsystem.activity.R;
+import com.unitloadsystem.activitys.R;
 
 public class Fragments {
 

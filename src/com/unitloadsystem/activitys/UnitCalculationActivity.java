@@ -1,6 +1,5 @@
-package com.unitloadsystem.activity;
+package com.unitloadsystem.activitys;
 
-import com.unitloadsystem.activity.R;
 import com.unitloadsystem.beans.StackEvalutorBean;
 import com.unitloadsystem.db.MySQLiteOpenHelper;
 import com.unitloadsystem.db.Pallet;

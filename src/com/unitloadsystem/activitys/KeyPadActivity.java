@@ -1,4 +1,4 @@
-package com.unitloadsystem.activity;
+package com.unitloadsystem.activitys;
 
 import android.app.Activity;
 import android.content.Intent;

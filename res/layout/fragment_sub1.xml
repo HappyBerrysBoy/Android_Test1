@@ -6,7 +6,7 @@
     android:background="@color/bodyBackgroundColor"
     android:orientation="vertical"
 
-    tools:context="com.unitloadsystem.activity.MainActivity$PlaceholderFragment" >
+    tools:context="com.unitloadsystem.activitys.MainActivity$PlaceholderFragment" >
 
     <RelativeLayout 
         style="@style/MenuButtonLayout">
