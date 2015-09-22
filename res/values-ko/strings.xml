@@ -43,6 +43,7 @@
     <!-- Pallet Manager -->
     <string name="palletWidth">팔렛트 가로</string>
     <string name="palletHeight">팔렛트 세로</string>
+    <string name="palletDimen">단위</string>
     <string name="addPallet">팔렛트 추가</string>
     <string name="delPallet">팔렛트 삭제</string>
 

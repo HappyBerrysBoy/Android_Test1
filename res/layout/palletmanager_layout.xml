@@ -40,6 +40,15 @@
                         android:gravity="center"
                         android:text="@string/palletWidth"
                         />
+
+                    <TextView
+                        android:id="@+id/palletDimen"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/palletDimen"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,15 +67,23 @@
                         android:layout_weight="1"
                         android:id="@+id/heightPalletforAdd"
                         android:onClick="btnInputNum"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/dimentPalletforAdd"
+                        android:onClick="btnDimenPallet"
+                        android:text="mm"/>
                     </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_weight="2"
+            android:orientation="vertical">
             <Button
                 android:id="@+id/addPallet"
                 android:layout_width="match_parent"

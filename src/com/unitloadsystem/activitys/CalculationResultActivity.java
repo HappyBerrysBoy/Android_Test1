@@ -3,6 +3,7 @@ package com.unitloadsystem.activitys;
 import java.util.ArrayList;
 
 import com.unitloadsystem.beans.PalletViewBean;
+import com.unitloadsystem.common.CommonFunction;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +27,8 @@ public class CalculationResultActivity extends Activity{
     float g_fBoxWeight;     // Box 무게
     int g_iBoxQuantity;     // Box 수량
     int g_iBoxLayers;       // Box 단적 수
+    String g_sBoxDimen;     // Box 수치 단위
+    String g_sBoxWgtUnit;   // Box 무게 단위
 
 	private final float RATE_SIZE = 0.30f;          // 사이즈 축소율
     private final int LEFT_MARGIN = 50;             // 좌측 마진
@@ -69,6 +72,8 @@ public class CalculationResultActivity extends Activity{
         g_fBoxWeight = intent.getFloatExtra("BoxWeight", 0f);
         g_iBoxQuantity = intent.getIntExtra("BoxQuantity", 0);
         g_iBoxLayers = intent.getIntExtra("BoxLayer", 0);
+        g_sBoxDimen = intent.getStringExtra("BoxDimension");
+        g_sBoxWgtUnit = intent.getStringExtra("BoxWeightUnit");
 	}
 	
 	class MyView extends View {
@@ -126,11 +131,11 @@ public class CalculationResultActivity extends Activity{
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, BIG_TEXT_SIZE, true);
 
                 iTop += TEXT_MARGIN;
-                sText = STACK_HEIGHT + " : " + (g_fHeight * g_iBoxLayers) + "mm";
+                sText = STACK_HEIGHT + " : " + (CommonFunction.changeToInch(g_fHeight, g_sBoxDimen)  * g_iBoxLayers) + g_sBoxDimen;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 iTop += TEXT_MARGIN;
-                sText = TOTAL_WEIGHT + " : " + (g_fBoxWeight * g_iBoxQuantity) + "kg";
+                sText = TOTAL_WEIGHT + " : " + (g_fBoxWeight * g_iBoxQuantity) + g_sBoxWgtUnit;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 // Split Stack Drawing..

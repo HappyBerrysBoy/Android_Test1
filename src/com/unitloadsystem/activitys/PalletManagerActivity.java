@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.unitloadsystem.db.MySQLiteOpenHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,6 +33,8 @@ public class PalletManagerActivity extends Activity{
     ListView listView;
 
     String strSelectedPallet;
+    int g_iBtnID;
+    int g_iArrayID;
 
     View.OnClickListener ocl = new View.OnClickListener() {
         @Override
@@ -68,6 +72,33 @@ public class PalletManagerActivity extends Activity{
         intent.putExtra("TextIn", bBtn.getText());
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent, v.getId());
+    }
+
+    public void btnDimenPallet(View v){
+        SetDialogItem(v.getId(), R.array.dimensions);
+    }
+
+    private String SetDialogItem(int id, int arrayId){
+        String sReturn = "";
+
+        g_iBtnID = id;
+        g_iArrayID = arrayId;
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Item")
+//		.setIcon(R.drawable.ic_launcher)
+                .setItems(g_iArrayID,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String[] dimensions = getResources().getStringArray(g_iArrayID);
+                                Button btn = (Button)findViewById(g_iBtnID);
+                                btn.setText(dimensions[which]);
+                            }
+                        })
+                .setNegativeButton("Cancel", null)
+                .show();
+
+        return sReturn;
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -114,6 +145,7 @@ public class PalletManagerActivity extends Activity{
     public void addPallet(View v){
         String widthBtn = (String)((Button)findViewById(R.id.widthPalletforAdd)).getText();
         String heightBtn = (String)((Button)findViewById(R.id.heightPalletforAdd)).getText();
+        String dimenBtn = (String)((Button)findViewById(R.id.dimentPalletforAdd)).getText();
 
         if(widthBtn.equals("") || Float.parseFloat(widthBtn) < 10){
             Toast.makeText(getApplicationContext(), "Please Input Width or Input Width over 100mm", Toast.LENGTH_SHORT).show();
@@ -137,7 +169,7 @@ public class PalletManagerActivity extends Activity{
         values.put("name", widthBtn + "X" + heightBtn);
         values.put("width", Integer.parseInt(widthBtn));
         values.put("height", Integer.parseInt(heightBtn));
-        values.put("unit", "mm");
+        values.put("unit", dimenBtn);
 
         db.insert("palletdb", null, values);
 

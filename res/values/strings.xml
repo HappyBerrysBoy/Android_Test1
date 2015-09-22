@@ -43,6 +43,7 @@
     <!-- Pallet Manager -->
     <string name="palletWidth">Pallet Width</string>
     <string name="palletHeight">Pallet Height</string>
+    <string name="palletDimen">Dimension</string>
     <string name="addPallet">Add Pallet</string>
     <string name="delPallet">Del Pallet</string>
 

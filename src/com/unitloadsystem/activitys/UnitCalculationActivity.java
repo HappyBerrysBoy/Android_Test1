@@ -1,6 +1,7 @@
 package com.unitloadsystem.activitys;
 
 import com.unitloadsystem.beans.StackEvalutorBean;
+import com.unitloadsystem.common.CommonFunction;
 import com.unitloadsystem.db.MySQLiteOpenHelper;
 import com.unitloadsystem.db.Pallet;
 import com.unitloadsystem.fragments.Fragments.TitleFragment;
@@ -105,7 +106,7 @@ public class UnitCalculationActivity extends Activity {
 
 	public void btnDimension(View v){
         // 2015. 1. 23. 일단 센치미터만 가능하도록 설정
-//		SetDialogItem(v.getId(), R.array.dimensions);
+		SetDialogItem(v.getId(), R.array.dimensions);
 	}
 
 	private String SetDialogItem(int id, int arrayId){
@@ -154,7 +155,7 @@ public class UnitCalculationActivity extends Activity {
 
 	public void btnWeightType(View v){
         // 2015. 1. 23. 일단 kg만 가능하도록 설정
-//		SetDialogItem(v.getId(), R.array.weights);
+		SetDialogItem(v.getId(), R.array.weights);
 	}
 
 	public void btnSelectType(View v){
@@ -175,16 +176,19 @@ public class UnitCalculationActivity extends Activity {
         SetDialogItem(v.getId(), strPallets);
 	}
 
-	public void btnCalc(View v){
+    public void btnCalc(View v){
         ArrayList<Pallet> aPalletList = getPallets();
+
+        String unit = ((Button)findViewById(R.id.dimension)).getText().toString();
+        String wgtUnit = ((Button)findViewById(R.id.weightType)).getText().toString();
 
 		Button btnSize;
 		btnSize = (Button) findViewById(R.id.length);
-		float fBoxLength = Float.parseFloat(btnSize.getText().toString());
+		float fBoxLength = CommonFunction.changeToMM(Float.parseFloat(btnSize.getText().toString()), unit);
 		btnSize = (Button) findViewById(R.id.width);
-		float fBoxWidth = Float.parseFloat(btnSize.getText().toString());
+		float fBoxWidth = CommonFunction.changeToMM(Float.parseFloat(btnSize.getText().toString()), unit);
 		btnSize = (Button) findViewById(R.id.height);
-		float fBoxHeight = Float.parseFloat(btnSize.getText().toString());
+		float fBoxHeight = CommonFunction.changeToMM(Float.parseFloat(btnSize.getText().toString()), unit);
         btnSize = (Button) findViewById(R.id.quantity);
         int iBoxQuantity = Integer.parseInt(btnSize.getText().toString());
         btnSize = (Button) findViewById(R.id.weight);
@@ -199,19 +203,25 @@ public class UnitCalculationActivity extends Activity {
         intent.putExtra("BoxQuantity", iBoxQuantity);
         intent.putExtra("BoxWeight", fBoxWeight);
         intent.putExtra("BoxLayer", iBoxLayer);
+        intent.putExtra("BoxDimension", unit);
+        intent.putExtra("BoxWeightUnit", wgtUnit);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         Bundle layouts = new Bundle();
 
         for(int i=0; i<aPalletList.size(); i++){
             Pallet pallet = aPalletList.get(i);
+
+            int palletWidth = (int)CommonFunction.changeToMM(pallet.getWidth(), pallet.getUnit()) + 1;
+            int palletLength = (int)CommonFunction.changeToMM(pallet.getLength(), pallet.getUnit()) + 1;
+
             Bundle layout = new Bundle();
             layout.putString("PalletName", pallet.getName());
-            layout.putInt("ContainerWidth", pallet.getWidth());
-            layout.putInt("ContainerLength", pallet.getLength());
+            layout.putInt("ContainerWidth", palletWidth);
+            layout.putInt("ContainerLength", palletLength);
 
-            StackEvalutorBean splitStack = getSplitStackResult(pallet.getWidth(), pallet.getLength(), fBoxWidth, fBoxLength);
-            StackEvalutorBean pinWheelStack = getPinWheelStackResult(pallet.getWidth(), pallet.getLength(), fBoxWidth, fBoxLength);
+            StackEvalutorBean splitStack = getSplitStackResult(palletWidth, palletLength, fBoxWidth, fBoxLength);
+            StackEvalutorBean pinWheelStack = getPinWheelStackResult(palletWidth, palletLength, fBoxWidth, fBoxLength);
 
             layout.putBundle("SplitStack", getBundleResult(splitStack));
             layout.putBundle("PinWheelStack", getBundleResult(pinWheelStack));
