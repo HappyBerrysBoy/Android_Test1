@@ -214,11 +214,13 @@ public class UnitCalculationActivity extends Activity {
 
             int palletWidth = (int)CommonFunction.changeToMM(pallet.getWidth(), pallet.getUnit()) + 1;
             int palletLength = (int)CommonFunction.changeToMM(pallet.getLength(), pallet.getUnit()) + 1;
+            String palletDimen = pallet.getUnit();
 
             Bundle layout = new Bundle();
             layout.putString("PalletName", pallet.getName());
             layout.putInt("ContainerWidth", palletWidth);
             layout.putInt("ContainerLength", palletLength);
+            layout.putString("PalletDimen", palletDimen);
 
             StackEvalutorBean splitStack = getSplitStackResult(palletWidth, palletLength, fBoxWidth, fBoxLength);
             StackEvalutorBean pinWheelStack = getPinWheelStackResult(palletWidth, palletLength, fBoxWidth, fBoxLength);

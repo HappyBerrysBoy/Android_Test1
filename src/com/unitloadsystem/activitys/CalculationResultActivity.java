@@ -36,7 +36,7 @@ public class CalculationResultActivity extends Activity{
     private final int TOP_INIT_MARGIN = 90;         // 최초 상단 마진
     private final int BIG_TEXT_MARGIN = 120;        // 큰 텍스트 마진
 
-    private final int TEXT_MARGIN = 70;             // Text와 Text 사이 간격
+    private final int TEXT_MARGIN = 75;             // Text와 Text 사이 간격
     private final int TEXT_LAYOUT_INTERVAL = 40;    // Text와 Pallet Layout 사이 간격
     private final int LINE_INTERVAL = 50;           // 라인 좌측 및 우측 간격
     private final int INTERVAL = 2;
@@ -117,6 +117,7 @@ public class CalculationResultActivity extends Activity{
 
                 float fContainerWidth = (float)layout.getInt("ContainerWidth");
                 float fContainerLength = (float)layout.getInt("ContainerLength");
+                String sContainerDimen = layout.getString("PalletDimen");
 
                 Bundle bunSplitStack = layout.getBundle("SplitStack");
                 Bundle bunPinWheelStack = layout.getBundle("PinWheelStack");
@@ -127,24 +128,39 @@ public class CalculationResultActivity extends Activity{
                 String palletName = layout.getString("PalletName");
 
                 // Pallet Info Text
-                sText = STR_PALLET_SIZE + "(" + palletName + ") ";
+                sText = STR_PALLET_SIZE;
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, BIG_TEXT_SIZE, true);
+                sText = "(" + palletName + ", " + sContainerDimen + ") ";
+                iTop += TEXT_MARGIN;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, BIG_TEXT_SIZE, true);
 
                 iTop += TEXT_MARGIN;
-                sText = STACK_HEIGHT + " : " + (CommonFunction.changeToInch(g_fHeight, g_sBoxDimen)  * g_iBoxLayers) + g_sBoxDimen;
+                sText = STACK_HEIGHT;
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = "   : " + (CommonFunction.changeToInch(g_fHeight, g_sBoxDimen)  * g_iBoxLayers) + g_sBoxDimen;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 iTop += TEXT_MARGIN;
-                sText = TOTAL_WEIGHT + " : " + (g_fBoxWeight * g_iBoxQuantity) + g_sBoxWgtUnit;
+                sText = TOTAL_WEIGHT;
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = "   : " + (g_fBoxWeight * g_iBoxQuantity) + g_sBoxWgtUnit;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 // Split Stack Drawing..
                 iTop += TEXT_MARGIN * 2;
-                sText = "<" + STR_STACK_RULE + "1> " + split.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("SplitStackShare") * 100) + "%";
+                sText = "<" + STR_STACK_RULE + "1> ";
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = split.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("SplitStackShare") * 100) + "%";
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 iTop += TEXT_MARGIN;
-                sText = NEED_PALLET + " : " + (int)(Math.ceil((double)g_iBoxQuantity / (split.size() * g_iBoxLayers))) + UNIT_CNT;
+                sText = NEED_PALLET;
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = " : " + (int)(Math.ceil((double)g_iBoxQuantity / (split.size() * g_iBoxLayers))) + UNIT_CNT;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
 //                iTop += TEXT_MARGIN;
@@ -158,11 +174,17 @@ public class CalculationResultActivity extends Activity{
                 iTop += (int)(RATE_SIZE * fContainerLength) + TEXT_MARGIN;
 
                 // Pin Wheel Stack Drawing...
-                sText = "<" + STR_STACK_RULE + "2> " + pinWheel.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("PinWheelStackShare") * 100) + "%";
+                sText = "<" + STR_STACK_RULE + "2> ";
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = pinWheel.size() + STR_BOXES + "/ " + STR_OCCUPANCY_RATE + Math.round(layout.getDouble("PinWheelStackShare") * 100) + "%";
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
                 iTop += TEXT_MARGIN;
-                sText = NEED_PALLET + " : " + (int)(Math.ceil((double)g_iBoxQuantity / (pinWheel.size() * g_iBoxLayers))) + UNIT_CNT;
+                sText = NEED_PALLET;
+                drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
+                iTop += TEXT_MARGIN;
+                sText = " : " + (int)(Math.ceil((double)g_iBoxQuantity / (pinWheel.size() * g_iBoxLayers))) + UNIT_CNT;
                 drawText(canvas, paint, sText, iTop, LEFT_MARGIN, TEXT_COLOR, TEXT_SIZE, false);
 
 //                iTop += TEXT_MARGIN;
