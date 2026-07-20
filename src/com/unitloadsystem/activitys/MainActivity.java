@@ -2,12 +2,6 @@ package com.unitloadsystem.activitys;
 
 import com.unitloadsystem.db.MySQLiteOpenHelper;
 import com.unitloadsystem.db.Pallet;
-import com.unitloadsystem.fragments.Fragments.TitleFragment;
-import com.unitloadsystem.fragments.Fragments.MenuFragment;
-
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,42 +13,40 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends LocalizedActivity {
     SQLiteDatabase db;
     MySQLiteOpenHelper helper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main_dashboard_layout);
 
-		FragmentManager fragManagr = getFragmentManager();
-		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-
-		if (savedInstanceState == null) {
-			fragTransaction.add(R.id.container, new TitleFragment());
-			fragTransaction.add(R.id.container, new MenuFragment());
-
-			fragTransaction.commit();
-		}
-
-        helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, 1);
+        helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, MySQLiteOpenHelper.DB_VERSION);
 	}
 
 	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-//		Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
-		TextView textTitle = (TextView) findViewById(R.id.title);
-		textTitle.setText(R.string.menu);
+	protected void onResume() {
+		super.onResume();
+		((TextView) findViewById(R.id.palletCount)).setText(String.valueOf(getTableCount("palletdb")));
+		((TextView) findViewById(R.id.boxCount)).setText(String.valueOf(getTableCount("boxdb")));
+	}
+
+	private int getTableCount(String tableName) {
+		db = helper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select count(*) from " + tableName, null);
+		try {
+			return cursor.moveToFirst() ? cursor.getInt(0) : 0;
+		} finally {
+			cursor.close();
+		}
 	}
 
 	public void btnCalcClick(View v){
         ArrayList aList = getPallets();
         if(aList.size() == 0){
             String msg = getString(R.string.registerPalletMsg);
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -70,8 +62,25 @@ public class MainActivity extends Activity {
 
 	public void btnCodeManager(View v){
 		Intent intent = new Intent(getApplicationContext(), PalletManagerActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);
+	}
+
+	public void btnBoxManager(View v){
+		startActivity(new Intent(this, BoxManagerActivity.class));
+	}
+
+	public void btnSettings(View view) {
+		startActivity(new Intent(this, SettingsActivity.class));
+	}
+
+	public void btnMixedCalcClick(View view) {
+		int palletCount = getTableCount("palletdb");
+		int boxCount = getTableCount("boxdb");
+		if (palletCount < 1 || boxCount < 1) {
+			Toast.makeText(this, R.string.mixedNeedsSavedSpecs, Toast.LENGTH_LONG).show();
+			return;
+		}
+		startActivity(new Intent(this, MixedCalculationActivity.class));
 	}
 
     public ArrayList<Pallet> getPallets(){
@@ -80,19 +89,28 @@ public class MainActivity extends Activity {
 
         ArrayList<Pallet> aResult = new ArrayList<Pallet>();
 
-        while (c.moveToNext()) {
-            // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
-            String name = c.getString(c.getColumnIndex("name"));
-            int width = c.getInt(c.getColumnIndex("width"));
-            int height = c.getInt(c.getColumnIndex("height"));
-            String unit = c.getString(c.getColumnIndex("unit"));
+        try {
+            int nameIndex = c.getColumnIndexOrThrow("name");
+            int widthIndex = c.getColumnIndexOrThrow("width");
+            int heightIndex = c.getColumnIndexOrThrow("height");
+            int unitIndex = c.getColumnIndexOrThrow("unit");
 
-            Pallet pallet = new Pallet();
-            pallet.setName(name);
-            pallet.setWidth(width);
-            pallet.setLength(height);
-            pallet.setUnit(unit);
-            aResult.add(pallet);
+            while (c.moveToNext()) {
+                // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
+                String name = c.getString(nameIndex);
+                int width = c.getInt(widthIndex);
+                int height = c.getInt(heightIndex);
+                String unit = c.getString(unitIndex);
+
+                Pallet pallet = new Pallet();
+                pallet.setName(name);
+                pallet.setWidth(width);
+                pallet.setLength(height);
+                pallet.setUnit(unit);
+                aResult.add(pallet);
+            }
+        } finally {
+            c.close();
         }
 
         return aResult;

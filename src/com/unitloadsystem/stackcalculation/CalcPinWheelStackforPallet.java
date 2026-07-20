@@ -10,7 +10,7 @@ public class CalcPinWheelStackforPallet {
 	public StackEvalutorBean CalcPinWheelStackRule(String firstDir, String secondDir, int containerWidth, int containerLength, float width, float length){
 		StackEvalutorBean result = new StackEvalutorBean();
 		
-		// PinWheel 한 면적에 박스 배치 수량
+		// Calculate the box positions for the pinwheel layout.
 		int iAvailCount = 0;
 		int iSmallLength = 0;
 		

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="64dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:background="@drawable/dashboard_header"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:paddingLeft="22dp"
+            android:paddingTop="38dp"
+            android:paddingRight="22dp"
+            android:paddingBottom="22dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mixedResultTitle"
+                android:textColor="@color/headerText"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mixedResultHeaderSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/headerSubText"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/mode_segment_container"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <Button
+                android:id="@+id/mixedMode2d"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_selected"
+                android:onClick="showMixed2d"
+                android:text="@string/resultMode2d"
+                android:textAllCaps="false"
+                android:textColor="@color/headerText"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/mixedMode3d"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_unselected"
+                android:onClick="showMixed3d"
+                android:text="@string/resultMode3d"
+                android:textAllCaps="false"
+                android:textColor="@color/textSecondary"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/mixedModeContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_unselected"
+                android:onClick="showMixedContainer"
+                android:text="@string/resultModeContainer"
+                android:textAllCaps="false"
+                android:textColor="@color/textSecondary"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mixedLegendCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/selection_summary"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mixedLegendTitle"
+                android:textColor="@color/textPrimary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/mixedResultLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mixedResultUnplaced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/danger_button"
+            android:padding="14dp"
+            android:textColor="@color/dangerColor"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/mixedResultPallets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="18dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/mixedHeuristicNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="22dp"
+            android:text="@string/mixedHeuristicNote"
+            android:textColor="@color/textSecondary"
+            android:textSize="12sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/secondary_button"
+            android:onClick="btnBack"
+            android:text="@string/back_button"
+            android:textAllCaps="false"
+            android:textColor="@color/textPrimary" />
+    </LinearLayout>
+</ScrollView>

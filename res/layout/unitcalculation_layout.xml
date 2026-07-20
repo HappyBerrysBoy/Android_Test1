@@ -1,126 +1,309 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/title_margin"
-    android:background="@color/bodyBackgroundColor"
-    android:orientation="vertical"
-    tools:context=".UnitCalculationActivity" >
+    android:background="@color/appBackground"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    tools:context=".UnitCalculationActivity">
 
-    <!--<TextView-->
-        <!--android:id="@+id/showInputInfo"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:background="@color/unitTextViewColor" />-->
-    <LinearLayout style="@style/LabelLayout">
-	    <TextView
-	        style="@style/DefaultWrapLayout"
-	        android:text="@string/length" />
-		<TextView
-		    style="@style/DefaultWrapLayout"
-	        android:text="@string/width" />
-	    <TextView
-	        style="@style/DefaultWrapLayout"
-	        android:text="@string/height" />
-	    <TextView
-	        style="@style/DefaultWrapLayout"
-	        android:text="@string/dimension" />
-	</LinearLayout>
-    <LinearLayout style="@style/LabelButtonLayout">
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/length"
-	        android:text="@string/initBoxWidth"
-	        android:onClick="btnInputNum" />
-		<Button
-		    style="@style/DefaultWrapLayout"
-	        android:id="@+id/width"
-	        android:text="@string/initBoxHeight"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/height"
-	        android:text="@string/initBoxDepth"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/dimension"
-            android:text="mm"
-	        android:onClick="btnDimension" />
-	</LinearLayout>
-	<LinearLayout style="@style/LabelLayout">
-	    <TextView
-	        style="@style/DefaultWrapLayout"
-	        android:text="@string/quantity" />
-		<TextView
-		    style="@style/DefaultWrapLayout"
-	        android:text="@string/unitWeight" />
-	    <TextView
-	        style="@style/DefaultWrapLayout"
-	        android:text="@string/weightType" />
-	</LinearLayout>
-	<LinearLayout style="@style/LabelButtonLayout">
-		<Button
-		    style="@style/DefaultWrapLayout"
-	        android:id="@+id/quantity"
-	        android:onClick="btnInputNum"
-            android:text="100"/>
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/weight"
-	        android:onClick="btnInputNum"
-            android:text="5"/>
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/weightType"
-            android:text="kg"
-	        android:onClick="btnWeightType" />
-	</LinearLayout>
-	
-	<LinearLayout style="@style/LabelLayout">
-	    <!--<TextView-->
-	        <!--style="@style/DefaultWrapLayout"-->
-	        <!--android:text="@string/PalletSize" />-->
-		<TextView
-		    style="@style/DefaultWrapLayout"
-	        android:text="@string/LayerNum" />
-	</LinearLayout>
-	<LinearLayout style="@style/LabelButtonLayout">
-	    <!--<Button-->
-	        <!--style="@style/DefaultWrapLayout"-->
-	        <!--android:id="@+id/detailSpec"-->
-	        <!--android:onClick="btnDetail" />-->
-        <Button
-            style="@style/DefaultWrapLayout"
-            android:id="@+id/boxLayers"
-            android:text="5"
-            android:onClick="btnInputNum" />
-	</LinearLayout>
-	<LinearLayout style="@style/LabelLayout"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp">
-	    <Button
-	        style="@style/DefaultWrapLayout"
-	        android:id="@+id/calculation"
-	        android:text="@string/calcButton"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:background="@drawable/round_button"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-	        android:onClick="btnCalc" />
+        android:paddingLeft="18dp"
+        android:paddingTop="20dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="34dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calculationPalletSection"
+            android:textColor="@color/textPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/selectedPalletStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selection_summary"
+            android:lineSpacingExtra="2dp"
+            android:minHeight="58dp"
+            android:paddingLeft="14dp"
+            android:paddingTop="11dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="11dp"
+            android:text="@string/currentPalletNone"
+            android:textColor="@color/textPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <Button
-            style="@style/DefaultWrapLayout"
-            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/secondary_button"
+            android:minHeight="0dp"
+            android:onClick="btnSelectPallet"
+            android:stateListAnimator="@null"
+            android:text="@string/chooseSavedPallet"
+            android:textAllCaps="false"
+            android:textColor="@color/textPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="22dp"
+            android:background="@color/dividerColor" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calculationBoxSection"
+            android:textColor="@color/textPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/selectedBoxStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/currentBoxDirect"
+            android:textColor="@color/textSecondary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loadBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/primary_button"
+                android:minHeight="0dp"
+                android:onClick="btnLoadBox"
+                android:stateListAnimator="@null"
+                android:text="@string/chooseSavedBox"
+                android:textAllCaps="false"
+                android:textColor="@color/headerText"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="1dp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/secondary_button"
+                android:minHeight="0dp"
+                android:onClick="btnDirectInput"
+                android:stateListAnimator="@null"
+                android:text="@string/directInput"
+                android:textAllCaps="false"
+                android:textColor="@color/textPrimary"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/dashboard_stat"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView style="@style/CalcFieldLabel" android:text="@string/length" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <TextView style="@style/CalcFieldLabel" android:text="@string/width" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <TextView style="@style/CalcFieldLabel" android:text="@string/height" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <TextView style="@style/CalcFieldLabel" android:text="@string/dimension" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/length"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initBoxWidth" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <Button
+                    android:id="@+id/width"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initBoxHeight" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <Button
+                    android:id="@+id/height"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initBoxDepth" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <Button
+                    android:id="@+id/dimension"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnDimension"
+                    android:text="@string/unitMm" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/dividerColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView style="@style/CalcFieldLabel" android:text="@string/unitWeight" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <TextView style="@style/CalcFieldLabel" android:text="@string/weightType" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/weight"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initialFive" />
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+                <Button
+                    android:id="@+id/weightType"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnWeightType"
+                    android:text="@string/unitKg" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/calculationSessionSection"
+            android:textColor="@color/textPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/calculationSessionSubtitle"
+            android:textColor="@color/textSecondary"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <TextView style="@style/CalcFieldLabel" android:text="@string/quantity" />
+            <Space android:layout_width="8dp" android:layout_height="1dp" />
+            <TextView style="@style/CalcFieldLabel" android:text="@string/layerCountShort" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="7dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/quantity"
+                style="@style/ModernInputButton"
+                android:onClick="btnInputNum"
+                android:text="" />
+            <Space android:layout_width="8dp" android:layout_height="1dp" />
+            <Button
+                android:id="@+id/boxLayers"
+                style="@style/ModernInputButton"
+                android:onClick="btnInputNum"
+                android:text="" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/estimatedStackHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selection_summary"
+            android:lineSpacingExtra="2dp"
+            android:minHeight="48dp"
+            android:paddingLeft="14dp"
+            android:paddingTop="10dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="10dp"
+            android:text="@string/estimatedStackHeightEmpty"
+            android:textColor="@color/textPrimary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/calculation"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/primary_button"
+            android:minHeight="0dp"
+            android:onClick="btnCalc"
+            android:stateListAnimator="@null"
+            android:text="@string/calcButton"
+            android:textAllCaps="false"
+            android:textColor="@color/headerText"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/secondary_button"
+            android:minHeight="0dp"
+            android:onClick="btnBack"
+            android:stateListAnimator="@null"
             android:text="@string/back_button"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:background="@drawable/round_button"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:onClick="btnBack" />
-	</LinearLayout>
-</LinearLayout>
+            android:textAllCaps="false"
+            android:textColor="@color/textPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

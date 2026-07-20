@@ -1,0 +1,63 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.unitloadsystem.activitys"
+    compileSdk 36
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    def releaseKeyPropertiesFile = rootProject.file("keystore/upload-key-reset.properties")
+    def releaseKeyProperties = new Properties()
+    if (System.getenv("ANDROID_RELEASE_STORE_FILE")) {
+        releaseKeyProperties["storeFile"] = System.getenv("ANDROID_RELEASE_STORE_FILE")
+        releaseKeyProperties["storePassword"] = System.getenv("ANDROID_RELEASE_STORE_PASSWORD")
+        releaseKeyProperties["keyAlias"] = System.getenv("ANDROID_RELEASE_KEY_ALIAS")
+        releaseKeyProperties["keyPassword"] = System.getenv("ANDROID_RELEASE_KEY_PASSWORD")
+    } else if (releaseKeyPropertiesFile.exists()) {
+        releaseKeyPropertiesFile.withInputStream { releaseKeyProperties.load(it) }
+    }
+
+    defaultConfig {
+        applicationId "com.unitloadsystem.activitys"
+        minSdk 21
+        targetSdk 36
+        versionCode 45
+        versionName "1.45"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    signingConfigs {
+        release {
+            if (!releaseKeyProperties.isEmpty()) {
+                storeFile file(releaseKeyProperties["storeFile"])
+                storePassword releaseKeyProperties["storePassword"]
+                keyAlias releaseKeyProperties["keyAlias"]
+                keyPassword releaseKeyProperties["keyPassword"]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (!releaseKeyProperties.isEmpty()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile "../AndroidManifest.xml"
+            java.srcDirs = ["../src"]
+            res.srcDirs = ["../res"]
+        }
+    }
+}

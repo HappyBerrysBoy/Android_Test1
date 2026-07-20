@@ -1,17 +1,168 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/bodyBackgroundColor"
-    android:id="@+id/calcResult"
-    tools:context=".CalculationResultActivity" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bodyBackgroundColor"
+        android:background="@color/headerBackground"
         android:orientation="vertical"
-        android:id="@+id/layoutResult">
+        android:paddingLeft="22dp"
+        android:paddingTop="30dp"
+        android:paddingRight="22dp"
+        android:paddingBottom="20dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/resultTitle"
+            android:textColor="@color/headerText"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/resultPalletInfoTitle"
+            android:textColor="@color/headerSubText"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/resultPalletHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/headerText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/headerSubText" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/resultBoxInfoTitle"
+            android:textColor="@color/headerSubText"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/resultBoxHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/headerText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/mode_segment_container"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <Button
+            android:id="@+id/mode2d"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/mode_segment_selected"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="show2d"
+            android:stateListAnimator="@null"
+            android:text="@string/resultMode2d"
+            android:textAllCaps="false"
+            android:textColor="@color/headerText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/mode3d"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/mode_segment_unselected"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="show3d"
+            android:stateListAnimator="@null"
+            android:text="@string/resultMode3d"
+            android:textAllCaps="false"
+            android:textColor="@color/textSecondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/modeContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/mode_segment_unselected"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="showContainer"
+            android:stateListAnimator="@null"
+            android:text="@string/resultModeContainer"
+            android:textAllCaps="false"
+            android:textColor="@color/textSecondary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/calcResult"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingTop="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="18dp" />
         </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="58dp"
+        android:background="@drawable/secondary_button"
+        android:onClick="btnBack"
+        android:text="@string/back_button"
+        android:textColor="@color/textPrimary"
+        android:textStyle="bold" />
+</LinearLayout>

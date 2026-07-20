@@ -15,6 +15,15 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Gradle / Android Studio build state
+.gradle/
+app/build/
+
+# Local release signing material
+keystore/*.jks
+keystore/*.properties
+keystore/*.pem
+
 # Eclipse project files
 .classpath
 .project
@@ -27,3 +36,16 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# macOS and local Codex/OMX workspace state
+.DS_Store
+.omc/
+.omx/
+
+# Legacy and exported Android signing keys
+SecondAndroid
+*.keystore
+*.p12
+*.pfx
+*.pepk
+keystore/pepk.jar

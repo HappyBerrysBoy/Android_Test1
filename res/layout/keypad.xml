@@ -1,105 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bodyBackgroundColor"
+    android:background="@color/headerBackground"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".KeyPadActivity" >
+    tools:context=".KeyPadActivity">
 
-    <LinearLayout style="@style/KeypadLayout">
-	    <TextView
-	        android:id="@+id/showInputNum"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:gravity="right|center"
-	        android:text="0"
-	        android:textSize="30dp"
-	        android:textStyle="bold|italic"
-	        android:cursorVisible="false"
-            android:layout_margin="10dp"
-	        android:background="@color/keypadTextViewColor" />
-	    <Button
-	        android:id="@+id/sendNum"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="4"
-            android:textSize="20dp"
-	        android:background="@drawable/round_button"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-	        android:text="@string/sendNum"
-	        android:onClick="btnSend" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:background="@color/headerBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/keypadTitle"
+            android:textColor="@color/headerText"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/keypadSubtitle"
+            android:textColor="@color/headerSubText"
+            android:textSize="13sp" />
     </LinearLayout>
-	<LinearLayout style="@style/KeypadLayout">
-		<Button
-		    style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn1"
-	        android:text="1"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn2"
-	        android:text="2"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn3"
-	        android:text="3"
-	        android:onClick="btnInputNum" />
-	</LinearLayout>
-	<LinearLayout style="@style/KeypadLayout">
-		<Button
-		    style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn4"
-	        android:text="4"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn5"
-	        android:text="5"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn6"
-	        android:text="6"
-	        android:onClick="btnInputNum" />
-	</LinearLayout>
-	<LinearLayout style="@style/KeypadLayout">
-		<Button
-		    style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn7"
-	        android:text="7"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn8"
-	        android:text="8"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn9"
-	        android:text="9"
-	        android:onClick="btnInputNum" />
-	</LinearLayout>
-	<LinearLayout style="@style/KeypadLayout">
-		<Button
-		    style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btnPoint"
-	        android:text="."
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btn0"
-	        android:text="0"
-	        android:onClick="btnInputNum" />
-	    <Button
-	        style="@style/DefaultKeypadLayout"
-	        android:id="@+id/btnClear"
-	        android:text="@string/clearNum"
-	        android:onClick="btnClear" />
-	</LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/appBackground"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="18dp"
+            android:paddingTop="28dp"
+            android:paddingRight="18dp"
+            android:paddingBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:background="@drawable/keypad_value_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp">
+
+                <TextView
+                    android:id="@+id/inputFieldLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/keypadValueLabel"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/showInputNum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="start"
+                        android:freezesText="true"
+                        android:gravity="right|center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/initialZero"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="34sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/inputUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="19sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:text="mm"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/keypadNumberLabel"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                style="@style/KeypadNumberRow"
+                android:layout_marginTop="8dp">
+
+                <Button android:id="@+id/btn1" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="1" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn2" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="2" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn3" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="3" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/KeypadNumberRow" android:layout_marginTop="9dp">
+                <Button android:id="@+id/btn4" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="4" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn5" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="5" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn6" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="6" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/KeypadNumberRow" android:layout_marginTop="9dp">
+                <Button android:id="@+id/btn7" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="7" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn8" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="8" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn9" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="9" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/KeypadNumberRow" android:layout_marginTop="9dp">
+                <Button android:id="@+id/btnPoint" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="." />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button android:id="@+id/btn0" style="@style/KeypadNumberButton" android:onClick="btnInputNum" android:text="0" />
+                <Space style="@style/KeypadHorizontalSpace" />
+                <Button
+                    android:id="@+id/btnBackspace"
+                    style="@style/KeypadNumberButton"
+                    android:background="@drawable/keypad_key_accent"
+                    android:contentDescription="@string/keypadBackspace"
+                    android:onClick="btnBackspace"
+                    android:text="@string/keypadBackspaceSymbol"
+                    android:textColor="@color/accentColor" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnClear"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85"
+                    android:background="@drawable/secondary_button"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:onClick="btnClear"
+                    android:stateListAnimator="@null"
+                    android:text="@string/keypadClearAll"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/sendNum"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.15"
+                    android:background="@drawable/primary_button"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:onClick="btnSend"
+                    android:stateListAnimator="@null"
+                    android:text="@string/keypadDone"
+                    android:textAllCaps="false"
+                    android:textColor="@color/headerText"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

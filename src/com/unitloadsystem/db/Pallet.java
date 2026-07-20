@@ -5,6 +5,7 @@ public class Pallet {
 	private String name;
 	private int width;
 	private int length;
+	private int height;
 	private String unit;
 	
 	public String getName() {
@@ -24,6 +25,12 @@ public class Pallet {
 	}
 	public void setLength(int length) {
 		this.length = length;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
 	}
 	public String getUnit() {
 		return unit;

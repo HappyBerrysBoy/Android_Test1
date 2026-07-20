@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/headerBackground"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/result_header_min_height"
+        android:orientation="horizontal"
+        android:paddingLeft="22dp"
+        android:paddingTop="@dimen/result_header_top_padding"
+        android:paddingRight="22dp"
+        android:paddingBottom="@dimen/result_header_bottom_padding">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/resultTitle"
+                android:textColor="@color/headerText"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/resultSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/headerSubText"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="44dp"
+            android:background="@drawable/mode_segment_container"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/mode2d"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_selected"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:onClick="show2d"
+                android:stateListAnimator="@null"
+                android:text="@string/resultMode2d"
+                android:textAllCaps="false"
+                android:textColor="@color/headerText"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/mode3d"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_unselected"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:onClick="show3d"
+                android:stateListAnimator="@null"
+                android:text="@string/resultMode3d"
+                android:textAllCaps="false"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/modeContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/mode_segment_unselected"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:onClick="showContainer"
+                android:stateListAnimator="@null"
+                android:text="@string/resultModeContainer"
+                android:textAllCaps="false"
+                android:textColor="@color/textSecondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/calcResult"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="12dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/secondary_button"
+        android:onClick="btnBack"
+        android:text="@string/back_button"
+        android:textColor="@color/textPrimary"
+        android:textStyle="bold" />
+</LinearLayout>

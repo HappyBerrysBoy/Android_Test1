@@ -3,12 +3,16 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-	<dimen name="title_margin">120dp</dimen>
-	<dimen name="title_textsize">50dp</dimen>
+	<dimen name="title_margin">72dp</dimen>
+	<dimen name="title_textsize">24sp</dimen>
 	<dimen name="menu_margin">20dp</dimen>
 	<dimen name="menu_interval">70dp</dimen>
 	<dimen name="menu_textsize">30dp</dimen>
     <dimen name="menu_Height">100dp</dimen>
+
+    <dimen name="result_header_min_height">132dp</dimen>
+    <dimen name="result_header_top_padding">28dp</dimen>
+    <dimen name="result_header_bottom_padding">20dp</dimen>
 
 	<!-- KeyPad Button Text Size -->
 	<dimen name="keypad_textSize">30dp</dimen>

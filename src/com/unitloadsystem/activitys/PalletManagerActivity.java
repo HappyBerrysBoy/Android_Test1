@@ -1,256 +1,294 @@
 package com.unitloadsystem.activitys;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import com.unitloadsystem.db.MySQLiteOpenHelper;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PalletManagerActivity extends Activity{
+import com.unitloadsystem.db.MySQLiteOpenHelper;
+import com.unitloadsystem.db.Pallet;
 
-    Button bBtn;
-	Activity thisAct = this;
-    SQLiteDatabase db;
-    MySQLiteOpenHelper helper;
+import java.util.ArrayList;
 
-    ListAdapter la;
-    ListView listView;
+public class PalletManagerActivity extends LocalizedActivity {
+    private MySQLiteOpenHelper helper;
+    private ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+    private String selectedName;
 
-    String strSelectedPallet;
-    int g_iBtnID;
-    int g_iArrayID;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.palletmanager_layout);
+        helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, MySQLiteOpenHelper.DB_VERSION);
+        clearForm(null);
+        refreshList();
+    }
 
-    View.OnClickListener ocl = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            TextView tv = (TextView) v;
-            tv.setBackgroundColor(getResources().getColor(R.color.keypadSendButtonBack));
-            strSelectedPallet = (String)tv.getText();
+    public void btnDimenPallet(final View view) {
+        final String[] dimensions = getResources().getStringArray(R.array.dimensions);
+        final Button target = (Button) view;
+        int selectedIndex = -1;
+        for (int i = 0; i < dimensions.length; i++) {
+            if (dimensions[i].equals(target.getText().toString())) {
+                selectedIndex = i;
+                break;
+            }
         }
-    };
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
-		setContentView(R.layout.palletmanager_layout);
-
-//		FragmentManager fragManagr = getFragmentManager();
-//		FragmentTransaction fragTransaction = fragManagr.beginTransaction();
-//
-//		if (savedInstanceState == null) {
-//			fragTransaction.add(R.id.container, new PalletManagerFragment());
-//			fragTransaction.commit();
-//		}
-
-        helper = new MySQLiteOpenHelper(getApplicationContext(), "pallet.db", null, 1);
-
-        listRefresh();
-	}
-
-    public void btnInputNum(View v){
-        bBtn = (Button) findViewById(v.getId());
-
-        Intent intent = new Intent(getApplicationContext(), KeyPadActivity.class);
-        intent.putExtra("BtnID", v.getId());
-        intent.putExtra("TextIn", bBtn.getText());
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivityForResult(intent, v.getId());
+        ModernChoiceDialog.show(this, R.string.chooseLengthUnit, dimensions, selectedIndex,
+                new ModernChoiceDialog.OnChoiceSelected() {
+                    @Override
+                    public void onChoiceSelected(int index) {
+                        target.setText(dimensions[index]);
+                    }
+                });
     }
 
-    public void btnDimenPallet(View v){
-        SetDialogItem(v.getId(), R.array.dimensions);
+    public void btnInputNum(View view) {
+        Button input = (Button) view;
+        Intent intent = new Intent(this, KeyPadActivity.class);
+        intent.putExtra("BtnID", view.getId());
+        intent.putExtra("TextIn", input.getText());
+        intent.putExtra("InputUnit",
+                ((Button) findViewById(R.id.palletUnitInput)).getText().toString());
+        startActivityForResult(intent, view.getId());
     }
 
-    private String SetDialogItem(int id, int arrayId){
-        String sReturn = "";
-
-        g_iBtnID = id;
-        g_iArrayID = arrayId;
-
-        new AlertDialog.Builder(this)
-                .setTitle("Select Item")
-//		.setIcon(R.drawable.ic_launcher)
-                .setItems(g_iArrayID,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String[] dimensions = getResources().getStringArray(g_iArrayID);
-                                Button btn = (Button)findViewById(g_iBtnID);
-                                btn.setText(dimensions[which]);
-                            }
-                        })
-                .setNegativeButton("Cancel", null)
-                .show();
-
-        return sReturn;
-    }
-
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK) {
-            bBtn = (Button) findViewById(requestCode);
-            bBtn.setText(data.getStringExtra("Value"));
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            ((Button) findViewById(requestCode)).setText(data.getStringExtra("Value"));
         }
     }
 
-    public ArrayList getPallets(){
-        // 1) db의 데이터를 읽어와서, 2) 결과 저장, 3)해당 데이터를 꺼내 사용
-
-        db = helper.getReadableDatabase(); // db객체를 얻어온다. 읽기 전용
-        Cursor c = db.query("palletdb", null, null, null, null, null, null);
-
-        /*
-         * 위 결과는 select * from student 가 된다. Cursor는 DB결과를 저장한다. public Cursor
-         * query (String table, String[] columns, String selection, String[]
-         * selectionArgs, String groupBy, String having, String orderBy)
-         */
-
-        ArrayList aResult = new ArrayList();
-
-        while (c.moveToNext()) {
-            // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
-            String name = c.getString(c.getColumnIndex("name"));
-            int width = c.getInt(c.getColumnIndex("width"));
-            int height = c.getInt(c.getColumnIndex("height"));
-            String unit = c.getString(c.getColumnIndex("unit"));
-            Log.i("db", "name: " + name + ", width : " + width + ", height : " + height + ", unit : " + unit);
-
-            HashMap hMap = new HashMap();
-            hMap.put("name", name);
-            hMap.put("width", width);
-            hMap.put("height", height);
-            hMap.put("unit", unit);
-            aResult.add(hMap);
-        }
-
-        return aResult;
-    }
-
-    public void addPallet(View v){
-        String widthBtn = (String)((Button)findViewById(R.id.widthPalletforAdd)).getText();
-        String heightBtn = (String)((Button)findViewById(R.id.heightPalletforAdd)).getText();
-        String dimenBtn = (String)((Button)findViewById(R.id.dimentPalletforAdd)).getText();
-
-        if(widthBtn.equals("") || Float.parseFloat(widthBtn) < 10){
-            Toast.makeText(getApplicationContext(), "Please Input Width or Input Width over 100mm", Toast.LENGTH_SHORT).show();
+    public void savePallet(View view) {
+        boolean updating = selectedName != null;
+        Pallet pallet = readForm();
+        if (pallet == null) {
             return;
-        }
-
-        if(heightBtn.equals("") || Float.parseFloat(heightBtn) < 10){
-            Toast.makeText(getApplicationContext(), "Please Input Height or Input Height over 100mm", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        db = helper.getWritableDatabase();
-
-        if(Float.parseFloat(widthBtn) < Float.parseFloat(heightBtn)){
-            String strTemp = heightBtn;
-            heightBtn = widthBtn;
-            widthBtn = strTemp;
         }
 
         ContentValues values = new ContentValues();
-        values.put("name", widthBtn + "X" + heightBtn);
-        values.put("width", Integer.parseInt(widthBtn));
-        values.put("height", Integer.parseInt(heightBtn));
-        values.put("unit", dimenBtn);
+        values.put("name", pallet.getName());
+        values.put("width", pallet.getWidth());
+        values.put("height", pallet.getLength());
+        values.put("pallet_height", pallet.getHeight());
+        values.put("unit", pallet.getUnit());
 
-        db.insert("palletdb", null, values);
-
-        listRefresh();
+        SQLiteDatabase db = helper.getWritableDatabase();
+        if (selectedName != null && !selectedName.equals(pallet.getName())) {
+            db.delete("palletdb", "name=?", new String[]{selectedName});
+        }
+        db.insertWithOnConflict("palletdb", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        selectedName = pallet.getName();
+        hideKeyboard();
+        refreshList();
+        updateFormMode();
+        Toast.makeText(this, updating ? R.string.palletUpdated : R.string.palletSaved,
+                Toast.LENGTH_SHORT).show();
     }
 
-    // update
-//    public void update (String name, int age) {
-//        db = helper.getWritableDatabase(); //db 객체를 얻어온다. 쓰기가능
-//
-//        ContentValues values = new ContentValues();
-//        values.put("age", age);    //age 값을 수정
-//        db.update("student", values, "name=?", new String[]{name});
-//        /*
-//         * new String[] {name} 이런 간략화 형태가 자바에서 가능하다
-//         * 당연하지만, 별도로 String[] asdf = {name} 후 사용하는 것도 동일한 결과가 나온다.
-//         */
-//
-//        /*
-//         * public int update (String table,
-//         * ContentValues values, String whereClause, String[] whereArgs)
-//         */
-//    }
-
-    public void delPallet(View v){
-        if(strSelectedPallet.equals(null) || strSelectedPallet.equals(""))
+    public void deletePallet(View view) {
+        if (selectedName == null) {
+            Toast.makeText(this, R.string.selectPalletToDelete, Toast.LENGTH_SHORT).show();
             return;
-
-        Button widthBtn = (Button)findViewById(R.id.widthPalletforAdd);
-        Button heightBtn = (Button)findViewById(R.id.heightPalletforAdd);
-        db = helper.getWritableDatabase();
-
-        db.delete("palletdb", "name=?", new String[]{strSelectedPallet});
-        listRefresh();
-    }
-
-    public void listRefresh(){
-        ArrayList aList = getPallets();
-
-        la = new ListAdapter(this, R.id.palletListView, aList);
-        listView = (ListView) findViewById(R.id.palletListView);
-        listView.setAdapter(la);
-    }
-
-    private class ListAdapter extends ArrayAdapter<HashMap> {
-        LayoutInflater inflater;
-        private ArrayList<HashMap> items;
-
-        public ListAdapter(Context context, int textViewResourceId, ArrayList<HashMap> items) {
-            super(context, textViewResourceId, items);
-            inflater = (LayoutInflater) thisAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.items = items;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.pallet_code, parent, false);
-
-                HashMap hPallet = items.get(position);
-
-                if (hPallet != null) {
-                    TextView tvPalletName = (TextView) convertView.findViewById(R.id.palletCodeName);
-                    TextView tvPalletWidth = (TextView) convertView.findViewById(R.id.palletCodeWidth);
-                    TextView tvPalletHeight = (TextView) convertView.findViewById(R.id.palletCodeHeight);
-                    TextView tvPalletUnit = (TextView) convertView.findViewById(R.id.palletCodeUnit);
-
-                    tvPalletName.setText((String) hPallet.get("name"));
-                    tvPalletWidth.setText(String.valueOf((Integer)hPallet.get("width")));
-                    tvPalletHeight.setText(String.valueOf((Integer)hPallet.get("height")));
-                    tvPalletUnit.setText((String) hPallet.get("unit"));
-
-                    tvPalletName.setOnClickListener(ocl);
+        ModernConfirmDialog.show(this, getString(R.string.confirmDeletePallet, selectedName),
+                R.string.deletePallet, new ModernConfirmDialog.OnConfirmed() {
+                    @Override
+                    public void onConfirmed() {
+                        helper.getWritableDatabase().delete("palletdb", "name=?", new String[]{selectedName});
+                        clearForm(null);
+                        refreshList();
+                        Toast.makeText(PalletManagerActivity.this, R.string.palletDeleted, Toast.LENGTH_SHORT).show();
                     }
-                }
+                });
+    }
 
-            return convertView;
+    public void clearForm(View view) {
+        selectedName = null;
+        EditText name = (EditText) findViewById(R.id.palletNameInput);
+        Button width = (Button) findViewById(R.id.palletWidthInput);
+        Button length = (Button) findViewById(R.id.palletLengthInput);
+        Button height = (Button) findViewById(R.id.palletHeightInput);
+        Button unit = (Button) findViewById(R.id.palletUnitInput);
+        if (name == null || width == null || length == null || height == null || unit == null) {
+            return;
+        }
+
+        name.setText("");
+        width.setText(R.string.initialPalletWidth);
+        length.setText(R.string.initialPalletLength);
+        height.setText(R.string.initialPalletHeight);
+        unit.setText(R.string.unitMm);
+        LinearLayout listContainer = (LinearLayout) findViewById(R.id.palletListContainer);
+        if (listContainer != null) {
+            for (int i = 0; i < listContainer.getChildCount(); i++) {
+                updateRowSelection((TextView) listContainer.getChildAt(i), false);
+            }
+        }
+        hideKeyboard();
+        updateFormMode();
+    }
+
+    private Pallet readForm() {
+        try {
+            int width = Integer.parseInt(((Button) findViewById(R.id.palletWidthInput)).getText().toString().trim());
+            int length = Integer.parseInt(((Button) findViewById(R.id.palletLengthInput)).getText().toString().trim());
+            int height = Integer.parseInt(((Button) findViewById(R.id.palletHeightInput)).getText().toString().trim());
+            if (width <= 0 || length <= 0 || height <= 0) {
+                throw new NumberFormatException();
+            }
+
+            String unit = ((Button) findViewById(R.id.palletUnitInput)).getText().toString();
+            String name = ((EditText) findViewById(R.id.palletNameInput)).getText().toString().trim();
+            if (name.length() == 0) {
+                name = width + "X" + length;
+            }
+
+            Pallet pallet = new Pallet();
+            pallet.setName(name);
+            pallet.setWidth(width);
+            pallet.setLength(length);
+            pallet.setHeight(height);
+            pallet.setUnit(unit);
+            return pallet;
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, R.string.invalidPalletSpec, Toast.LENGTH_SHORT).show();
+            return null;
         }
     }
 
-    public void btnBack(View v){
-        this.finish();
+    private ArrayList<Pallet> loadPallets() {
+        ArrayList<Pallet> result = new ArrayList<Pallet>();
+        Cursor cursor = helper.getReadableDatabase().query("palletdb", null, null, null, null, null, "name");
+        try {
+            while (cursor.moveToNext()) {
+                Pallet pallet = new Pallet();
+                pallet.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                pallet.setWidth(cursor.getInt(cursor.getColumnIndexOrThrow("width")));
+                pallet.setLength(cursor.getInt(cursor.getColumnIndexOrThrow("height")));
+                pallet.setHeight(cursor.getInt(cursor.getColumnIndexOrThrow("pallet_height")));
+                pallet.setUnit(cursor.getString(cursor.getColumnIndexOrThrow("unit")));
+                result.add(pallet);
+            }
+        } finally {
+            cursor.close();
+        }
+        return result;
+    }
+
+    private void refreshList() {
+        pallets = loadPallets();
+        final LinearLayout listContainer = (LinearLayout) findViewById(R.id.palletListContainer);
+        listContainer.removeAllViews();
+
+        for (final Pallet pallet : pallets) {
+            TextView row = new TextView(this);
+            CharSequence rowText = getString(R.string.palletListRow, pallet.getName(), pallet.getWidth(),
+                    pallet.getLength(), pallet.getHeight(), pallet.getUnit());
+            row.setTag(rowText);
+            row.setTextSize(15);
+            row.setPadding(dp(14), dp(12), dp(14), dp(12));
+            row.setBackgroundResource(R.drawable.dashboard_action);
+            updateRowSelection(row, pallet.getName().equals(selectedName));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, dp(6));
+            listContainer.addView(row, params);
+
+            row.setOnClickListener(clicked -> {
+                selectedName = pallet.getName();
+                for (int i = 0; i < listContainer.getChildCount(); i++) {
+                    updateRowSelection((TextView) listContainer.getChildAt(i),
+                            listContainer.getChildAt(i) == clicked);
+                }
+                applyPallet(pallet);
+                scrollToForm();
+            });
+        }
+
+        findViewById(R.id.emptyPalletList).setVisibility(pallets.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private void updateRowSelection(TextView row, boolean selected) {
+        CharSequence rowText = (CharSequence) row.getTag();
+        row.setSelected(selected);
+        row.setText(selected ? getString(R.string.selectedListItem, rowText) : rowText);
+        row.setTextColor(getResources().getColor(
+                selected ? R.color.headerText : R.color.textPrimary));
+        row.setTypeface(Typeface.DEFAULT, selected ? Typeface.BOLD : Typeface.NORMAL);
+        row.setContentDescription(selected
+                ? getString(R.string.selectedListItemDescription, rowText) : rowText);
+    }
+
+    private void applyPallet(Pallet pallet) {
+        ((EditText) findViewById(R.id.palletNameInput)).setText(pallet.getName());
+        ((Button) findViewById(R.id.palletWidthInput)).setText(String.valueOf(pallet.getWidth()));
+        ((Button) findViewById(R.id.palletLengthInput)).setText(String.valueOf(pallet.getLength()));
+        ((Button) findViewById(R.id.palletHeightInput)).setText(String.valueOf(pallet.getHeight()));
+        ((Button) findViewById(R.id.palletUnitInput)).setText(pallet.getUnit());
+        hideKeyboard();
+        updateFormMode();
+    }
+
+    private void updateFormMode() {
+        TextView mode = (TextView) findViewById(R.id.palletFormModeTitle);
+        Button save = (Button) findViewById(R.id.palletSaveButton);
+        Button delete = (Button) findViewById(R.id.palletDeleteButton);
+        if (mode == null || save == null || delete == null) {
+            return;
+        }
+        boolean editing = selectedName != null;
+        mode.setText(editing
+                ? getString(R.string.palletFormModeEditing, selectedName)
+                : getString(R.string.palletFormModeNew));
+        mode.setTextColor(getResources().getColor(
+                editing ? R.color.primaryColor : R.color.textPrimary));
+        mode.setBackgroundResource(editing
+                ? R.drawable.update_mode_background : R.drawable.selection_summary);
+        save.setText(editing ? R.string.updatePallet : R.string.savePallet);
+        delete.setEnabled(editing);
+        delete.setAlpha(editing ? 1f : 0.45f);
+    }
+
+    private void scrollToForm() {
+        final ScrollView scroll = (ScrollView) findViewById(R.id.palletManagerScroll);
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.smoothScrollTo(0, 0);
+            }
+        });
+    }
+
+    private void hideKeyboard() {
+        View focused = getCurrentFocus();
+        if (focused != null) {
+            InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            keyboard.hideSoftInputFromWindow(focused.getWindowToken(), 0);
+            focused.clearFocus();
+        }
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    public void btnBack(View view) {
+        finish();
     }
 }

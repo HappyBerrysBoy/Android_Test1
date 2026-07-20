@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.unitloadsystem.activitys"
-    android:versionCode="7"
-    android:versionName="1.7" >
-
-    <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="21" />
+    >
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/unitload_icon"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
         <activity
             android:name="com.unitloadsystem.activitys.MainActivity"
+            android:exported="true"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,15 +24,32 @@
         </activity>
         <activity
             android:name="com.unitloadsystem.activitys.KeyPadActivity"
-            android:label="@string/app_name" >
+            android:label="@string/keypadTitle"
+            android:theme="@style/KeypadTheme" >
         </activity>
         <activity
             android:name="com.unitloadsystem.activitys.CalculationResultActivity"
-            android:label="@string/app_name" >
+            android:label="@string/resultTitle" >
         </activity>
         <activity
             android:name="com.unitloadsystem.activitys.PalletManagerActivity"
-            android:label="@string/app_name" >
+            android:label="@string/palletManagerTitle" >
+        </activity>
+        <activity
+            android:name="com.unitloadsystem.activitys.BoxManagerActivity"
+            android:label="@string/boxManagerTitle" >
+        </activity>
+        <activity
+            android:name="com.unitloadsystem.activitys.MixedCalculationActivity"
+            android:label="@string/mixedCalculationTitle" >
+        </activity>
+        <activity
+            android:name="com.unitloadsystem.activitys.MixedCalculationResultActivity"
+            android:label="@string/mixedResultTitle" >
+        </activity>
+        <activity
+            android:name="com.unitloadsystem.activitys.SettingsActivity"
+            android:label="@string/settingsTitle" >
         </activity>
         
     </application>

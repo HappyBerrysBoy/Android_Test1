@@ -2,125 +2,212 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        >
+        android:layout_height="88dp"
+        android:background="@color/headerBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/palletManagerTitle"
+            android:textColor="@color/headerText"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/palletManagerSubtitle"
+            android:textColor="@color/headerSubText"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/palletManagerScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/appBackground"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <Button
+                android:id="@+id/palletNewInputButton"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="@drawable/secondary_button"
+                android:onClick="clearForm"
+                android:text="@string/newPalletAction"
+                android:textAllCaps="false"
+                android:textColor="@color/primaryColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/palletFormModeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/selection_summary"
+                android:paddingLeft="14dp"
+                android:paddingTop="12dp"
+                android:paddingRight="14dp"
+                android:paddingBottom="12dp"
+                android:text="@string/palletFormModeNew"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/palletNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/input_field"
+                android:hint="@string/palletNameHint"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:singleLine="true"
+                android:textColor="@color/textPrimary"
+                android:textColorHint="@color/textTertiary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/palletDimensions"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/palletWidthInput"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initialPalletWidth"
+                    android:textSize="16sp" />
+
+                <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/palletLengthInput"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initialPalletLength"
+                    android:textSize="16sp" />
+
+                <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/palletHeightInput"
+                    style="@style/ModernInputButton"
+                    android:onClick="btnInputNum"
+                    android:text="@string/initialPalletHeight"
+                    android:textSize="16sp" />
+
+                <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/palletUnitInput"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/palletName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/palletWidth"
-                        />
+                    android:layout_weight="0.75"
+                    android:background="@drawable/secondary_button"
+                    android:onClick="btnDimenPallet"
+                    android:text="@string/unitMm"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/palletWidth"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/palletWidth"
-                        />
+            <Button
+                android:id="@+id/palletSaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/primary_button"
+                android:onClick="savePallet"
+                android:text="@string/savePallet"
+                android:textAllCaps="false"
+                android:textColor="@color/headerText"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/palletDimen"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/palletDimen"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/savedPallets"
+                android:textColor="@color/textPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/emptyPalletList"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center"
+                android:text="@string/noSavedPallet"
+                android:textColor="@color/textTertiary" />
+
+            <LinearLayout
+                android:id="@+id/palletListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/list_background"
+                android:orientation="vertical"
+                android:padding="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/palletDeleteButton"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/widthPalletforAdd"
-                        android:onClick="btnInputNum"/>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/heightPalletforAdd"
-                        android:onClick="btnInputNum"/>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/dimentPalletforAdd"
-                        android:onClick="btnDimenPallet"
-                        android:text="mm"/>
-                    </LinearLayout>
+                    android:layout_weight="1"
+                    android:background="@drawable/danger_button"
+                    android:onClick="deletePallet"
+                    android:text="@string/deleteSelectedPallet"
+                    android:textColor="@color/dangerColor"
+                    android:textStyle="bold" />
 
+                <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/secondary_button"
+                    android:onClick="btnBack"
+                    android:text="@string/back_button"
+                    android:textColor="@color/textPrimary"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/addPallet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/addPallet"
-                android:onClick="addPallet"/>
-
-            <Button
-                android:id="@+id/delPallet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/delPallet"
-                android:onClick="delPallet"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <ListView
-         android:id="@+id/palletListView"
-         android:layout_width="match_parent"
-         android:layout_height="380dp"
-         android:gravity="start"
-         android:numColumns="1"
-         android:scrollbars="vertical"
-         android:stretchMode="columnWidth" >
-     </ListView>
-
-    <LinearLayout style="@style/LabelLayout">
-        <Button
-            style="@style/DefaultWrapLayout"
-            android:id="@+id/backMenufromPalletManager"
-            android:textColor="#fff"
-            android:text="@string/back_button"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:background="@drawable/round_button"
-            android:onClick="btnBack" />
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

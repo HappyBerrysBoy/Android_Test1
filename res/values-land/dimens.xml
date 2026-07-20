@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="result_header_min_height">96dp</dimen>
+    <dimen name="result_header_top_padding">12dp</dimen>
+    <dimen name="result_header_bottom_padding">12dp</dimen>
+</resources>

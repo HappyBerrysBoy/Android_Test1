@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:background="@color/headerBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/boxManagerTitle"
+            android:textColor="@color/headerText"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/boxManagerSubtitle"
+            android:textColor="@color/headerSubText"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/boxManagerScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <Button
+                android:id="@+id/boxNewInputButton"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="@drawable/secondary_button"
+                android:onClick="clearForm"
+                android:text="@string/newBoxAction"
+                android:textAllCaps="false"
+                android:textColor="@color/primaryColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/boxFormModeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/selection_summary"
+                android:paddingLeft="14dp"
+                android:paddingTop="12dp"
+                android:paddingRight="14dp"
+                android:paddingBottom="12dp"
+                android:text="@string/boxFormModeNew"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/boxName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/input_field"
+                android:hint="@string/boxNameHint"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:singleLine="true"
+                android:textColor="@color/textPrimary"
+                android:textColorHint="@color/textTertiary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/boxDimensions"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/boxLength"
+                    style="@style/ModernInputButton"
+                    android:text="@string/initBoxWidth"
+                    android:onClick="btnInputNum" />
+
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/boxWidth"
+                    style="@style/ModernInputButton"
+                    android:text="@string/initBoxHeight"
+                    android:onClick="btnInputNum" />
+
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/boxHeight"
+                    style="@style/ModernInputButton"
+                    android:text="@string/initBoxDepth"
+                    android:onClick="btnInputNum" />
+
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/boxDimension"
+                    style="@style/ModernInputButton"
+                    android:text="@string/unitMm"
+                    android:onClick="btnBoxDimension" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/boxLoadSettings"
+                android:textColor="@color/textSecondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/boxWeight"
+                    style="@style/ModernInputButton"
+                    android:text="@string/initialFive"
+                    android:onClick="btnInputNum" />
+
+                <Space android:layout_width="6dp" android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/boxWeightUnit"
+                    style="@style/ModernInputButton"
+                    android:text="@string/unitKg"
+                    android:onClick="btnBoxWeightType" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/boxSaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/primary_button"
+                android:onClick="saveBox"
+                android:text="@string/saveBox"
+                android:textAllCaps="false"
+                android:textColor="@color/headerText"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/savedBoxes"
+                android:textColor="@color/textPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/emptyBoxList"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center"
+                android:text="@string/noSavedBox"
+                android:textColor="@color/textTertiary" />
+
+            <LinearLayout
+                android:id="@+id/boxListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/list_background"
+                android:orientation="vertical"
+                android:padding="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/boxDeleteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/danger_button"
+                    android:onClick="deleteBox"
+                    android:text="@string/deleteSelectedBox"
+                    android:textColor="@color/dangerColor"
+                    android:textStyle="bold" />
+
+                <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/secondary_button"
+                    android:onClick="btnBack"
+                    android:text="@string/back_button"
+                    android:textColor="@color/textPrimary"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
